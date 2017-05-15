@@ -32,6 +32,12 @@ provider:
       Action:
         - lambda:InvokeFunction
       Resource: "arn:aws:lambda:us-east-1:*:function:*"
+    - Effect: "Allow"
+      Action:
+        - kinesis:DescribeStream
+        - kinesis:GetShardIterator
+        - kinesis:GetRecords
+      Resource: "arn:aws:kinesis:us-east-1:*:stream/*"
 
 # you can define service wide environment variables here
 #  environment:
@@ -48,15 +54,15 @@ provider:
 
 functions:
   persistValueFunction:
+    name: persistValueFunction
     handler: persistValue/handler.handler
     timeout: 10
     memorySize: 128
-    name: persistValueFunction
   ingestValueFunction:
+    name: ingestValueFunction
     handler: ingestValue/handler.handler
     timeout: 10
     memorySize: 128
-    name: ingestValueFunction
   readValuesFunction:
     name: readValuesFunction
     handler: readValues/handler.handler
@@ -67,6 +73,11 @@ functions:
     handler: readPredictions/handler.handler
     timeout: 10,
     memeorySize: 128
+  readNotificationsFunction:
+    name: readNotificationsFunction
+    handler: readNotifications/handler.handler
+    timeout: 10
+    memorySize: 128
 
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
