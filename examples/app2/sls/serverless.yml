@@ -27,6 +27,10 @@ provider:
       Action:
         - dynamodb:PutItem
       Resource: "arn:aws:dynamodb:us-east-1:*:*"
+    - Effect: "Allow"
+      Action:
+        - lambda:InvokeFunction
+      Resource: "arn:aws:lambda:us-east-1:*:function:*"
 
 # you can define service wide environment variables here
 #  environment:
@@ -44,6 +48,14 @@ provider:
 functions:
   persistValueFunction:
     handler: persistValue/handler.handler
+    timeout: 10
+    memorySize: 128
+    name: persistValueFunction
+  ingestValueFunction:
+    handler: ingestValue/handler.handler
+    timeout: 10
+    memorySize: 128
+    name: ingestValueFunction
 
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
