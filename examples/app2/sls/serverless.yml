@@ -38,6 +38,10 @@ provider:
         - kinesis:GetShardIterator
         - kinesis:GetRecords
       Resource: "arn:aws:kinesis:us-east-1:*:stream/*"
+    - Effect: "Allow"
+      Action:
+        - sqs:SendMessage
+      Resource: "arn:aws:sqs:us-east-1:*:*"
 
 # you can define service wide environment variables here
 #  environment:
@@ -143,3 +147,7 @@ resources:
         Tags:
          - Key: app
            Value: smartgridmonitor
+    meterTopic:
+      Type: AWS::SQS::Queue
+      Properties:
+        QueueName: DE00056366740S2031372170000000000010001080000
