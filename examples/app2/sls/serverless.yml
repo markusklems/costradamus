@@ -26,6 +26,7 @@ provider:
     - Effect: "Allow"
       Action:
         - dynamodb:PutItem
+        - dynamodb:Query
       Resource: "arn:aws:dynamodb:us-east-1:*:*"
     - Effect: "Allow"
       Action:
@@ -56,6 +57,11 @@ functions:
     timeout: 10
     memorySize: 128
     name: ingestValueFunction
+  readValuesFunction:
+    name: readValuesFunction
+    handler: readValues/handler.handler
+    timeout: 10
+    memorySize: 128
 
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
