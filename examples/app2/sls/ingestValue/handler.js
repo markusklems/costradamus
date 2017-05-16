@@ -80,7 +80,9 @@ module.exports.handler = (event, context, callback) => {
     const promises = [sendToDynamodb(event), sendToLambda(event)];
     Promise.all(promises)
         .then( values => {
-            callback(null, values);
+            callback(null, {
+                statusCode: '202'
+            });
         })
         .catch( err => {
             callback(err);
