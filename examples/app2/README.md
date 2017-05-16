@@ -217,7 +217,9 @@ sls invoke -f readPredictionsFunction -p readPredictions/event.json
 ```
 
 #### Emulate Notification Service Client
-CURRENTLY NOT SUPPORTED!!!
+```
+sls invoke -f readNotificationsFunction -p readNotifications/event.json
+```
 
 #### Check Executions
 ```
