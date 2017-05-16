@@ -1,5 +1,11 @@
 # Smart Meter Monitor Application
 
+## Pre-requisites
++ [Node.js >= v6.5.0](https://nodejs.org/en/)
++ [Serverless Framework](https://serverless.com/)
++ [AWS account](https://aws.amazon.com/)
++ [AWS Provider Credentials](https://serverless.comaws )
+
 ## Architecture
 
 ![SMGA Architecture](./documentation/sgma-architecture.jpg)
