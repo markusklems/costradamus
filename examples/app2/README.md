@@ -1,10 +1,10 @@
 # Smart Meter Monitor Application
 
-### Architecture
+## Architecture
 
 ![SMGA Architecture](./documentation/sgma-architecture.jpg)
 
-### Getting Started
+## Getting Started
 
 ##### Deploy Application
 ```
