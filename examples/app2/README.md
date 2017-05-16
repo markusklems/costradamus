@@ -2,7 +2,7 @@
 
 ### Architecture
 
-![SMGA Architecture](./documentation/sgma-architecture.pdf?raw=true)
+![SMGA Architecture](./documentation/sgma-architecture.jpg)
 
 ### Getting Started
 
