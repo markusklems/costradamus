@@ -1,4 +1,4 @@
-# Smart Meter Monitor Application
+# Smart Grid Metering Application
 
 ## Pre-requisites
 + [Node.js >= v6.5.0](https://nodejs.org/en/)
