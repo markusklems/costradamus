@@ -1,12 +1,18 @@
 # Smart Grid Metering Application
 
-## Pre-requisites
+Table of Contents:
++ [Pre-requisits](#prerequisits)
++ [Architecture & Implementation](#architecture)
++ [Getting Started](#gettingstarted)
+
+
+## <a name="prerequisits"></a> Pre-requisites
 + [Node.js >= v6.5.0](https://nodejs.org/en/)
 + [Serverless Framework](https://serverless.com/)
 + [AWS account](https://aws.amazon.com/)
 + [AWS Provider Credentials](https://serverless.comaws )
 
-## Architecture & Implementation
+## <a name="architecture"></a> Architecture & Implementation
 
 ![SMGA Architecture](./documentation/sgma-architecture.jpg)
 
@@ -69,7 +75,15 @@ Example Client Input:
 
 #### ReadNotificatitons Function (Lambda: [DOCS](https://aws.amazon.com/de/documentation/lambda/)/[SDK](http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/Lambda.html))
 The ReadPredictions functions allows to query predicted metered values
-for timeseries of interst.
+for timeseries of interest.
+
+Example Client Input:
+```
+{
+    "id": "DE00056366740S2031372170000000000010001080000",
+    "start": 1494499997
+}
+```
 
 #### Values Table (DynamoDB: [DOCS](https://aws.amazon.com/de/documentation/dynamodb/)/[SDK](http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/DynamoDB.html))
 
@@ -102,7 +116,7 @@ Schema and example data:
 The Notifications stream publishes predicted meter values that represent
 an absolute change in value that is greater than a configurable threshold.
 
-## Getting Started
+## <a name="gettingstarted"></a> Getting Started
 
 ##### Deploy Application
 ```
