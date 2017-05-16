@@ -31,6 +31,12 @@ Example Client Input:
 }
 ```
 
+Example Client Response:
+```
+{
+    "statusCode": "202"
+}
+```
 #### PersistValue Function (Lambda: [DOCS](https://aws.amazon.com/de/documentation/lambda/)/[SDK](http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/Lambda.html))
 The PersistValue function persists new meter values without any
 processing in the DynamoDB table Values. The PersistValue function is a
@@ -50,7 +56,7 @@ The ReadValues functions allows to query metered values in a time a
 configurable time [start...end] interval. Timestamps are UNIX-Timestamps
 with second precision.
 
-Example Client Input:
+Example Client Request:
 ```
 {
     "id": "DE00056366740S2031372170000000000010001080000",
@@ -59,12 +65,28 @@ Example Client Input:
 }
 ```
 
+Example Client Response:
+```
+[
+    {
+        "id": "DE00056366740S2031372170000000000010001080000",
+        "value": "+000000040+1",
+        "timestamp": 1494500001
+    },
+    {
+        "id": "DE00056366740S2031372170000000000010001080000",
+        "value": "+000000010+1",
+        "timestamp": 1494500002
+    }
+]
+```
+
 #### ReadPredictions Function (Lambda: [DOCS](https://aws.amazon.com/de/documentation/lambda/)/[SDK](http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/Lambda.html))
 The ReadPredictions functions allows to query predicted metered values
 in a time a configurable time [start...end] interval. Timestamps are
 UNIX-Timestamps with second precision.
 
-Example Client Input:
+Example Client Request:
 ```
 {
     "id": "DE00056366740S2031372170000000000010001080000",
@@ -73,11 +95,37 @@ Example Client Input:
 }
 ```
 
+Example Client Response:
+```
+[
+    {
+        "id": "DE00056366740S2031372170000000000010001080000",
+        "value": "+000000017+1",
+        "timestamp": 1494500001
+    },
+    {
+        "id": "DE00056366740S2031372170000000000010001080000",
+        "value": "+000000019+1",
+        "timestamp": 1494500002
+    },
+    {
+        "id": "DE00056366740S2031372170000000000010001080000",
+        "value": "+000000019+1",
+        "timestamp": 1494500003
+    },
+    {
+        "id": "DE00056366740S2031372170000000000010001080000",
+        "value": "+000000016+1",
+        "timestamp": 1494500004
+    }
+]
+
+```
 #### ReadNotificatitons Function (Lambda: [DOCS](https://aws.amazon.com/de/documentation/lambda/)/[SDK](http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/Lambda.html))
 The ReadPredictions functions allows to query predicted metered values
 for timeseries of interest.
 
-Example Client Input:
+Example Client Request:
 ```
 {
     "id": "DE00056366740S2031372170000000000010001080000",
@@ -85,6 +133,27 @@ Example Client Input:
 }
 ```
 
+Example Client Response:
+```
+[
+    {
+        "id": "DE00056366740S2031372170000000000010001080000",
+        "timestamp": 1494500004,
+        "value": "+000000016+1"
+    },
+    {
+        "id": "DE00056366740S2031372170000000000010001080000",
+        "timestamp": 1494500003,
+        "value": "+000000019+1"
+    },
+    {
+        "id": "DE00056366740S2031372170000000000010001080000",
+        "timestamp": 1494500002,
+        "value": "+000000019+1"
+    }
+]
+
+```
 #### Values Table (DynamoDB: [DOCS](https://aws.amazon.com/de/documentation/dynamodb/)/[SDK](http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/DynamoDB.html))
 
 The Values table stores submitted and metered meter values.
