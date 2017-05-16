@@ -22,6 +22,8 @@ provider:
   runtime: nodejs4.3
 #  stage: dev
 #  region: us-east-1
+# TODO Set region via reference.
+# TODO Set IAM role statements for specific resources and not globally.
   iamRoleStatements:
     - Effect: "Allow"
       Action:
@@ -37,11 +39,19 @@ provider:
         - kinesis:DescribeStream
         - kinesis:GetShardIterator
         - kinesis:GetRecords
+        - kinesis:PutRecord
       Resource: "arn:aws:kinesis:us-east-1:*:stream/*"
     - Effect: "Allow"
       Action:
         - sqs:SendMessage
+        - sqs:ReceiveMessage
       Resource: "arn:aws:sqs:us-east-1:*:*"
+    - Effect: "Allow"
+      Action:
+        - logs:CreateLogGroup
+        - logs:CreateLogStream
+        - logs:PutLogEvents
+      Resource: "arn:aws:logs:us-east-1:*:*"
 
 # you can define service wide environment variables here
 #  environment:
@@ -82,6 +92,11 @@ functions:
     handler: readNotifications/handler.handler
     timeout: 10
     memorySize: 128
+  predictValueFunction:
+    name: predictValueFunction
+    handler: predictValue/handler.handler
+    timeout: 10
+    memeorySize: 128
 
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
