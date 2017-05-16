@@ -23,6 +23,6 @@ module.exports.handler = (event, context, callback) => {
 
     return dynamo.put(params, (err, data) => {
         if(err) callback(err);
-        else callback(null, "Success!");
+        else callback(null, data);
     });
 };
