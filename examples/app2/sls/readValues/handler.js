@@ -29,6 +29,9 @@ module.exports.handler = (event, context, callback) => {
 
     return dynamo.query(params, (err, data) => {
         if(err) callback(err);
-        else callback(null, data);
+        else {
+            // TODO add X-Ray hook. Payload: data.ConsumedCapacity
+            callback(null, data.Items);
+        }
     });
 };
