@@ -11,9 +11,10 @@ const sqs = new AWS.SQS({apiVersion: '2012-11-05'});
 
 const sendToDynamodb = event => {
     return new Promise((resolve, reject) => {
+        // TODO Change invocation type to event
         const params = {
             FunctionName: 'persistValueFunction',
-            InvocationType: 'RequestResponse',
+            InvocationType: 'Event',
             Payload: JSON.stringify(event, null)
         };
         lambda.invoke(params, (err, data) => {
@@ -37,6 +38,7 @@ const sendToSqs = event => {
         };
         sqs.sendMessage(params, (err, data) => {
             if (err) {
+                // TODO Create new topic if topic does not exist
                 console.log(err, err.stack);
                 reject(err);
             }
@@ -48,12 +50,34 @@ const sendToSqs = event => {
     })
 };
 
+const sendToLambda = event => {
+    return new Promise((resolve, reject) => {
+        // TODO Change invocation type to event
+        const params = {
+            FunctionName: 'predictValueFunction',
+            InvocationType: 'Event',
+            Payload: JSON.stringify(event, null)
+        };
+        lambda.invoke(params, (err, data) => {
+            if (err) {
+                console.log(err, err.stack, err.message);
+                reject(err);
+            }
+            else {
+                console.log(data);
+                resolve(data);
+            }
+        });
+    });
+};
+
 module.exports.handler = (event, context, callback) => {
 
     // TODO Check params
 
     // TODO Join both functions and terminate via a callback.
-    const promises = [sendToDynamodb(event), sendToSqs(event)];
+    // const promises = [sendToDynamodb(event), sendToSqs(event)];
+    const promises = [sendToDynamodb(event), sendToLambda(event)];
     Promise.all(promises)
         .then( values => {
             callback(null, values);
