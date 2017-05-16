@@ -76,7 +76,8 @@ for timeseries of interst.
 The Values table stores submitted and metered meter values.
 
 Schema and example data:
-| id                                            | timestamp  |     value    |
+
+| id                                            | timestamp  | value        |
 | --------------------------------------------- |:----------:| ------------:|
 | DE00056366740S2031372170000000000010001080000 | 1494499997 | +000000010+1 |
 | DE00056366740S2031372170000000000010001080000 | 1494499998 | +000000040+1 |
@@ -90,7 +91,8 @@ based on an analytical model. Thus, stored values have never been
 submitted or metered.
 
 Schema and example data:
-| id                                            | timestamp  |     value    |
+
+| id                                            | timestamp  | value        |
 | --------------------------------------------- |:----------:| ------------:|
 | DE00056366740S2031372170000000000010001080000 | 1494499997 | +000000010+1 |
 | DE00056366740S2031372170000000000010001080000 | 1494499998 | +000000040+1 |
