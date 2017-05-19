@@ -208,7 +208,7 @@ sls invoke -f ingestValueFunction -p ingestValue/event3.json
 
 #### Emulate Grid Operator Client
 ```
-sls invoke -f readValuesFunction -p readValue/event.json
+sls invoke -f readValuesFunction -p readValues/event.json
 ```
 
 #### Emulate Grid Controller Client

@@ -4,8 +4,9 @@
 
 'use strict';
 
-const AWSXRay = require('aws-xray-sdk');
-const AWS = AWSXRay.captureAWS(require('aws-sdk'));
+const AWSXRAY = require('aws-xray-sdk-core');
+AWSXRAY.middleware.setSamplingRules('./sampling-rules.json');
+const AWS = AWSXRAY.captureAWS(require('aws-sdk'));
 const lambda = new AWS.Lambda({
   apiVersion: '2015-03-31'
 });
