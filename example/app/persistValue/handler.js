@@ -51,7 +51,6 @@ module.exports.handler = (event, context, callback) => {
       subsegment.addMetadata("DynamoDBConsumedCapacity", consumedCapacity, "ResourceUsage");
       subsegment.close();
     }
-
   });
 
 };
