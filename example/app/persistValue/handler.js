@@ -33,7 +33,6 @@ module.exports.handler = (event, context, callback) => {
   }
 
   let req = dynamo.put(params, (err, data) => {
-    console.log('dynamo.put response', data);
     if (err) {
       console.error(err);
       callback(err);
@@ -43,7 +42,6 @@ module.exports.handler = (event, context, callback) => {
   });
 
   req.on('success', res => {
-    console.log('success');
     if (_tracing) {
       const contextUtils = require('aws-xray-sdk-core/lib/context_utils');
       let parent = contextUtils.resolveSegment(contextUtils.resolveManualSegmentParams(req.params));
