@@ -3,7 +3,7 @@
  */
 
 'use strict';
-let _tracing = true;
+let _tracing = require('toggles.js').persistValueTracing;
 let AWS, AWSXRAY;
 if (_tracing) {
   AWSXRAY = require('aws-xray-sdk-core');
