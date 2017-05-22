@@ -32,13 +32,14 @@ module.exports.handler = (event, context, callback) => {
     params.ReturnConsumedCapacity = 'TOTAL';
   }
 
-  let req = dynamo.put(params);
+  let req = dynamo.put(params, (err, res) => {});
 
   req.on('error', err => {
+    console.error('error', err);
     callback(err);
   });
 
-  req.on('complete', res => {
+  req.on('success', res => {
     if (_tracing) {
       const contextUtils = require('aws-xray-sdk-core/lib/context_utils');
       let parent = contextUtils.resolveSegment(contextUtils.resolveManualSegmentParams(req.params));
@@ -46,9 +47,9 @@ module.exports.handler = (event, context, callback) => {
       let traceId = parent.segment ? parent.segment.trace_id : parent.trace_id;
       let consumedCapacity = res.data.ConsumedCapacity;
       subsegment.addMetadata("DynamoDBConsumedCapacity", consumedCapacity, "ResourceUsage");
-      //console.log("my subsegment", subsegment);
       subsegment.close();
     }
     callback(null, res.data);
   });
+
 };
