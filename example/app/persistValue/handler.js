@@ -3,14 +3,14 @@
  */
 
 'use strict';
-const costradamus = require('costradamus');
-const Costradamus = costradamus.Costradamus;
-let c = new Costradamus();
-let _tracing = true; //costradamus.toggle('persistValueTracing').then(val => let tracing = val;);
-const AWSXRAY = c.getXRay();
-const AWS = c.getAWS();
+const Costradamus = require('costradamus');
+let costradamus = new Costradamus();
+costradamus.init('persistValue');
+const AWSXRAY = costradamus.getXRay();
+const AWS = costradamus.getAWS();
 
 const dynamo = new AWS.DynamoDB.DocumentClient();
+let dynamoTracer = costradamus.getDynamoTracer();
 
 module.exports.handler = (event, context, callback) => {
 
@@ -25,7 +25,7 @@ module.exports.handler = (event, context, callback) => {
     }
   };
 
-  costradamus.prepareDynamoDBParams(params, _tracing);
+  dynamoTracer.prepareParams(params);
 
   let req = dynamo.put(params, (err, data) => {
     if (err) {
@@ -36,5 +36,5 @@ module.exports.handler = (event, context, callback) => {
     }
   });
 
-  costradamus.handleDynamoDBRequest(req, AWSXRAY.getSegment(), _tracing);
+  dynamoTracer.handleRequest(req);
 };
