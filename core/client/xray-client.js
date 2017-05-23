@@ -1,3 +1,5 @@
+'use strict';
+
 const AWS = require('aws-sdk');
 const XRay = new AWS.XRay({
   region: 'us-east-1'

@@ -3,15 +3,11 @@
  */
 
 'use strict';
-let _tracing = require('toggles.js').persistValueTracing;
-let AWS, AWSXRAY;
-if (_tracing) {
-  AWSXRAY = require('aws-xray-sdk-core');
-  AWSXRAY.middleware.setSamplingRules('./sampling-rules.json');
-  AWS = AWSXRAY.captureAWS(require('aws-sdk'));
-} else {
-  AWS = require('aws-sdk');
-}
+const costradamus = require('costradamus');
+let _tracing = costradamus.toggle('persistValueTracing');
+const AWSXRAY = require('aws-xray-sdk-core');
+costradamus.setup(AWSXRAY);
+const AWS = AWSXRAY.captureAWS(require('aws-sdk'));
 
 const dynamo = new AWS.DynamoDB.DocumentClient();
 
@@ -45,8 +41,10 @@ module.exports.handler = (event, context, callback) => {
     if (_tracing) {
       const contextUtils = require('aws-xray-sdk-core/lib/context_utils');
       let parent = contextUtils.resolveSegment(contextUtils.resolveManualSegmentParams(req.params));
+      //console.log("parent sub/segment", parent);
       let subsegment = parent.addNewSubsegment("DynamoDBConsumedCapacity");
       let traceId = parent.segment ? parent.segment.trace_id : parent.trace_id;
+      //console.log("traceId", traceId);
       let consumedCapacity = res.data.ConsumedCapacity;
       subsegment.addMetadata("DynamoDBConsumedCapacity", consumedCapacity, "ResourceUsage");
       subsegment.close();
