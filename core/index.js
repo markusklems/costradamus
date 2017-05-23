@@ -2,7 +2,7 @@
 
 module.exports = {
   toggle: require('./serverless/toggle.js'),
-  setup: require('./serverless/tracing-aws-sdk.js'),
+  Costradamus: require('./serverless/costradamus.js'),
   prepareDynamoDBParams: require('./serverless/tracing-dynamodb.js').prepareDynamoDBParams,
   handleDynamoDBRequest: require('./serverless/tracing-dynamodb.js').handleDynamoDBRequest
 }

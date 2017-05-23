@@ -4,10 +4,11 @@
 
 'use strict';
 const costradamus = require('costradamus');
+const Costradamus = costradamus.Costradamus;
+let c = new Costradamus();
 let _tracing = true; //costradamus.toggle('persistValueTracing').then(val => let tracing = val;);
-const AWSXRAY = require('aws-xray-sdk-core');
-costradamus.setup(AWSXRAY);
-const AWS = AWSXRAY.captureAWS(require('aws-sdk'));
+const AWSXRAY = c.getXRay();
+const AWS = c.getAWS();
 
 const dynamo = new AWS.DynamoDB.DocumentClient();
 
