@@ -7,7 +7,7 @@ const XRay = new AWS.XRay({
 
 const params = {
   TraceIds: [
-    '1-5922d9e9-8eae4552bac1d2d4f6e450eb'
+    '1-59244514-05996dd9e36837dd31478567'
   ]
 };
 
@@ -18,9 +18,10 @@ XRay.batchGetTraces(params, (err, data) => {
     let segments = data.Traces[0].Segments;
     segments.forEach(segment => {
       let document = JSON.parse(segment.Document);
+      //console.log(document);
       if (document.subsegments) {
         let dynamoSubSeg = document.subsegments.find(subsegment => subsegment.name === 'DynamoDB');
-        let dynamoCapacitySubSeg = dynamoSubSeg.subsegments.find(subsegment => subsegment.name === 'DynamoDBConsumedCapacity');
+        let dynamoCapacitySubSeg = document.subsegments.find(subsegment => subsegment.name === 'DynamoDBConsumedCapacity');
         //console.log(dynamoCapacitySubSeg);
         let ResourceUsage = dynamoCapacitySubSeg.metadata.ResourceUsage;
         console.log(ResourceUsage);
