@@ -4,7 +4,7 @@
 
 'use strict';
 const costradamus = require('costradamus');
-let _tracing = costradamus.toggle('persistValueTracing');
+let _tracing = true; //costradamus.toggle('persistValueTracing').then(val => let tracing = val;);
 const AWSXRAY = require('aws-xray-sdk-core');
 costradamus.setup(AWSXRAY);
 const AWS = AWSXRAY.captureAWS(require('aws-sdk'));
@@ -24,9 +24,7 @@ module.exports.handler = (event, context, callback) => {
     }
   };
 
-  if (_tracing) {
-    params.ReturnConsumedCapacity = 'TOTAL';
-  }
+  costradamus.prepareDynamoDBParams(params, _tracing);
 
   let req = dynamo.put(params, (err, data) => {
     if (err) {
@@ -37,18 +35,5 @@ module.exports.handler = (event, context, callback) => {
     }
   });
 
-  req.on('success', res => {
-    if (_tracing) {
-      const contextUtils = require('aws-xray-sdk-core/lib/context_utils');
-      let parent = contextUtils.resolveSegment(contextUtils.resolveManualSegmentParams(req.params));
-      //console.log("parent sub/segment", parent);
-      let subsegment = parent.addNewSubsegment("DynamoDBConsumedCapacity");
-      let traceId = parent.segment ? parent.segment.trace_id : parent.trace_id;
-      //console.log("traceId", traceId);
-      let consumedCapacity = res.data.ConsumedCapacity;
-      subsegment.addMetadata("DynamoDBConsumedCapacity", consumedCapacity, "ResourceUsage");
-      subsegment.close();
-    }
-  });
-
+  costradamus.handleDynamoDBRequest(req, AWSXRAY.getSegment(), _tracing);
 };
