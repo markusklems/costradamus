@@ -2,6 +2,7 @@
 const fs = require('fs');
 const path = require('path');
 const DynamoTracer = require('./dynamo-tracer.js');
+const LambdaTracer = require('./lambda-tracer.js');
 
 module.exports = class Costradamus {
   constructor() {
@@ -36,6 +37,15 @@ module.exports = class Costradamus {
       return this.getXRay().captureAWS(require('aws-sdk'));
     } else {
       return require('aws-sdk');
+    }
+  }
+
+  getLambdaTracer() {
+    if (this._tracing) {
+      let segment = this.getXRay().getSegment();
+      return new LambdaTracer(segment);
+    } else {
+      return null;
     }
   }
 
