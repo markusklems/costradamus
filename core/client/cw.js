@@ -14,20 +14,29 @@ let parseCloudWatchLogs = (lambdaFunctionName, startTime, endTime) => {
 
 let r = parseCloudWatchLogs('persistValueFunction', '1495549204', '1495549207');
 
-let string = '';
-r.on('data', (chunk) => {
-  let part = chunk.toString();
-  string += part;
-  console.log('stream data ' + part);
-
-  //const regex = /Duration:/;
-  //var result = chunk.match(regex);
-  //var statusNumber = result[1];
-  //var statusString = result[2];
-});
-
+let logString = '';
+r.on('data', (chunk) => logString += chunk.toString());
 r.on('end', () => {
-  console.log('final output ' + string);
+  console.log('final output ' + logString);
+  const regex = / /;
+  let splitResult = logString.split(/Duration:|Memory Size:|Max Memory Used:/);
+  splitResult.shift(); // remove the first entry, i.e., "RequestId: ..."
+  let reduced = splitResult.reduce((acc, curr) => {
+    const regex = / |\t|\n/;
+    const makeObj = (str) => {
+      return {
+        "val": str.split(regex)[1],
+        "type": str.split(regex)[2]
+      }
+    };
+    if (Array.isArray(acc)) {
+      acc.push(makeObj(curr));
+      return acc;
+    } else {
+      return [makeObj(acc), makeObj(curr)];
+    }
+  });
+  //console.log("reduced", reduced);
 });
 
 //.pipe(process.stdout);
