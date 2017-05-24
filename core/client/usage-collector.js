@@ -30,7 +30,7 @@ let usageCollector = (document) => {
           //console.log('requestId', requestId)
           const resourceId = lambdaUsage.aws.function_arn;
           const resourceName = lambdaUsage.name;
-          console.log("lambdaUsage", lambdaUsage)
+          //console.log("lambdaUsage", lambdaUsage)
           parseCloudWatchLogs(lambdaUsage.name, startTimeUnix, endTimeUnix, requestId).then(res => {
             resolve({
               "service": "lambda",

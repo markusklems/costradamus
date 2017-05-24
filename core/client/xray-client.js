@@ -8,7 +8,7 @@ const usageCollector = require('./usage-collector.js');
 
 const params = {
   TraceIds: [
-    '1-5925b130-21dd571f2574a9287589f79a'
+    '1-5925b4b2-d5066655438c3e474924515d'
   ]
 };
 
@@ -21,8 +21,8 @@ XRay.batchGetTraces(params, (err, data) => {
       //console.log(document);
       usageCollector(document).then(res => {
         console.log('RESULT', res);
-        console.log('Invocations', res.invocations);
-        console.log('Consumptions', res.invocations.forEach(i => {
+        console.log('INVOCATIONS', res.invocations);
+        console.log('CONSUMPTIONS', res.invocations.forEach(i => {
           if (i.consumptions) {
             console.log(i.consumptions)
           }
