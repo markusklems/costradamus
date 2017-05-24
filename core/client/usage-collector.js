@@ -46,32 +46,28 @@ let usageCollector = (document) => {
 
   if (document.subsegments) {
     // DynamoDB usage collection
-    let dynamoUsageSubSeg = document.subsegments.find(finder.dynamoUsageFinder);
-    //console.log(dynamoUsageSubSeg);
-    if (dynamoUsageSubSeg) {
-      let ddbUsage = dynamoUsageSubSeg.metadata.ResourceUsage;
-      let p = new Promise((resolve, reject) => {
-        resolve({
-          name: 'DynamoDBConsumedCapacity',
-          value: ddbUsage.DynamoDBConsumedCapacity
-        });
-      });
-      promises.push(p);
-    }
-
-    // Lambda usage collection
-    //let lambdaUsageSubSeg = //document.subsegments.find(finder.lambdaUsageFinder);
-    ////console.log(dynamoCapacitySubSeg);
-    //if (lambdaUsageSubSeg) {
-    //  let lambdaUsage = lambdaUsageSubSeg;
-    //  toReturn.LambdaUsage = lambdaUsage;
-    //}
+    let p = new Promise((resolve, reject) => {
+      let dynamoUsageSubSeg = document.subsegments.find(finder.dynamoUsageFinder);
+      if (dynamoUsageSubSeg) {
+        let ddbUsage = dynamoUsageSubSeg.metadata.ResourceUsage;
+        if (ddbUsage) {
+          resolve({
+            name: 'DynamoDBConsumedCapacity',
+            value: ddbUsage.DynamoDBConsumedCapacity
+          });
+        } else {
+          reject(`Expected to find a metadata.ResourceUsage property for the subsegment. Skip processing DynamoDB usage for subsegment ${dynamoUsageSubSeg}.`);
+        }
+      }
+    });
+    promises.push(p);
   }
+
   return new Promise((resolve, reject) => {
+    let toReturn = {};
     Promise.all(promises).then(res => {
-      let toReturn = {};
       if (res && res.length > 0) {
-        toReturn[res[0].name] = res[0].value;
+        res.forEach(i => toReturn[i.name] = i.value);
       }
       resolve(toReturn);
     }).catch(err => reject(err));

@@ -8,8 +8,7 @@ const usageCollector = require('./usage-collector.js');
 
 const params = {
   TraceIds: [
-    '1-59259938-34e8d4f893d074c8b6f04e49',
-    '1-59259969-e6b42520637bb59c919c2e4f'
+    '1-5925a43e-7163ba58157e53826d3c9730'
   ]
 };
 
@@ -20,7 +19,7 @@ XRay.batchGetTraces(params, (err, data) => {
     segments.forEach(segment => {
       let document = JSON.parse(segment.Document);
       //console.log(document);
-      usageCollector(document).then(resourceUsage => console.log('', resourceUsage)).catch(err => console.log(err));
+      usageCollector(document).then(resourceUsage => console.log('Resource Usage', resourceUsage)).catch(err => console.log(err));
     });
   }
 });
