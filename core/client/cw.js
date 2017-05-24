@@ -40,7 +40,13 @@ let parseCloudWatchLogs = (lambdaFunctionName, startTime, endTime, requestId) =>
             return [makeObj(acc), makeObj(curr)];
           }
         });
-        resolve(reduced);
+        let toReturn = {
+          "Duration": reduced[0],
+          "BilledDuration": reduced[1],
+          "MemorySize": reduced[2],
+          "MayMemoryUsed": reduced[3]
+        };
+        resolve(toReturn);
       } else {
         reject(`Couldn\'t find CloudWatch logs for the specified time frame ${startTime} - ${endTime} and pattern ${searchPattern}.`);
       }
