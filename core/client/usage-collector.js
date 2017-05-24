@@ -28,10 +28,15 @@ let usageCollector = (document) => {
           //console.log('startTimeUnix', new Date(startTimeUnix));
           //console.log('endTimeUnix', new Date(endTimeUnix));
           //console.log('requestId', requestId)
+          const resourceId = lambdaUsage.aws.function_arn;
+          const resourceName = lambdaUsage.name;
+          console.log("lambdaUsage", lambdaUsage)
           parseCloudWatchLogs(lambdaUsage.name, startTimeUnix, endTimeUnix, requestId).then(res => {
             resolve({
-              name: 'LambdaUsage',
-              value: res
+              "service": "lambda",
+              "resourceName": resourceName,
+              "resourceId": resourceId,
+              "consumptions": res
             });
           }).catch(err => reject(err));
         } else {
@@ -64,12 +69,17 @@ let usageCollector = (document) => {
   }
 
   return new Promise((resolve, reject) => {
-    let toReturn = {};
+    let invocations = [];
     Promise.all(promises).then(res => {
+      //console.log("res", res);
       if (res && res.length > 0) {
-        res.forEach(i => toReturn[i.name] = i.value);
+        res.forEach(i => invocations.push(i));
       }
-      resolve(toReturn);
+      resolve({
+        "traceId": "xray-0000000000001",
+        "origin": "POST /app/meter",
+        "invocations": invocations
+      });
     }).catch(err => reject(err));
   });
 }
