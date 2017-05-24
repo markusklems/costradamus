@@ -1,0 +1,97 @@
+{
+    "traceId": "xray-0000000000001",
+    "event": "POST /app/meter",
+    "invocations": [
+        {
+            "service": "lambda",
+            "region": "eu-west-1",
+            "resourceId": "arn:aws:lambda:region:us-west-1:user1:function:IngestValueFunction",
+            "resourceName": "IngestValueFunction",
+            "consumptions": [
+                {
+                    "capacityType": "crn:costradamus:lambda:function:memory:memory_cu",
+                    "amount": 128000,
+                    "description": "Provisioned memory for container [MB] * runtime of invocation [ms]."
+                }
+            ]
+        },
+        {
+            "service": "lambda",
+            "region": "eu-west-1",
+            "resourceId": "arn:aws:lambda:region:us-west-1:user1:function:PersistValueFunction",
+            "resourceName": "PersistValueFunction",
+            "consumptions": [
+                {
+                    "capacityType": "crn:costradamus:lambda:function:memory:memory_cu",
+                    "amount": 256000,
+                    "description": "Provisioned memory for container [MB] * runtime of invocation [ms]."
+                }
+            ]
+        },
+        {
+            "service": "lambda",
+            "region": "eu-west-1",
+            "resourceId": "arn:aws:lambda:region:us-west-1:user1:function:PredictValueFunction",
+            "resourceName": "PredictValueFunction",
+            "consumptions": [
+                {
+                    "capacityType": "crn:costradamus:lambda:function:memory:memory_cu",
+                    "amount": 64000,
+                    "description": "Provisioned memory for container [MB] * runtime of invocation [ms]."
+                }
+            ]
+        },
+        {
+            "service": "dynamodb",
+            "region": "eu-west-1",
+            "resourceId": "arn:aws:dynamodb:region:us-west-1:user1:table/ValuesTable",
+            "resourceName": "ValuesTable",
+            "consumptions": [
+                {
+                    "capacityType": "crn:costradamus:dynamodb:table:put:write_cu",
+                    "amount": 2,
+                    "description": "Dynamodb write capacity units."
+                }
+            ]
+        },
+        {
+            "service": "dynamodb",
+            "region": "eu-west-1",
+            "resourceId": "arn:aws:dynamodb:region:us-west-1:user1:table/ValuesTable",
+            "resourceName": "ValuesTable",
+            "consumptions": [
+                {
+                    "capacityType": "crn:costradamus:dynamodb:table:put:read_cu",
+                    "amount": 4,
+                    "description": "Dynamodb read capacity units."
+                }
+            ]
+        },
+        {
+            "service": "dynamodb",
+            "region": "eu-west-1",
+            "resourceId": "arn:aws:dynamodb:region:us-west-1:user1:table/PredictionsTable",
+            "resourceName": "PredictionsTable",
+            "consumptions": [
+                {
+                    "capacityType": "crn:costradamus:dynamodb:table:put:write_cu",
+                    "amount": 2,
+                    "description": "Dynamodb write capacity units."
+                }
+            ]
+        },
+        {
+            "service": "kinesis",
+            "region": "eu-west-1",
+            "resourceId": "arn:aws:kinesis:region:us-west-1:user1:table/NotificationStream",
+            "resourceName": "NotificationStream",
+            "consumptions": [
+                {
+                    "capacityType": "crn:costradamus:kinesis:stream:putrecord:put_cu",
+                    "amount": 1,
+                    "description": "Kinesis PUT payload units."
+                }
+            ]
+        }
+    ]
+}
