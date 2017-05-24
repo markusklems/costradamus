@@ -18,8 +18,17 @@ module.exports = class DynamoTracer {
       let subsegment = parent.addNewSubsegment("DynamoDBConsumedCapacity");
       let traceId = parent.segment ? parent.segment.trace_id : parent.trace_id;
       //console.log("traceId", traceId);
-      let consumedCapacity = res.data.ConsumedCapacity;
-      subsegment.addMetadata("DynamoDBConsumedCapacity", consumedCapacity, "ResourceUsage");
+      console.log("DYNAMO REQ", req);
+      console.log("DYNAMO RES DATA", res.data);
+      let metadata = {
+        "service": "dynamodb",
+        "resourceName": res.data.ConsumedCapacity.TableName,
+        "consumptions": {
+          "Operation": req.operation,
+          "CapacityUnits": res.data.ConsumedCapacity.CapacityUnits
+        }
+      };
+      subsegment.addMetadata("Metadata", metadata, "ResourceUsage");
       subsegment.close();
     });
   }

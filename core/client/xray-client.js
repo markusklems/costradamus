@@ -8,7 +8,7 @@ const usageCollector = require('./usage-collector.js');
 
 const params = {
   TraceIds: [
-    '1-5925a43e-7163ba58157e53826d3c9730'
+    '1-5925b130-21dd571f2574a9287589f79a'
   ]
 };
 

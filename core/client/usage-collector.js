@@ -56,10 +56,7 @@ let usageCollector = (document) => {
       if (dynamoUsageSubSeg) {
         let ddbUsage = dynamoUsageSubSeg.metadata.ResourceUsage;
         if (ddbUsage) {
-          resolve({
-            name: 'DynamoDBConsumedCapacity',
-            value: ddbUsage.DynamoDBConsumedCapacity
-          });
+          resolve(ddbUsage.Metadata);
         } else {
           reject(`Expected to find a metadata.ResourceUsage property for the subsegment. Skip processing DynamoDB usage for subsegment ${dynamoUsageSubSeg}.`);
         }
