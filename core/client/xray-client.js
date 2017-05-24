@@ -18,9 +18,8 @@ XRay.batchGetTraces(params, (err, data) => {
     let segments = data.Traces[0].Segments;
     segments.forEach(segment => {
       let document = JSON.parse(segment.Document);
-      console.log(document);
-      let resourceUsage = usageCollector(document);
-      //console.log(resourceUsage);
+      //console.log(document);
+      usageCollector(document).then(resourceUsage => console.log('', resourceUsage)).catch(err => console.log(err));
     });
   }
 });

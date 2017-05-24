@@ -4,25 +4,36 @@ const finder = require('./finder.js');
 const cwlogs = require('cwlogs');
 
 let usageCollector = (document) => {
-  let toReturn = {};
+  let promises = [];
 
   if (finder.lambdaUsageFinder(document)) {
     let lambdaUsage = document;
-    //{
-    //  start_time: document.start_time,
-    //  end_time: document.end_time,
-    //  duration: (document.end_time - document.start_time)
-    //};
-    toReturn.LambdaUsage = lambdaUsage;
+    let parseCloudWatchLogs = require('./cw.js');
+    let p = new Promise((resolve, reject) => {
+      // TODO hardcoded values, get from document => transform to Unix epoch in ms
+      parseCloudWatchLogs('persistValueFunction', 1495549204000, 1495549207999).then(res => {
+        resolve({
+          name: 'LambdaUsage',
+          value: res
+        });
+      }).catch(err => reject(err));
+    });
+    promises.push(p);
   }
 
   if (document.subsegments) {
     // DynamoDB usage collection
     let dynamoUsageSubSeg = document.subsegments.find(finder.dynamoUsageFinder);
-    //console.log(dynamoCapacitySubSeg);
+    //console.log(dynamoUsageSubSeg);
     if (dynamoUsageSubSeg) {
       let ddbUsage = dynamoUsageSubSeg.metadata.ResourceUsage;
-      toReturn.DynamoDBConsumedCapacity = ddbUsage.DynamoDBConsumedCapacity;
+      let p = new Promise((resolve, reject) => {
+        resolve({
+          name: 'DynamoDBConsumedCapacity',
+          value: ddbUsage.DynamoDBConsumedCapacity
+        });
+      });
+      promises.push(p);
     }
 
     // Lambda usage collection
@@ -33,7 +44,15 @@ let usageCollector = (document) => {
     //  toReturn.LambdaUsage = lambdaUsage;
     //}
   }
-  return toReturn;
+  return new Promise((resolve, reject) => {
+    Promise.all(promises).then(res => {
+      let toReturn = {};
+      if (res && res.length > 0) {
+        toReturn[res[0].name] = res[0].value;
+      }
+      resolve(toReturn);
+    }).catch(err => reject(err));
+  });
 }
 
 module.exports = usageCollector;
