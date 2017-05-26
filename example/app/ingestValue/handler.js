@@ -4,15 +4,21 @@
 
 'use strict';
 
-const AWSXRAY = require('aws-xray-sdk-core');
-AWSXRAY.middleware.setSamplingRules('./sampling-rules.json');
-const AWS = AWSXRAY.captureAWS(require('aws-sdk'));
+const Costradamus = require('costradamus');
+let costradamus = new Costradamus();
+costradamus.init('persistValue');
+const AWSXRAY = costradamus.getXRay();
+const AWS = costradamus.getAWS();
+
 const lambda = new AWS.Lambda({
   apiVersion: '2015-03-31'
 });
 const sqs = new AWS.SQS({
   apiVersion: '2012-11-05'
 });
+
+// Add cost tracers
+let lambdaTracer = costradamus.getLambdaTracer();
 
 
 const sendToDynamodb = event => {
@@ -75,7 +81,7 @@ const sendToLambda = event => {
 };
 
 module.exports.handler = (event, context, callback) => {
-
+  lambdaTracer.addSubsegment(context.awsRequestId);
   // TODO Check params
 
   // TODO Join both functions and terminate via a callback.

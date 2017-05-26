@@ -4,15 +4,22 @@
 
 'use strict';
 
-const AWSXRAY = require('aws-xray-sdk-core');
-AWSXRAY.middleware.setSamplingRules('./sampling-rules.json');
-const AWS = AWSXRAY.captureAWS(require('aws-sdk'));
+const Costradamus = require('costradamus');
+let costradamus = new Costradamus();
+costradamus.init('persistValue');
+const AWSXRAY = costradamus.getXRay();
+const AWS = costradamus.getAWS();
+
 const dynamo = new AWS.DynamoDB.DocumentClient();
 const kinesis = new AWS.Kinesis({
   apiVersion: '2013-12-02'
 });
 const util = require('util');
 const mavg = require('./mavg');
+
+// Add cost tracers
+let dynamoTracer = costradamus.getDynamoTracer();
+let lambdaTracer = costradamus.getLambdaTracer();
 
 const readMissingValues = (id, start, end) => {
   // console.log('Reading missing values: { id:' +id+ ', start:' +start+ ', end:' +end+ '}');
@@ -29,17 +36,20 @@ const readMissingValues = (id, start, end) => {
         '#t': 'timestamp'
       },
       KeyConditionExpression: "id = :id AND #t BETWEEN :start AND :end",
-      ReturnConsumedCapacity: "TOTAL",
       Limit: 100
     };
 
-    dynamo.query(params, (err, data) => {
+    dynamoTracer.prepareParams(params);
+
+    let req = dynamo.query(params, (err, data) => {
       if (err) reject(err);
       else {
         // console.log('Data from dynamo: ' +util.inspect(data));
         resolve(data);
       }
     });
+
+    dynamoTracer.handleRequest(req);
   });
 };
 
@@ -51,14 +61,17 @@ const sendToDynamodb = event => {
         id: event.id,
         timestamp: event.timestamp,
         value: event.value
-      },
-      ReturnConsumedCapacity: "TOTAL"
+      }
     };
 
-    return dynamo.put(params, (err, data) => {
+    dynamoTracer.prepareParams(params);
+
+    let req = dynamo.put(params, (err, data) => {
       if (err) reject(err);
       else resolve(data);
     });
+
+    dynamoTracer.handleRequest(req);
   });
 };
 
@@ -80,7 +93,7 @@ const sendToKinesis = event => {
 };
 
 module.exports.handler = (event, context, callback) => {
-
+  lambdaTracer.addSubsegment(context.awsRequestId);
   // TODO Check params
 
   // Read missing values from DynamoDB
