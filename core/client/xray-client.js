@@ -20,13 +20,16 @@ XRay.batchGetTraces(params, (err, data) => {
       let document = JSON.parse(segment.Document);
       //console.log(document);
       usageCollector(document).then(res => {
-        console.log('RESULT', res);
-        console.log('INVOCATIONS', res.invocations);
-        console.log('CONSUMPTIONS', res.invocations.forEach(i => {
-          if (i.consumptions) {
-            console.log(i.consumptions)
-          }
-        }));
+        if (Object.keys(res).length > 0) {
+          //console.log(res);
+          console.log('RESULT', res);
+          console.log('INVOCATIONS', res.invocations);
+          console.log('CONSUMPTIONS', res.invocations.forEach(i => {
+            if (i.consumptions) {
+              console.log(i.consumptions)
+            }
+          }));
+        }
       }).catch(err => console.log(err));
     });
   }

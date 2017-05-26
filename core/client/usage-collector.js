@@ -72,11 +72,15 @@ let usageCollector = (document) => {
       if (res && res.length > 0) {
         res.forEach(i => invocations.push(i));
       }
-      resolve({
-        "traceId": "xray-0000000000001",
-        "origin": "POST /app/meter",
-        "invocations": invocations
-      });
+      if (invocations && invocations.length > 0) {
+        resolve({
+          "traceId": "xray-0000000000001",
+          "origin": "POST /app/meter",
+          "invocations": invocations
+        });
+      } else {
+        resolve({});
+      }
     }).catch(err => reject(err));
   });
 }
