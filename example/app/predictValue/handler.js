@@ -20,6 +20,7 @@ const mavg = require('./mavg');
 // Add cost tracers
 let dynamoTracer = costradamus.getDynamoTracer();
 let lambdaTracer = costradamus.getLambdaTracer();
+let kinesisTracer = costradamus.getKinesisTracer();
 
 const readMissingValues = (id, start, end) => {
   // console.log('Reading missing values: { id:' +id+ ', start:' +start+ ', end:' +end+ '}');
@@ -84,10 +85,16 @@ const sendToKinesis = event => {
       /* required */
       StreamName: 'NotificationsStream' /* required */
     };
-    // TODO Add X-Ray hook here!
+
     kinesis.putRecord(params, (err, data) => {
       if (err) reject(err);
-      else resolve(data);
+      else {
+        console.log("Kinesis data", data);
+        // TODO length is not an accurate measure => encoding
+        // data is base64-encoded when the blob is serialized
+        kinesisTracer.addSubsegment('putRecord', params.Data.length);
+        resolve(data)
+      };
     });
   })
 };

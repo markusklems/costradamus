@@ -6,7 +6,7 @@ module.exports = class LambdaTracer {
   }
 
   addSubsegment(requestId) {
-    console.log("add Lambda Subsegment with RequestId");
+    console.log("Add Lambda Subsegment with RequestId (to retrieve usage data from CloudWatch).");
     let parent = this._segment;
     let subsegment = parent.addNewSubsegment("LambdaMetadata");
     let traceId = parent.segment ? parent.segment.trace_id : parent.trace_id;
