@@ -37,9 +37,10 @@ const readMissingValues = (id, start, end) => {
         '#t': 'timestamp'
       },
       KeyConditionExpression: "id = :id AND #t BETWEEN :start AND :end",
-      ReturnConsumedCapacity: "TOTAL",
       Limit: 100
     };
+
+    dynamoTracer.prepareParams(params);
 
     dynamo.query(params, (err, data) => {
       if (err) reject(err);
@@ -87,9 +88,7 @@ const sendToKinesis = event => {
     kinesis.putRecord(params, (err, data) => {
       if (err) reject(err);
       else {
-        // TODO length is not an accurate measure => encoding
-        // data is base64-encoded when the blob is serialized
-        kinesisTracer.addSubsegment('putRecord', params.Data.length);
+        kinesisTracer.addSubsegment(AWSXRAY.getSegment(), 'KINESISPUTRECORD', params);
         resolve(data)
       };
     });

@@ -21,8 +21,8 @@ module.exports = class Costradamus {
 
   getXRay() {
     if (this._tracing) {
-      console.log("getXRay() this._tracing", this._tracing);
-      console.log("getXRay() this.AWSXRAY", this.AWSXRAY);
+      //console.log("getXRay() this._tracing", this._tracing);
+      //console.log("getXRay() this.AWSXRAY", this.AWSXRAY);
       if (!this.AWSXRAY) {
         this.AWSXRAY = require('aws-xray-sdk-core');
         this.AWSXRAY.middleware.setSamplingRules(path.join(__dirname, 'config', 'sampling-rules.json'));
