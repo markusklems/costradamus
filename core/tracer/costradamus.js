@@ -2,6 +2,8 @@
 const fs = require('fs');
 const path = require('path');
 const DynamoTracer = require('./dynamo-tracer.js');
+const LambdaTracer = require('./lambda-tracer.js');
+const KinesisTracer = require('./kinesis-tracer.js');
 
 module.exports = class Costradamus {
   constructor() {
@@ -43,6 +45,15 @@ module.exports = class Costradamus {
     if (this._tracing) {
       let segment = this.getXRay().getSegment();
       return new DynamoTracer(segment);
+    } else {
+      return null;
+    }
+  }
+
+  getKinesisTracer() {
+    if (this._tracing) {
+      let segment = this.getXRay().getSegment();
+      return new KinesisTracer(segment);
     } else {
       return null;
     }

@@ -14,6 +14,14 @@ const kinesis = new AWS.Kinesis({
 const util = require('util');
 const mavg = require('./mavg');
 
+<<<<<<< HEAD
+=======
+// Add cost tracers
+let dynamoTracer = costradamus.getDynamoTracer();
+let lambdaTracer = costradamus.getLambdaTracer();
+let kinesisTracer = costradamus.getKinesisTracer();
+
+>>>>>>> 78097b020d5f6ed77da8c48cd403439712d161b8
 const readMissingValues = (id, start, end) => {
   // console.log('Reading missing values: { id:' +id+ ', start:' +start+ ', end:' +end+ '}');
   return new Promise((resolve, reject) => {
@@ -71,10 +79,16 @@ const sendToKinesis = event => {
       /* required */
       StreamName: 'NotificationsStream' /* required */
     };
-    // TODO Add X-Ray hook here!
+
     kinesis.putRecord(params, (err, data) => {
       if (err) reject(err);
-      else resolve(data);
+      else {
+        console.log("Kinesis data", data);
+        // TODO length is not an accurate measure => encoding
+        // data is base64-encoded when the blob is serialized
+        kinesisTracer.addSubsegment('putRecord', params.Data.length);
+        resolve(data)
+      };
     });
   })
 };
