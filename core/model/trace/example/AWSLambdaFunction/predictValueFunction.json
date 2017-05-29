@@ -1,0 +1,225 @@
+{
+            "Document": {
+                "id": "1bf0c3c5244338e7",
+                "name": "predictValueFunction",
+                "start_time": 1496044984.585,
+                "end_time": 1496044984.931,
+                "parent_id": "42be293bb5a0ae59",
+                "aws": {
+                    "function_arn": "arn:aws:lambda:us-east-1:186706155491:function:predictValueFunction",
+                    "resource_names": [
+                        "predictValueFunction"
+                    ],
+                    "account_id": "186706155491"
+                },
+                "trace_id": "1-592bd5af-b903f8a24d447e5e06adc54a",
+                "origin": "AWS::Lambda::Function",
+                "subsegments": [
+                    {
+                        "id": "5b7077c705d91639",
+                        "name": "Initialization",
+                        "start_time": 1496044984.142,
+                        "end_time": 1496044984.583,
+                        "aws": {
+                            "function_arn": "arn:aws:lambda:us-east-1:186706155491:function:predictValueFunction"
+                        }
+                    },
+                    {
+                        "id": "cc35a0387700cf6c",
+                        "name": "LambdaMetadata",
+                        "start_time": 1496044984.586,
+                        "end_time": 1496044984.587,
+                        "metadata": {
+                            "ResourceUsage": {
+                                "RequestId": "3bb61475-4445-11e7-9373-6b56519caa0b"
+                            }
+                        }
+                    },
+                    {
+                        "id": "3e6c7a2c324a6263",
+                        "name": "DynamoDB",
+                        "start_time": 1496044984.593,
+                        "end_time": 1496044984.733,
+                        "http": {
+                            "response": {
+                                "status": 200
+                            }
+                        },
+                        "aws": {
+                            "operation": "Query",
+                            "region": "us-east-1",
+                            "request_id": "E90JOES0FCDP9NSE86O0NCA5ONVV4KQNSO5AEMVJF66Q9ASUAAJG",
+                            "retries": 0,
+                            "limit": 100,
+                            "select": "ALL_ATTRIBUTES",
+                            "table_name": "ValuesTable",
+                            "resource_names": [
+                                "ValuesTable"
+                            ]
+                        },
+                        "namespace": "aws",
+                        "subsegments": [
+                            {
+                                "id": "1ba402c8c0de214a",
+                                "name": "DynamoDB",
+                                "start_time": 1496044984.768,
+                                "end_time": 1496044984.911,
+                                "http": {
+                                    "response": {
+                                        "status": 200
+                                    }
+                                },
+                                "aws": {
+                                    "operation": "PutItem",
+                                    "region": "us-east-1",
+                                    "request_id": "H1TA8QIPAJL7UCC4NU2FU4L1NRVV4KQNSO5AEMVJF66Q9ASUAAJG",
+                                    "retries": 0,
+                                    "table_name": "PredictionsTable",
+                                    "resource_names": [
+                                        "PredictionsTable"
+                                    ]
+                                },
+                                "namespace": "aws"
+                            },
+                            {
+                                "id": "540fc44850269525",
+                                "name": "Kinesis",
+                                "start_time": 1496044984.808,
+                                "end_time": 1496044984.897,
+                                "http": {
+                                    "response": {
+                                        "status": 200
+                                    }
+                                },
+                                "aws": {
+                                    "operation": "PutRecord",
+                                    "region": "us-east-1",
+                                    "request_id": "f2526dfd-ad35-b14f-a3f7-ba0559e73e14",
+                                    "retries": 0
+                                },
+                                "namespace": "aws"
+                            },
+                            {
+                                "id": "4d4cd391267569f1",
+                                "name": "DynamoDB",
+                                "start_time": 1496044984.813,
+                                "end_time": 1496044984.895,
+                                "http": {
+                                    "response": {
+                                        "status": 200
+                                    }
+                                },
+                                "aws": {
+                                    "operation": "PutItem",
+                                    "region": "us-east-1",
+                                    "request_id": "BALP86QNADMQNHFBO6D7CTUPLBVV4KQNSO5AEMVJF66Q9ASUAAJG",
+                                    "retries": 0,
+                                    "table_name": "PredictionsTable",
+                                    "resource_names": [
+                                        "PredictionsTable"
+                                    ]
+                                },
+                                "namespace": "aws"
+                            },
+                            {
+                                "id": "7e897fc048f4bc8b",
+                                "name": "Kinesis",
+                                "start_time": 1496044984.814,
+                                "end_time": 1496044984.928,
+                                "http": {
+                                    "response": {
+                                        "status": 200
+                                    }
+                                },
+                                "aws": {
+                                    "operation": "PutRecord",
+                                    "region": "us-east-1",
+                                    "request_id": "e95e75e6-43e1-0d36-b8fb-a21eade88eb7",
+                                    "retries": 0
+                                },
+                                "namespace": "aws"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "60d471b1e22bede2",
+                        "name": "DynamoDBConsumedCapacity",
+                        "start_time": 1496044984.71,
+                        "end_time": 1496044984.731,
+                        "metadata": {
+                            "ResourceUsage": {
+                                "Metadata": {
+                                    "service": "dynamodb",
+                                    "resourceName": "ValuesTable",
+                                    "consumptions": {
+                                        "Operation": "query",
+                                        "CapacityUnits": 0.5
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "id": "187067a9054291ce",
+                        "name": "DynamoDBConsumedCapacity",
+                        "start_time": 1496044984.889,
+                        "end_time": 1496044984.895,
+                        "metadata": {
+                            "ResourceUsage": {
+                                "Metadata": {
+                                    "service": "dynamodb",
+                                    "resourceName": "PredictionsTable",
+                                    "consumptions": {
+                                        "Operation": "putItem",
+                                        "CapacityUnits": 1
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "id": "e9f24f89226d2366",
+                        "name": "KinesisMetadata",
+                        "start_time": 1496044984.898,
+                        "end_time": 1496044984.898,
+                        "metadata": {
+                            "ResourceUsage": {
+                                "Operation": "putRecord",
+                                "MessagePayloadSize": 101
+                            }
+                        }
+                    },
+                    {
+                        "id": "a621657a7c76ac23",
+                        "name": "DynamoDBConsumedCapacity",
+                        "start_time": 1496044984.907,
+                        "end_time": 1496044984.91,
+                        "metadata": {
+                            "ResourceUsage": {
+                                "Metadata": {
+                                    "service": "dynamodb",
+                                    "resourceName": "PredictionsTable",
+                                    "consumptions": {
+                                        "Operation": "putItem",
+                                        "CapacityUnits": 1
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "id": "27a24ab0afbcf00e",
+                        "name": "KinesisMetadata",
+                        "start_time": 1496044984.929,
+                        "end_time": 1496044984.929,
+                        "metadata": {
+                            "ResourceUsage": {
+                                "Operation": "putRecord",
+                                "MessagePayloadSize": 100
+                            }
+                        }
+                    }
+                ]
+            },
+            "Id": "1bf0c3c5244338e7"
+        }
