@@ -4,13 +4,18 @@
 
 'use strict';
 
-const AWSXRAY = require('aws-xray-sdk-core');
-AWSXRAY.middleware.setSamplingRules('./sampling-rules.json');
-const AWS = AWSXRAY.captureAWS(require('aws-sdk'));
+const Costradamus = require('costradamus');
+let costradamus = new Costradamus();
+costradamus.init('persistValue');
+const AWSXRAY = costradamus.getXRay();
+const AWS = costradamus.getAWS();
 const kinesis = new AWS.Kinesis({
   apiVersion: '2013-12-02'
 });
 const util = require('util');
+
+// Add cost tracers
+let lambdaTracer = costradamus.getLambdaTracer();
 
 const getShardIterator = (streamName, from, shardId) => {
   if (shardId === undefined) shardId = 'shardId-000000000000';
