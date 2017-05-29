@@ -44,7 +44,7 @@ let parseCloudWatchLogs = (lambdaFunctionName, startTime, endTime, requestId) =>
           "Duration": reduced[0],
           "BilledDuration": reduced[1],
           "MemorySize": reduced[2],
-          "MayMemoryUsed": reduced[3]
+          "MaxMemoryUsed": reduced[3]
         };
         resolve(toReturn);
       } else {
