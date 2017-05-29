@@ -20,7 +20,6 @@ const sqs = new AWS.SQS({
 // Add cost tracers
 let lambdaTracer = costradamus.getLambdaTracer();
 
-
 const sendToDynamodb = event => {
   return new Promise((resolve, reject) => {
     // TODO Change invocation type to event
@@ -81,8 +80,7 @@ const sendToLambda = event => {
 };
 
 module.exports.handler = (event, context, callback) => {
-  lambdaTracer.addSubsegment(context.awsRequestId);
-  // TODO Check params
+  lambdaTracer.addSubsegment(AWSXRAY.getSegment(), context.awsRequestId);
 
   // TODO Join both functions and terminate via a callback.
   // const promises = [sendToDynamodb(event), sendToSqs(event)];

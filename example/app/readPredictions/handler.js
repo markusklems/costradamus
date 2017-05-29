@@ -17,7 +17,7 @@ let dynamoTracer = costradamus.getDynamoTracer();
 let lambdaTracer = costradamus.getLambdaTracer();
 
 module.exports.handler = (event, context, callback) => {
-  lambdaTracer.addSubsegment(context.awsRequestId);
+  lambdaTracer.addSubsegment(AWSXRAY.getSegment(), context.awsRequestId);
   // TODO Check params
 
   const params = {
@@ -37,12 +37,12 @@ module.exports.handler = (event, context, callback) => {
 
   dynamoTracer.prepareParams(params);
 
-  let req = dynamo.query(params, (err, data) => {
+  dynamo.query(params, (err, data) => {
     if (err) callback(err);
     else {
+      dynamoTracer.addSubsegment(AWSXRAY.getSegment(), data);
       callback(null, data.Items);
     }
   });
 
-  dynamoTracer.handleRequest(req);
 };

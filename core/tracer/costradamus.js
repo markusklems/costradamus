@@ -43,8 +43,15 @@ module.exports = class Costradamus {
 
   getDynamoTracer() {
     if (this._tracing) {
-      let segment = this.getXRay().getSegment();
-      return new DynamoTracer(segment);
+      return new DynamoTracer();
+    } else {
+      return null;
+    }
+  }
+
+  getLambdaTracer() {
+    if (this._tracing) {
+      return new LambdaTracer();
     } else {
       return null;
     }
@@ -52,8 +59,7 @@ module.exports = class Costradamus {
 
   getKinesisTracer() {
     if (this._tracing) {
-      let segment = this.getXRay().getSegment();
-      return new KinesisTracer(segment);
+      return new KinesisTracer();
     } else {
       return null;
     }

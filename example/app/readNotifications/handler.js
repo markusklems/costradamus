@@ -58,6 +58,7 @@ const getRecords = shardIterator => {
 };
 
 module.exports.handler = (event, context, callback) => {
+  lambdaTracer.addSubsegment(AWSXRAY.getSegment(), context.awsRequestId);
 
   getShardIterator('NotificationsStream', event.start)
     .then(shardIterator => {

@@ -14,14 +14,11 @@ const kinesis = new AWS.Kinesis({
 const util = require('util');
 const mavg = require('./mavg');
 
-<<<<<<< HEAD
-=======
 // Add cost tracers
 let dynamoTracer = costradamus.getDynamoTracer();
 let lambdaTracer = costradamus.getLambdaTracer();
 let kinesisTracer = costradamus.getKinesisTracer();
 
->>>>>>> 78097b020d5f6ed77da8c48cd403439712d161b8
 const readMissingValues = (id, start, end) => {
   // console.log('Reading missing values: { id:' +id+ ', start:' +start+ ', end:' +end+ '}');
   return new Promise((resolve, reject) => {
@@ -44,7 +41,7 @@ const readMissingValues = (id, start, end) => {
     dynamo.query(params, (err, data) => {
       if (err) reject(err);
       else {
-        // console.log('Data from dynamo: ' +util.inspect(data));
+        dynamoTracer.addSubsegment(AWSXRAY.getSegment(), data);
         resolve(data);
       }
     });
@@ -59,13 +56,17 @@ const sendToDynamodb = event => {
         id: event.id,
         timestamp: event.timestamp,
         value: event.value
-      },
-      ReturnConsumedCapacity: "TOTAL"
+      }
     };
 
-    return dynamo.put(params, (err, data) => {
+    dynamoTracer.prepareParams(params);
+
+    dynamo.put(params, (err, data) => {
       if (err) reject(err);
-      else resolve(data);
+      else {
+        dynamoTracer.addSubsegment(AWSXRAY.getSegment(), data);
+        resolve(data)
+      };
     });
   });
 };
@@ -93,8 +94,7 @@ const sendToKinesis = event => {
 };
 
 module.exports.handler = (event, context, callback) => {
-
-  // TODO Check params
+  lambdaTracer.addSubsegment(AWSXRAY.getSegment(), context.awsRequestId);
 
   // Read missing values from DynamoDB
   readMissingValues(event.id, event.timestamp - 3, event.timestamp)

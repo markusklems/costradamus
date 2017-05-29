@@ -16,9 +16,7 @@ let dynamoTracer = costradamus.getDynamoTracer();
 let lambdaTracer = costradamus.getLambdaTracer();
 
 module.exports.handler = (event, context, callback) => {
-  lambdaTracer.addSubsegment(context.awsRequestId);
-
-  // TODO Check params
+  lambdaTracer.addSubsegment(AWSXRAY.getSegment(), context.awsRequestId);
 
   const params = {
     TableName: 'ValuesTable',
@@ -31,14 +29,14 @@ module.exports.handler = (event, context, callback) => {
 
   dynamoTracer.prepareParams(params);
 
-  let req = dynamo.put(params, (err, data) => {
+  dynamo.put(params, (err, data) => {
     if (err) {
       console.error(err);
       callback(err);
     } else {
+      dynamoTracer.addSubsegment(AWSXRAY.getSegment(), data);
       callback(null, data);
     }
   });
 
-  dynamoTracer.handleRequest(req);
 };
