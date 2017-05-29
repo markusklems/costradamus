@@ -6,12 +6,11 @@ module.exports = class DynamoTracer {
   }
 
   prepareParams(params) {
-    console.log("prepareDynamoDBParams");
     params.ReturnConsumedCapacity = 'TOTAL';
   }
 
   handleRequest(req) {
-    console.log("handleDynamoDBRequest");
+    console.log("Add DynamoDB Subsegment with used Capacity Units.");
     let parent = this._segment;
     req.on('success', res => {
       //console.log("parent sub/segment", parent);
