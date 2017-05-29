@@ -3,6 +3,8 @@
     "origin": "POST /app/meter",
     "invocations": [
         {
+            "id" : "{ivfSegmentId}",
+            "parentId": "root",
             "service": "lambda",
             "resourceName": "IngestValueFunction",
             "consumptions": {
@@ -13,6 +15,8 @@
             }
         },
         {
+            "id" : "{pvfSegmentId}",
+            "parentId": "{ivfSegmentId}",
             "service": "lambda",
             "resourceName": "PersistValueFunction",
             "consumptions": {

@@ -89,7 +89,6 @@ const sendToKinesis = event => {
     kinesis.putRecord(params, (err, data) => {
       if (err) reject(err);
       else {
-        console.log("Kinesis data", data);
         // TODO length is not an accurate measure => encoding
         // data is base64-encoded when the blob is serialized
         kinesisTracer.addSubsegment('putRecord', params.Data.length);
