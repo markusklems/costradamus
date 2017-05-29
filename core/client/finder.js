@@ -2,9 +2,11 @@
 
 let dynamoUsageFinder = (subsegment) => subsegment.name === 'DynamoDBConsumedCapacity';
 
-let lambdaUsageFinder = (segment) => segment.origin === 'AWS::Lambda';
+let lambdaUsageFinder = (subsegment) => subsegment.origin === 'AWS::Lambda::Function';
+let lambdaMetadataFinder = (subsegment) => subsegment.name === 'LambdaMetadata';
 
 module.exports = {
   "dynamoUsageFinder": dynamoUsageFinder,
-  "lambdaUsageFinder": lambdaUsageFinder
+  "lambdaUsageFinder": lambdaUsageFinder,
+  "lambdaMetadataFinder": lambdaMetadataFinder
 }

@@ -10,9 +10,13 @@ const AWSXRAY = costradamus.getXRay();
 const AWS = costradamus.getAWS();
 
 const dynamo = new AWS.DynamoDB.DocumentClient();
+
+// Add cost tracers
 let dynamoTracer = costradamus.getDynamoTracer();
+let lambdaTracer = costradamus.getLambdaTracer();
 
 module.exports.handler = (event, context, callback) => {
+  lambdaTracer.addSubsegment(context.awsRequestId);
 
   // TODO Check params
 

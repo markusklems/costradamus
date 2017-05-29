@@ -4,13 +4,20 @@
 
 'use strict';
 
-const AWSXRAY = require('aws-xray-sdk-core');
-AWSXRAY.middleware.setSamplingRules('./sampling-rules.json');
-const AWS = AWSXRAY.captureAWS(require('aws-sdk'));
+const Costradamus = require('costradamus');
+let costradamus = new Costradamus();
+costradamus.init('persistValue');
+const AWSXRAY = costradamus.getXRay();
+const AWS = costradamus.getAWS();
+
 const dynamo = new AWS.DynamoDB.DocumentClient();
 
-module.exports.handler = (event, context, callback) => {
+// Add cost tracers
+let dynamoTracer = costradamus.getDynamoTracer();
+let lambdaTracer = costradamus.getLambdaTracer();
 
+module.exports.handler = (event, context, callback) => {
+  lambdaTracer.addSubsegment(context.awsRequestId);
   // TODO Check params
 
   const params = {
@@ -25,15 +32,17 @@ module.exports.handler = (event, context, callback) => {
       '#t': 'timestamp'
     },
     KeyConditionExpression: "id = :id AND #t BETWEEN :start AND :end",
-    ReturnConsumedCapacity: "TOTAL",
     Limit: 100
   };
 
-  return dynamo.query(params, (err, data) => {
+  dynamoTracer.prepareParams(params);
+
+  let req = dynamo.query(params, (err, data) => {
     if (err) callback(err);
     else {
-      // TODO add X-Ray hook. Payload: data.ConsumedCapacity
       callback(null, data.Items);
     }
   });
+
+  dynamoTracer.handleRequest(req);
 };
