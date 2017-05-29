@@ -74,13 +74,6 @@ module.exports = c => {
         costs.PayloadWaste.val = c.CapacityUnits.val - c.PayloadSize.val;
     if ( c.CapacityUnits.type === 'RCU')
         costs.PayloadWaste.val = c.CapacityUnits.val * 4 - c.PayloadSize.val;
-    // console.log('PayloadWaste [KB]: ' +costs.PayloadWaste.val);
-
-    // monetary runtime waste
-    // costs.MonetaryPayloadWaste = {};
-    // costs.MonetaryPayloadWaste.type = 'MS';
-    // costs.MonetaryPayloadWaste.val = costs.RuntimeWaste.val * _price(region, c.MemorySize.val);
-    // console.log('MonetaryRuntimeWaste: ' +costs.MonetaryRuntimeWaste.val);
 
     return costs;
 

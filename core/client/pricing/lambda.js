@@ -6,7 +6,7 @@
 
 // Price per 1ms in USD per 1mio invocation, SOURCE: (https://aws.amazon.com/lambda/pricing, accessed: 2017/05/29)
 const _prices = {
-    'eu-west-1': {
+    'us-west-1': {
         128: 0.00208,
         192: 0.313,
         256: 0.417,
@@ -63,9 +63,8 @@ module.exports = c => {
 
     let costs = {};
 
-    const region = 'eu-west-1';
+    const region = 'us-west-1';
 
-    // Check input params for strings
     if (isNaN(c.Duration.val) || isNaN(c.BilledDuration.val) || isNaN(c.MemorySize.val) || isNaN(c.MaxMemoryUsed.val)) {
         new Error('InvalidParameterError: ' + c);
     }
@@ -88,25 +87,25 @@ module.exports = c => {
     costs.MonetaryCost = {};
     costs.MonetaryCost.type = 'USD';
     costs.MonetaryCost.val = c.BilledDuration.val * _price(region, c.MemorySize.val);
-    console.log('MonetaryCost: ' +costs.MonetaryCost.val);
+    // console.log('MonetaryCost: ' +costs.MonetaryCost.val);
 
     // Runtime waste
     costs.RuntimeWaste = {};
     costs.RuntimeWaste.type = 'MS';
     costs.RuntimeWaste.val = c.BilledDuration.val - c.Duration.val;
-    console.log('RuntimeWaste: ' +costs.RuntimeWaste.val);
+    // console.log('RuntimeWaste: ' +costs.RuntimeWaste.val);
 
     // monetary runtime waste
     costs.MonetaryRuntimeWaste = {};
     costs.MonetaryRuntimeWaste.type = 'MS';
     costs.MonetaryRuntimeWaste.val = costs.RuntimeWaste.val * _price(region, c.MemorySize.val);
-    console.log('MonetaryRuntimeWaste: ' +costs.MonetaryRuntimeWaste.val);
+    // console.log('MonetaryRuntimeWaste: ' +costs.MonetaryRuntimeWaste.val);
 
     // memory waste
     costs.MemoryWaste = {};
     costs.MemoryWaste.type = 'MB';
     costs.MemoryWaste.val = c.MemorySize.val - c.MaxMemoryUsed.val;
-    console.log('MemoryWaste: ' +costs.MemoryWaste.val);
+    // console.log('MemoryWaste: ' +costs.MemoryWaste.val);
 
     // TODO monetary memory waste
 
