@@ -65,7 +65,7 @@ module.exports = c => {
     costs.MonetaryCost = {};
     costs.MonetaryCost.type = 'USD';
     costs.MonetaryCost.val = (c.CapacityUnits.val * c.Latency.val * _price('eu-west-1', c.CapacityUnits.type)) / 3600000;
-    console.log('MonetaryCost [USD]: ' +costs.MonetaryCost.val);
+    // console.log('MonetaryCost [USD]: ' +costs.MonetaryCost.val);
 
     // Runtime waste
     costs.PayloadWaste = {};
@@ -74,13 +74,6 @@ module.exports = c => {
         costs.PayloadWaste.val = c.CapacityUnits.val - c.PayloadSize.val;
     if ( c.CapacityUnits.type === 'RCU')
         costs.PayloadWaste.val = c.CapacityUnits.val * 4 - c.PayloadSize.val;
-    console.log('PayloadWaste [KB]: ' +costs.PayloadWaste.val);
-
-    // monetary runtime waste
-    // costs.MonetaryPayloadWaste = {};
-    // costs.MonetaryPayloadWaste.type = 'MS';
-    // costs.MonetaryPayloadWaste.val = costs.RuntimeWaste.val * _price(region, c.MemorySize.val);
-    // console.log('MonetaryRuntimeWaste: ' +costs.MonetaryRuntimeWaste.val);
 
     return costs;
 
