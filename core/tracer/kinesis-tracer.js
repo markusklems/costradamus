@@ -8,8 +8,9 @@ module.exports = class KinesisTracer {
     console.log("Add Kinesis Subsegment with operation type and payload size.");
     let subsegment = parent.addNewSubsegment("KinesisMetadata");
     subsegment.addMetadata("Operation", operation, "ResourceUsage");
-    // data is base64-encoded when the Data blob is serialized
-    let payloadSize = AWS.util.base64.encode(params.Data).length;
+    // Data is base64-encoded when the Data blob is serialized
+    // Calculate payload size in bytes.
+    let payloadSize = Math.ceil(AWS.util.base64.encode(params.Data).length * 8 / 6);
     //console.log("payloadSize", payloadSize);
     subsegment.addMetadata("MessagePayloadSize", payloadSize, "ResourceUsage");
     subsegment.close();
