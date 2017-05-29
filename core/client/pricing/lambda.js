@@ -4,30 +4,44 @@
 
 "use strict";
 
-const eu_west_1_prices = {
-     128: 0.000000208,
-     192: 0.000000313,
-     256: 0.000000417,
-     320: 0.000000521,
-     384: 0.000000625,
-     448: 0.000000729,
-     512: 0.000000834,
-     576: 0.000000938,
-     640: 0.000001042,
-     704: 0.000001146,
-     768: 0.000001250,
-     832: 0.000001354,
-     896: 0.000001459,
-     960: 0.000001563,
-    1024: 0.000001667,
-    1088: 0.000001771,
-    1152: 0.000001875,
-    1216: 0.000001980,
-    1280: 0.000002084,
-    1344: 0.000002188,
-    1408: 0.000002292,
-    1472: 0.000002396,
-    1536: 0.000002501
+// Price per 1ms in USD per 1mio invocation, SOURCE: (https://aws.amazon.com/lambda/pricing, accessed: 2017/05/29)
+const _prices = {
+    'eu-west-1': {
+        128: 0.00208,
+        192: 0.313,
+        256: 0.417,
+        320: 0.521,
+        384: 0.625,
+        448: 0.729,
+        512: 0.834,
+        576: 0.938,
+        640: 1.042,
+        704: 1.146,
+        768: 1.250,
+        832: 1.354,
+        896: 1.459,
+        960: 1.563,
+        1024: 1.667,
+        1088: 1.771,
+        1152: 1.875,
+        1216: 1.980,
+        1280: 2.084,
+        1344: 2.188,
+        1408: 2.292,
+        1472: 2.396,
+        1536: 2.501
+    }
+};
+
+/**
+ *
+ * @param region    Calculate prices based on this AWS region.
+ * @param memory    Amount of provisioned memory for this AWS Lambda function.
+ * @returns {*}
+ * @private
+ */
+const _price = (region, memory) => {
+    return _prices[region][memory];
 };
 
 /**
@@ -39,27 +53,60 @@ const eu_west_1_prices = {
  *                                  This metric can be tricky for AWS Lambda because configured memory does
  *                                  proportionally increase other selected compute resources, e.g., cpu.
  *
- * @param c.BilledDuration
- * @param c.Duration
- * @param c.MemorySize
- * @param c.MaxMemoryUsed
- * @returns {{}}    monetaryCost, runtimeWaste, monetaryRuntimeWaste, memoryWaste
+ * @param c.Duration:           Total runtime of an invocation. { val: '233.22', type: 'ms' },
+ * @param c.BilledDuration:     Billed runtime of an invocation. { val: '300', type: 'ms' },
+ * @param c.MemorySize:         Provisioned amount of memory for an invocation. { val: '128', type: 'MB' },
+ * @param c.MaxMemoryUsed:      Maximum amount of used memory for an invocation. { val: '45', type: 'MB' } }
+ * @returns {{}}                monetaryCost, runtimeWaste, monetaryRuntimeWaste, memoryWaste
  */
 module.exports = c => {
 
-    let costs= {};
+    let costs = {};
 
-    // execution cost
-    costs.monetaryCost = c.BilledDuration * eu_west_1_prices[c.MemorySize];
+    const region = 'eu-west-1';
 
-    // runtime waste
-    costs.runtimeWaste = c.BilledDuration - c.Duration;
+    // Check input params for strings
+    if (isNaN(c.Duration.val) || isNaN(c.BilledDuration.val) || isNaN(c.MemorySize.val) || isNaN(c.MaxMemoryUsed.val)) {
+        new Error('InvalidParameterError: ' + c);
+    }
+
+    if (c.Duration.type !== 'MS' || c.BilledDuration.type !== 'MS') {
+        new Error('InvalidParameterError: Durations must be specified in MS.' + c);
+    }
+
+    if (c.MemorySize.type !== 'MB' || c.MaxMemoryUsed.type !== 'MB') {
+        new Error('InvalidParameterError: Memory must be specified in MB. ' + c);
+    }
+
+    if (typeof c.Duration.val === 'string')         c.Duration.val = +c.Duration.val;
+    if (typeof c.BilledDuration.val === 'string')   c.BilledDuration.val = +c.BilledDuration.val;
+    if (typeof c.MemorySize.val === 'string')       c.MemorySize.val = +c.MemorySize.val;
+    if (typeof c.MaxMemoryUsed.val === 'string')    c.MaxMemoryUsed.val = +c.MaxMemoryUsed.val;
+
+
+    // monetary execution cost
+    costs.MonetaryCost = {};
+    costs.MonetaryCost.type = 'USD';
+    costs.MonetaryCost.val = c.BilledDuration.val * _price(region, c.MemorySize.val);
+    console.log('MonetaryCost: ' +costs.MonetaryCost.val);
+
+    // Runtime waste
+    costs.RuntimeWaste = {};
+    costs.RuntimeWaste.type = 'MS';
+    costs.RuntimeWaste.val = c.BilledDuration.val - c.Duration.val;
+    console.log('RuntimeWaste: ' +costs.RuntimeWaste.val);
 
     // monetary runtime waste
-    costs.monetaryRuntimeWaste = costs.runtimeWaste * eu_west_1_prices[c.MemorySize];
+    costs.MonetaryRuntimeWaste = {};
+    costs.MonetaryRuntimeWaste.type = 'MS';
+    costs.MonetaryRuntimeWaste.val = costs.RuntimeWaste.val * _price(region, c.MemorySize.val);
+    console.log('MonetaryRuntimeWaste: ' +costs.MonetaryRuntimeWaste.val);
 
     // memory waste
-    costs.memoryWaste = c.MemorySize - c.MaxMemoryUsed;
+    costs.MemoryWaste = {};
+    costs.MemoryWaste.type = 'MB';
+    costs.MemoryWaste.val = c.MemorySize.val - c.MaxMemoryUsed.val;
+    console.log('MemoryWaste: ' +costs.MemoryWaste.val);
 
     // TODO monetary memory waste
 
