@@ -4,9 +4,12 @@
 
 'use strict';
 
-const AWSXRAY = require('aws-xray-sdk-core');
-AWSXRAY.middleware.setSamplingRules('./sampling-rules.json');
-const AWS = AWSXRAY.captureAWS(require('aws-sdk'));
+const Costradamus = require('costradamus');
+let costradamus = new Costradamus();
+costradamus.init('persistValue');
+const AWSXRAY = costradamus.getXRay();
+const AWS = costradamus.getAWS();
+
 const dynamo = new AWS.DynamoDB.DocumentClient();
 const kinesis = new AWS.Kinesis({
   apiVersion: '2013-12-02'
