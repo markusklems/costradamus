@@ -18,7 +18,7 @@ describe('AWS DynamoDB Table (QUERY) - ', () => {
         output = model( input );
     });
 
-    it('MonetaryCost: 6KB, 2RCU => 0.098USD / 1 mio. req', done => {
+    it('MonetaryCost: 10KB, 3RCU => 0.098USD / 1 mio. req', done => {
         expect(output.MonetaryCost.val).to.be.a('number');
         expect(output.MonetaryCost.val).to.equal(0.098);
         expect(output.MonetaryCost.type).to.be.a('string');
@@ -26,7 +26,7 @@ describe('AWS DynamoDB Table (QUERY) - ', () => {
         done();
     });
 
-    it('PayloadWaste: 6KB, 2RCU => 2KB / req.', done => {
+    it('PayloadWaste: 10KB, 3RCU => 2KB / req.', done => {
         expect(output.PayloadWaste.val).to.be.a('number');
         expect(output.PayloadWaste.val).to.equal(2);
         expect(output.PayloadWaste.type).to.be.a('string');
