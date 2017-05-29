@@ -20,7 +20,7 @@ XRay.batchGetTraces(params, (err, data) => {
     segments.forEach(segment => {
       let document = JSON.parse(segment.Document);
       let promise = collect(document);
-      //promises.push(promise);
+      promises.push(promise);
       //console.log(document);
 
       //collect(document).then(res => {
@@ -29,7 +29,8 @@ XRay.batchGetTraces(params, (err, data) => {
       //}).catch(err => console.log(err));
     });
   }
-  Promise.all(promises).then(res => console.log(res)).catch(err => console.log(err));
+  const util = require('util');
+  Promise.all(promises).then(res => console.log(util.inspect(res, false, null))).catch(err => console.log(err));
 });
 
 //module.exports = class XRayClient {

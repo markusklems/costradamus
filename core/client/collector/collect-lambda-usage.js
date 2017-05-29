@@ -2,6 +2,7 @@
 
 const finder = require('./finder.js');
 const cwlogs = require('cwlogs');
+const cost = require('../pricing/lambda.js');
 
 let collectLambdaUsage = (document) => {
   return new Promise((resolve, reject) => {
@@ -25,11 +26,15 @@ let collectLambdaUsage = (document) => {
         //console.log('endTimeUnix', new Date(endTimeUnix));
         //console.log('requestId', requestId);
         parseCloudWatchLogs(resourceName, startTimeUnix, endTimeUnix, requestId).then(res => {
+          // TODO
           resolve({
-            "service": "lambda",
-            "resourceName": resourceName,
-            "resourceId": resourceId,
-            "consumptions": res
+            "metadata": {
+              "service": "lambda",
+              "resourceName": resourceName,
+              "resourceId": resourceId,
+              "consumptions": res
+            },
+            "cost": cost(res)
           });
         }).catch(err => reject(err));
       } else {

@@ -14,25 +14,27 @@ let promiseThenHelper = (res, resolve, reject) => {
 };
 
 let collect = document => {
+  document.costs = [];
   return new Promise((resolve, reject) => {
-    let p1, p2;
-    if (finder.lambdaUsageFinder(document)) {
+    let lambdaDoc = finder.lambdaUsageFinder(document);
+    if (lambdaDoc) {
       console.log("Found Lambda document");
-      p1 = collectLambdaUsage(document);
-      let foundDynamoDoc = finder.dynamoUsageFinder(document);
-      if (foundDynamoDoc) {
-        console.log("Found dynamodb document!!!");
-        let foundDynamoUsage = foundDynamoDoc.subsegments.find(finder.dynamoMetadataFinder);
-        console.log("foundDynamoUsage", foundDynamoUsage);
-        p2 = collectDynamodbUsage(foundDynamoUsage); //.then(res => promiseThenHelper(res, resolve, reject)).catch(err => reject(err));
-      }
-      let promises = [];
-      if (p1) promises.push(p1);
-      if (p2) promises.push(p2);
-      Promise.all(promises).then(res => resolve(res)).catch(err => reject(err));
-      //.then(res => promiseThenHelper(res, resolve, reject)).catch(err => reject(err));
-    } else if (false) {
-      // TODO
+      collectLambdaUsage(document).then(res => {
+        // TODO
+        document.costs.push(res);
+        let dynamoDoc = finder.dynamoUsageFinder(document);
+        if (dynamoDoc) {
+          console.log("Found dynamodb document!!!");
+          let dynamoUsage = dynamoDoc.subsegments.find(finder.dynamoMetadataFinder);
+          collectDynamodbUsage(dynamoUsage).then(res => {
+            // TODO
+            document.costs.push(res);
+            resolve(document);
+          }).catch(err => reject(err));
+        } else {
+          resolve(document);
+        }
+      }).catch(err => reject(err));
     } else {
       resolve({});
     }
