@@ -34,7 +34,7 @@ module.exports.handler = (event, context, callback) => {
       console.error(err);
       callback(err);
     } else {
-      dynamoTracer.addSubsegment(AWSXRAY.getSegment(), data);
+      dynamoTracer.addSubsegment(AWSXRAY.getSegment(), data, 'WCU');
       callback(null, data);
     }
   });

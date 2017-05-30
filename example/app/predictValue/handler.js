@@ -45,7 +45,7 @@ const readMissingValues = (id, start, end) => {
     dynamo.query(params, (err, data) => {
       if (err) reject(err);
       else {
-        dynamoTracer.addSubsegment(AWSXRAY.getSegment(), data);
+        dynamoTracer.addSubsegment(AWSXRAY.getSegment(), data, 'RCU');
         resolve(data);
       }
     });
@@ -68,7 +68,7 @@ const sendToDynamodb = event => {
     dynamo.put(params, (err, data) => {
       if (err) reject(err);
       else {
-        dynamoTracer.addSubsegment(AWSXRAY.getSegment(), data);
+        dynamoTracer.addSubsegment(AWSXRAY.getSegment(), data, 'WCU');
         resolve(data)
       };
     });

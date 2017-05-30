@@ -21,24 +21,27 @@ let collect = document => {
       console.log("Found Lambda document");
       collectLambdaUsage(document).then(res => {
         // TODO work in progress
+        //console.log("lambda res", res);
         costDocument.id = document.id;
-        costDocument.name = document.name;
         costDocument.parent_id = document.parent_id;
+        costDocument.resourceName = res.resourceName;
+        costDocument.resourceId = res.resourceId;
         costDocument.consumptions = res.consumptions;
         costDocument.cost = res.cost;
         let dynamoDoc = finder.dynamoUsageFinder(document);
         if (dynamoDoc) {
           console.log("Found dynamodb document");
           let dynamoUsage = dynamoDoc.subsegments.find(finder.dynamoMetadataFinder);
+          dynamoUsage.metadata.DynamoDBConsumedCapacity.consumptions.Latency = dynamoDoc.end_time - dynamoDoc.start_time;
           collectDynamodbUsage(dynamoUsage).then(res => {
             // TODO work in progress
+            console.log("res", res);
+            let metadata = res.metadata.DynamoDBConsumedCapacity;
             let subsegment = {};
             subsegment.id = dynamoDoc.id;
             subsegment.name = dynamoDoc.name;
-            subsegment.resource = res.metadata.ResourceUsage.DynamoDBConsumedCapacity.TableName;
-            subsegment.consumptions = {
-              "CapacityUnits": res.metadata.ResourceUsage.DynamoDBConsumedCapacity.CapacityUnits
-            };
+            subsegment.resourceName = metadata.resourceName;
+            subsegment.consumptions = metadata.consumptions;
             subsegment.cost = res.cost;
             costDocument.subsegment = subsegment;
             resolve(costDocument);

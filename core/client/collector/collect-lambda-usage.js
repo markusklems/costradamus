@@ -27,14 +27,12 @@ let collectLambdaUsage = (document) => {
         //console.log('requestId', requestId);
         parseCloudWatchLogs(resourceName, startTimeUnix, endTimeUnix, requestId).then(res => {
           // TODO
+          let costResult = cost(res); //= res ? cost(res) : 0;
           resolve({
-            "consumptions": {
-              "service": "lambda",
-              "resourceName": resourceName,
-              "resourceId": resourceId,
-              "consumptions": res
-            },
-            "cost": cost(res)
+            "resourceName": resourceName,
+            "resourceId": resourceId,
+            "consumptions": res,
+            "cost": costResult
           });
         }).catch(err => reject(err));
       } else {

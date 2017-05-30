@@ -8,7 +8,7 @@ const collect = require('./collector/collect.js');
 
 const params = {
   TraceIds: [
-    '1-592c2234-875d9fe2a6ec523b563403f4'
+    '1-592d3b49-bf8ac7498a9738de2ce8291d'
   ]
 };
 

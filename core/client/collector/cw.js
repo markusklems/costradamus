@@ -48,7 +48,8 @@ let parseCloudWatchLogs = (lambdaFunctionName, startTime, endTime, requestId) =>
         };
         resolve(toReturn);
       } else {
-        reject(`Couldn\'t find CloudWatch logs for the specified time frame ${startTime} - ${endTime} and pattern ${searchPattern}.`);
+        console.error(`Couldn\'t find CloudWatch logs for the specified time frame ${startTime} - ${endTime} and pattern ${searchPattern}.`);
+        resolve({});
       }
     });
   });

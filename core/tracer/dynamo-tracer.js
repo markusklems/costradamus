@@ -6,11 +6,18 @@ module.exports = class DynamoTracer {
     params.ReturnConsumedCapacity = 'TOTAL';
   }
 
-  addSubsegment(parent, dynamoResponseData) {
+  addSubsegment(parent, dynamoResponseData, operationType) {
     console.log("Add DynamoDB Subsegment with used Capacity Units.");
     let subsegment = parent.addNewSubsegment("DynamoDBConsumedCapacity");
-    let consumedCapacity = dynamoResponseData.ConsumedCapacity;
-    subsegment.addMetadata("DynamoDBConsumedCapacity", consumedCapacity, "ResourceUsage");
+    let CapacityUnits = {
+      "val": dynamoResponseData.ConsumedCapacity.CapacityUnits,
+      "type": operationType
+    }
+    let consumptions = {};
+    consumptions.CapacityUnits = CapacityUnits;
+    let resourceName = dynamoResponseData.ConsumedCapacity.TableName;
+    subsegment.addMetadata("consumptions", consumptions, "DynamoDBConsumedCapacity");
+    subsegment.addMetadata("resourceName", resourceName, "DynamoDBConsumedCapacity");
     subsegment.close();
   }
 
