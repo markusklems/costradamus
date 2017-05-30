@@ -41,7 +41,7 @@ function parseCloudWatchLogs(lambdaFunctionName, startTime, endTime, requestId) 
           "MemorySize": reduced[2],
           "MaxMemoryUsed": reduced[3]
         };
-        console.log("CloudWatch output:", toReturn);
+        //console.log("CloudWatch output:", toReturn);
         resolve(toReturn);
       } else {
         console.error(`Couldn\'t find CloudWatch logs for the specified time frame ${startTime} - ${endTime} and pattern ${searchPattern}.`);

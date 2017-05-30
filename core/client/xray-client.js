@@ -7,51 +7,55 @@ const XRay = new AWS.XRay({
 const collect = require('./collector/collect.js');
 const util = require('util');
 
-const params = {
-  TraceIds: [
-    '1-592d3b49-bf8ac7498a9738de2ce8291d'
-  ]
-};
+function batchGetTracesPromise(params) {
+  return new Promise((resolve, reject) => {
+    XRay.batchGetTraces(params, (err, data) => {
+      //console.log(util.inspect(data, false, null));
+      if (err) {
+        reject(err);
+      } else {
+        resolve(data)
+      };
+    });
+  });
+}
 
-XRay.batchGetTraces(params, (err, data) => {
-  //console.log(util.inspect(data, false, null));
-  let promises = [];
-  if (err) console.log(err, err.stack); // an error occurred
-  else {
+async function main() {
+  const params = {
+    TraceIds: [
+      '1-592d3b49-bf8ac7498a9738de2ce8291d'
+    ]
+  };
+
+  let data = null;
+  try {
+    data = await batchGetTracesPromise(params);
     let segments = data.Traces[0].Segments;
+    let promises = [];
     segments.forEach(segment => {
       let document = JSON.parse(segment.Document);
-      let promise = collect(document);
-      promises.push(promise);
-      //if (document.subsegments) {
-      //  document.subsegments.forEach(subsegment => {
-      //    //if (subsegment.Document) {
-      //    //console.log("Found a subsegment");
-      //    let promise = collect(subsegment);
-      //    promises.push(promise);
-      //    //}
-      //  });
-      //}
-      //console.log(document);
-
-      //collect(document).then(res => {
-      //  console.log('Collected usage data.', res);
-      //  results.push(res);
-      //}).catch(err => console.log(err));
+      try {
+        let p = collect(document);
+        promises.push(p);
+      } catch (err) {
+        console.error(err);
+      }
     });
-  }
 
-  Promise.all(promises).then(res => {
-    // TODO hardcoded
+    let allAugmentedDocuments = await Promise.all(promises);
+
     let costTrace = {
       "traceId": params.TraceIds[0],
       "origin": "TODO"
     };
-    let invocations = cleanArray(res);
-    costTrace.invocations = invocations;
-    console.log(util.inspect(costTrace, false, null));
-  }).catch(err => console.log(err));
-});
+    //let invocations = cleanArray(allAugmentedDocuments);
+    costTrace.invocations = allAugmentedDocuments;
+    return costTrace;
+  } catch (err) {
+    console.log(err, err.stack);
+  }
+}
+
 
 function cleanArray(arr) {
   for (let i = 0; i < arr.length; i++) {
@@ -62,6 +66,8 @@ function cleanArray(arr) {
   }
   return arr;
 }
+
+main().then(costTrace => console.log(util.inspect(costTrace, false, null)));
 
 //module.exports = class XRayClient {
 //  constructor() {}

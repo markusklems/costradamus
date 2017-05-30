@@ -21,7 +21,6 @@ async function collectLambdaUsage(document) {
       //console.log('endTimeUnix', new Date(endTimeUnix));
       //console.log('requestId', requestId);
 
-      let res = {};
       try {
         let res = await parseCloudWatchLogs(resourceName, startTimeUnix, endTimeUnix, requestId);
         // TODO
@@ -43,6 +42,10 @@ async function collectLambdaUsage(document) {
   } else {
     console.error(errMsg);
   }
+  // In case something went wrong, we still resolve (to an empty object)
+  return new Promise((resolve, reject) => {
+    resolve({})
+  });
 }
 
 module.exports = collectLambdaUsage;
