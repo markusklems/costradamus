@@ -30,8 +30,27 @@ XRay.batchGetTraces(params, (err, data) => {
     });
   }
   const util = require('util');
-  Promise.all(promises).then(res => console.log(util.inspect(res, false, null))).catch(err => console.log(err));
+  Promise.all(promises).then(res => {
+    // TODO hardcoded
+    let costTrace = {
+      "traceId": params.TraceIds[0],
+      "origin": "TODO"
+    };
+    let invocations = cleanArray(res);
+    costTrace.invocations = invocations;
+    console.log(util.inspect(costTrace, false, null))
+  }).catch(err => console.log(err));
 });
+
+function cleanArray(arr) {
+  for (let i = 0; i < arr.length; i++) {
+    if (Object.keys(arr[i]).length === 0) {
+      arr.splice(i, 1);
+      i--;
+    }
+  }
+  return arr;
+}
 
 //module.exports = class XRayClient {
 //  constructor() {}

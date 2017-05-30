@@ -21,7 +21,7 @@ let collectUsage = (dynamoUsageSubSeg) => {
       //  val: 800,
       //  type: 'MS'
       //};
-      console.log("consumptions", consumptions);
+      //console.log("consumptions", consumptions);
       dynamoUsageSubSeg.cost = cost(consumptions);
       resolve(dynamoUsageSubSeg);
     } else {

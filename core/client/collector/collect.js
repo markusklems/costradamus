@@ -35,7 +35,7 @@ let collect = document => {
           dynamoUsage.metadata.DynamoDBConsumedCapacity.consumptions.Latency = dynamoDoc.end_time - dynamoDoc.start_time;
           collectDynamodbUsage(dynamoUsage).then(res => {
             // TODO work in progress
-            console.log("res", res);
+            //console.log("res", res);
             let metadata = res.metadata.DynamoDBConsumedCapacity;
             let subsegment = {};
             subsegment.id = dynamoDoc.id;
