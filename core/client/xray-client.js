@@ -49,7 +49,7 @@ async function main() {
       "origin": "TODO"
     };
     //let invocations = cleanArray(allAugmentedDocuments);
-    costTrace.invocations = allAugmentedDocuments;
+    costTrace.segments = allAugmentedDocuments;
     return costTrace;
   } catch (err) {
     console.log(err, err.stack);
