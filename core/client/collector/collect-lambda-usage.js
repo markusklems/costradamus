@@ -1,14 +1,14 @@
 'use strict';
 
 const finder = require('./finder.js');
-const cwlogs = require('cwlogs');
+const parseCloudWatchLogs = require('./cw.js');
 const cost = require('../pricing/lambda.js');
 
-let collectLambdaUsage = (document) => {
-  return new Promise((resolve, reject) => {
+async function collectLambdaUsage(document) {
+  return await new Promise((resolve, reject) => {
     let lambdaUsage = document;
     //console.log("lambdaUsage", lambdaUsage);
-    let parseCloudWatchLogs = require('./cw.js');
+
     const errMsg = `A problem occured while processing the X-Ray data of ${lambdaUsage.name}. Expected that the 'AWS::Lambda::Function' segment has a subsegment with name 'LambdaMetadata' but could not find it. Skip processing this Lambda function...`;
     if (lambdaUsage.subsegments) {
       let lambdaMetadata = lambdaUsage.subsegments.find(finder.lambdaMetadataFinder);
@@ -25,16 +25,20 @@ let collectLambdaUsage = (document) => {
         //console.log('startTimeUnix', new Date(startTimeUnix));
         //console.log('endTimeUnix', new Date(endTimeUnix));
         //console.log('requestId', requestId);
-        parseCloudWatchLogs(resourceName, startTimeUnix, endTimeUnix, requestId).then(res => {
+
+        try {
+          let res = parseCloudWatchLogs(resourceName, startTimeUnix, endTimeUnix, requestId);
           // TODO
-          let costResult = cost(res); //= res ? cost(res) : 0;
+          let costResult = 1; //cost(res); //= res ? cost(res) : 0;
           resolve({
             "resourceName": resourceName,
             "resourceId": resourceId,
             "consumptions": res,
             "cost": costResult
           });
-        }).catch(err => reject(err));
+        } catch (err) {
+          reject(err);
+        }
       } else {
         reject(errMsg);
       }

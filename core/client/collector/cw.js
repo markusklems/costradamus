@@ -1,7 +1,7 @@
 const cwlogs = require('cwlogs');
 
-let getCloudWatchLogs = (lambdaFunctionName, startTime, endTime, searchPattern) => {
-  const readable = cwlogs.readable({
+function getCloudWatchLogs(lambdaFunctionName, startTime, endTime, searchPattern) {
+  return cwlogs.readable({
     group: '/aws/lambda/' + lambdaFunctionName,
     region: 'us-east-1',
     messages: true,
@@ -9,11 +9,10 @@ let getCloudWatchLogs = (lambdaFunctionName, startTime, endTime, searchPattern) 
     end: endTime,
     pattern: searchPattern
   });
-  return readable;
 }
 
-let parseCloudWatchLogs = (lambdaFunctionName, startTime, endTime, requestId) => {
-  return new Promise((resolve, reject) => {
+async function parseCloudWatchLogs(lambdaFunctionName, startTime, endTime, requestId) {
+  return await new Promise((resolve, reject) => {
     let logString = '';
     const searchPattern = `REPORT RequestId: ${requestId}`;
     let r = getCloudWatchLogs(lambdaFunctionName, startTime, endTime, searchPattern);
@@ -46,6 +45,7 @@ let parseCloudWatchLogs = (lambdaFunctionName, startTime, endTime, requestId) =>
           "MemorySize": reduced[2],
           "MaxMemoryUsed": reduced[3]
         };
+        //console.log("CloudWatch output:", toReturn);
         resolve(toReturn);
       } else {
         console.error(`Couldn\'t find CloudWatch logs for the specified time frame ${startTime} - ${endTime} and pattern ${searchPattern}.`);
