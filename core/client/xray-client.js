@@ -5,6 +5,7 @@ const XRay = new AWS.XRay({
   region: 'us-east-1'
 });
 const collect = require('./collector/collect.js');
+const util = require('util');
 
 const params = {
   TraceIds: [
@@ -13,6 +14,7 @@ const params = {
 };
 
 XRay.batchGetTraces(params, (err, data) => {
+  //console.log(util.inspect(data, false, null));
   let promises = [];
   if (err) console.log(err, err.stack); // an error occurred
   else {
@@ -21,6 +23,15 @@ XRay.batchGetTraces(params, (err, data) => {
       let document = JSON.parse(segment.Document);
       let promise = collect(document);
       promises.push(promise);
+      if (document.subsegments) {
+        document.subsegments.forEach(subsegment => {
+          //if (subsegment.Document) {
+          //console.log("Found a subsegment");
+          let promise = collect(subsegment);
+          promises.push(promise);
+          //}
+        });
+      }
       //console.log(document);
 
       //collect(document).then(res => {
@@ -29,7 +40,7 @@ XRay.batchGetTraces(params, (err, data) => {
       //}).catch(err => console.log(err));
     });
   }
-  const util = require('util');
+
   Promise.all(promises).then(res => {
     // TODO hardcoded
     let costTrace = {
