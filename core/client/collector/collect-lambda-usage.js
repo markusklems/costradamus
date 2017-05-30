@@ -28,7 +28,7 @@ let collectLambdaUsage = (document) => {
         parseCloudWatchLogs(resourceName, startTimeUnix, endTimeUnix, requestId).then(res => {
           // TODO
           resolve({
-            "metadata": {
+            "consumptions": {
               "service": "lambda",
               "resourceName": resourceName,
               "resourceId": resourceId,

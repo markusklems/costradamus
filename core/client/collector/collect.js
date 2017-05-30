@@ -14,25 +14,37 @@ let promiseThenHelper = (res, resolve, reject) => {
 };
 
 let collect = document => {
-  document.costs = [];
+  let costDocument = {};
   return new Promise((resolve, reject) => {
     let lambdaDoc = finder.lambdaUsageFinder(document);
     if (lambdaDoc) {
       console.log("Found Lambda document");
       collectLambdaUsage(document).then(res => {
-        // TODO
-        document.costs.push(res);
+        // TODO work in progress
+        costDocument.id = document.id;
+        costDocument.name = document.name;
+        costDocument.parent_id = document.parent_id;
+        costDocument.consumptions = res.consumptions;
+        costDocument.cost = res.cost;
         let dynamoDoc = finder.dynamoUsageFinder(document);
         if (dynamoDoc) {
-          console.log("Found dynamodb document!!!");
+          console.log("Found dynamodb document");
           let dynamoUsage = dynamoDoc.subsegments.find(finder.dynamoMetadataFinder);
           collectDynamodbUsage(dynamoUsage).then(res => {
-            // TODO
-            document.costs.push(res);
-            resolve(document);
+            // TODO work in progress
+            let subsegment = {};
+            subsegment.id = dynamoDoc.id;
+            subsegment.name = dynamoDoc.name;
+            subsegment.resource = res.metadata.ResourceUsage.DynamoDBConsumedCapacity.TableName;
+            subsegment.consumptions = {
+              "CapacityUnits": res.metadata.ResourceUsage.DynamoDBConsumedCapacity.CapacityUnits
+            };
+            subsegment.cost = res.cost;
+            costDocument.subsegment = subsegment;
+            resolve(costDocument);
           }).catch(err => reject(err));
         } else {
-          resolve(document);
+          resolve(costDocument);
         }
       }).catch(err => reject(err));
     } else {
