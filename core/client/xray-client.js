@@ -23,15 +23,15 @@ XRay.batchGetTraces(params, (err, data) => {
       let document = JSON.parse(segment.Document);
       let promise = collect(document);
       promises.push(promise);
-      if (document.subsegments) {
-        document.subsegments.forEach(subsegment => {
-          //if (subsegment.Document) {
-          //console.log("Found a subsegment");
-          let promise = collect(subsegment);
-          promises.push(promise);
-          //}
-        });
-      }
+      //if (document.subsegments) {
+      //  document.subsegments.forEach(subsegment => {
+      //    //if (subsegment.Document) {
+      //    //console.log("Found a subsegment");
+      //    let promise = collect(subsegment);
+      //    promises.push(promise);
+      //    //}
+      //  });
+      //}
       //console.log(document);
 
       //collect(document).then(res => {
