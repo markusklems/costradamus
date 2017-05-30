@@ -15,6 +15,10 @@ let promiseThenHelper = (res, resolve, reject) => {
 
 let collect = document => {
   let costDocument = {};
+  return addToCostDocument(costDocument, document);
+};
+
+let addToCostDocument = (costDocument, document) => {
   return new Promise((resolve, reject) => {
     let lambdaDoc = finder.lambdaUsageFinder(document);
     if (lambdaDoc) {
@@ -44,16 +48,21 @@ let collect = document => {
             subsegment.consumptions = metadata.consumptions;
             subsegment.cost = res.cost;
             costDocument.subsegment = subsegment;
-            resolve(costDocument);
           }).catch(err => reject(err));
-        } else {
-          resolve(costDocument);
         }
+        //console.log("document", document);
+        let kinesisDoc = finder.kinesisUsageFinder(document);
+        if (kinesisDoc) {
+          console.log("kinesisDoc", kinesisDoc);
+        }
+
+        // Last but not least, resolve the Promise
+        resolve(costDocument);
       }).catch(err => reject(err));
     } else {
       resolve({});
     }
   });
-};
+}
 
 module.exports = collect;

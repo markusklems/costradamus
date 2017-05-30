@@ -44,7 +44,7 @@ XRay.batchGetTraces(params, (err, data) => {
 
 function cleanArray(arr) {
   for (let i = 0; i < arr.length; i++) {
-    if (Object.keys(arr[i]).length === 0) {
+    if (!arr[i] || Object.keys(arr[i]).length === 0) {
       arr.splice(i, 1);
       i--;
     }

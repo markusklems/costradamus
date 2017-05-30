@@ -1,14 +1,19 @@
 'use strict';
 
-let lambdaUsageFinder = (doc) => doc.origin === 'AWS::Lambda::Function';
+let lambdaUsageFinder = (segment) => segment.origin === 'AWS::Lambda::Function';
 let lambdaMetadataFinder = (subsegment) => subsegment.name === 'LambdaMetadata';
 
 let dynamoMetadataFinder = (subsegment) => subsegment.name === 'DynamoDBConsumedCapacity';
-let dynamoUsageFinder = (doc) => doc.subsegments && doc.subsegments.find(subsegment => subsegment.name === 'DynamoDB' && subsegment.subsegments.find(dynamoMetadataFinder));
+let dynamoUsageFinder = (segment) => segment.subsegments && segment.subsegments.find(subsegment => subsegment.name === 'DynamoDB' && subsegment.subsegments.find(dynamoMetadataFinder));
+
+let kinesisMetadataFinder = (subsegment) => subsegment.name === 'KinesisMetadata';
+let kinesisUsageFinder = (segment) => segment.subsegments && segment.subsegments.find(subsegment => subsegment.name === 'Kinesis' && subsegment.subsegments.find(kinesisMetadataFinder));
 
 module.exports = {
+  "lambdaUsageFinder": lambdaUsageFinder,
+  "lambdaMetadataFinder": lambdaMetadataFinder,
   "dynamoMetadataFinder": dynamoMetadataFinder,
   "dynamoUsageFinder": dynamoUsageFinder,
-  "lambdaUsageFinder": lambdaUsageFinder,
-  "lambdaMetadataFinder": lambdaMetadataFinder
+  "kinesisMetadataFinder": kinesisMetadataFinder,
+  "kinesisUsageFinder": kinesisUsageFinder
 }

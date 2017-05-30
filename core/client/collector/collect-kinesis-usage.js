@@ -1,9 +1,9 @@
 'use strict';
 
 const finder = require('./finder.js');
-const cost = require('../pricing/dynamodb.js');
+const cost = require('../pricing/kinesis.js');
 
-let collectUsage = (dynamoUsageSubSeg) => {
+let collectUsage = (kinesisUsageSubSeg) => {
   return new Promise((resolve, reject) => {
     let consumptions = dynamoUsageSubSeg.metadata.DynamoDBConsumedCapacity.consumptions;
     if (consumptions) {
