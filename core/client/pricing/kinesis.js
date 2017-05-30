@@ -7,21 +7,30 @@
 // ..., SOURCE: (https://aws.amazon.com/kinesis/streams/pricing, accessed: 2017/05/29)
 const _prices = {
     'us-west-1': {
-        PUTPU: 0.014,
+        UNIT: {
+            READ: 0,
+            WRITE: 0.014
+        },
         SHARD: {
             BASE: 0.015,
             EXTENDED: 0.035
         }
     },
     'eu-west-1': {
-        PUTPU: 0.0165,
+        UNIT: {
+            READ: 0,
+            WRITE: 0.0165
+        },
         SHARD: {
             BASE: 0.017,
             EXTENDED: 0.04
         }
     },
     'eu-central-1': {
-        PUTPU: 0.0175,
+        UNIT: {
+            READ: 0,
+            WRITE: 0.0175
+        },
         SHARD: {
             BASE: 0.018,
             EXTENDED: 0.042
@@ -49,6 +58,7 @@ module.exports = c => {
     let costs = {};
 
     const region = 'us-west-1';
+    const retention = 'BASE';
 
     if ( c.PayloadSize.type !== 'KB') {
         new Error('InvalidParameterError: Payload must be specified in KB.' + c);
@@ -69,14 +79,44 @@ module.exports = c => {
     if (typeof c.PayloadSize.val === 'string')      c.PayloadSize.val = +c.PayloadSize.val;
     if (typeof c.Latency.val === 'string')          c.Latency.val = +c.Latency.val;
 
-    
+
     // monetary operation cost
     costs.MonetaryCost = {};
     costs.MonetaryCost.type = 'USD';
-    costs.MonetaryCost.val = (c.CapacityUnits.val * c.Latency.val * _price('eu-west-1', c.CapacityUnits.type)) / 3600000;
-    // console.log('MonetaryCost [USD]: ' +costs.MonetaryCost.val);
+
+    /**
+    const shardPricePerHourAndMB = _prices[region]['SHARD']['BASE'][c.Operation.val];
+    console.log('ShardPricePerHourAndMB [USD]: ' +shardPricePerHourAndMB);
+
+    const latencyInHours = c.Latency.val / 3600000;
+    console.log('Latency [h]: ' +latencyInHours);
+
+    const payloadInMb = c.PayloadSize.val / 1000;
+    console.log('Payload [MB]: ' +payloadInMb);
+
+     const shardPricePerReq = shardPricePerHourAndMB * latencyInHours * payloadInMb;
+     console.log('ShardPricePerMioReq [USD]: ' +shardPricePerMioReq);
+    */
+
+    const shardPricePerMioReq = _prices[region]['SHARD'][retention] / 3 * c.Latency.val / 3600 * c.PayloadSize.val;
+
+
+    /**
+    const units = Math.ceil(c.PayloadSize.val / 25);
+    console.log('Units: ' +units);
+    const unitsCostPerMioReq = _prices[region]['UNIT'][c.Operation.val] * units;
+    console.log('UnitsCostPerMioReq [USD]: ' +unitsCostPerMioReq);
+    costs.MonetaryCost.val = shardPricePerMioReq + unitsCostPerMioReq;
+    console.log('CostPerMioReq [USD]: ' +costs.MonetaryCost.val );
+    */
+
+    const unitsCostPerMioReq = _prices[region]['UNIT'][c.Operation.val] * Math.ceil(c.PayloadSize.val / 25);
+
+    costs.MonetaryCost.val = shardPricePerMioReq + unitsCostPerMioReq;
+    // console.log('CostPerMioReq [USD]: ' +costs.MonetaryCost.val );
 
     // Runtime waste
+    /*
     costs.PayloadWaste = {};
     costs.PayloadWaste.type = 'KB';
     if ( c.CapacityUnits.type === 'WCU' )
