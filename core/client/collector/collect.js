@@ -35,55 +35,55 @@ let collect = document => {
 };
 
 async function makeCostDocument(document) {
-  return await new Promise((resolve, reject) => {
-    let costDocument = {};
+  let costDocument = {};
 
-    let lambdaDoc = finder.lambdaUsageFinder(document);
-    if (lambdaDoc) {
-      console.log("Found Lambda document", document.id);
-      let res = {};
-      try {
-        res = collectLambdaUsage(document);
-        console.log("lambda res", document.id);
-        costDocument.id = document.id;
-        costDocument.parent_id = document.parent_id;
-        costDocument.resourceName = res.resourceName;
-        costDocument.resourceId = res.resourceId;
-        costDocument.consumptions = res.consumptions;
-        costDocument.cost = res.cost;
-      } catch (err) {
-        reject(err);
-      }
+  let lambdaDoc = finder.lambdaUsageFinder(document);
+  if (lambdaDoc) {
+    console.log("Found Lambda document", document.id);
+    let res = {};
+    try {
+      res = await collectLambdaUsage(document);
+      console.log("lambda res", document.id);
+      costDocument.id = document.id;
+      costDocument.parent_id = document.parent_id;
+      costDocument.resourceName = res.resourceName;
+      costDocument.resourceId = res.resourceId;
+      costDocument.consumptions = res.consumptions;
+      costDocument.cost = res.cost;
+    } catch (err) {
+      console.error(err);
     }
-    let dynamoDoc = finder.dynamoUsageFinder(document);
-    if (dynamoDoc) {
-      console.log("Found dynamodb document");
-      let dynamoUsage = dynamoDoc.subsegments.find(finder.dynamoMetadataFinder);
-      dynamoUsage.metadata.DynamoDBConsumedCapacity.consumptions.Latency = dynamoDoc.end_time - dynamoDoc.start_time;
-      let res = {};
-      try {
-        res = collectDynamodbUsage(dynamoUsage);
-        // TODO work in progress
-        //console.log("res", res);
-        let metadata = res.metadata.DynamoDBConsumedCapacity;
-        let subsegment = {};
-        subsegment.id = dynamoDoc.id;
-        subsegment.name = dynamoDoc.name;
-        subsegment.resourceName = metadata.resourceName;
-        subsegment.consumptions = metadata.consumptions;
-        subsegment.cost = res.cost;
-        costDocument.subsegment = subsegment;
-      } catch (err) {
-        reject(err);
-      }
+  }
+  let dynamoDoc = finder.dynamoUsageFinder(document);
+  if (dynamoDoc) {
+    console.log("Found dynamodb document");
+    let dynamoUsage = dynamoDoc.subsegments.find(finder.dynamoMetadataFinder);
+    dynamoUsage.metadata.DynamoDBConsumedCapacity.consumptions.Latency = dynamoDoc.end_time - dynamoDoc.start_time;
+    let res = {};
+    try {
+      res = collectDynamodbUsage(dynamoUsage);
+      // TODO work in progress
+      //console.log("res", res);
+      let metadata = res.metadata.DynamoDBConsumedCapacity;
+      let subsegment = {};
+      subsegment.id = dynamoDoc.id;
+      subsegment.name = dynamoDoc.name;
+      subsegment.resourceName = metadata.resourceName;
+      subsegment.consumptions = metadata.consumptions;
+      subsegment.cost = res.cost;
+      costDocument.subsegment = subsegment;
+    } catch (err) {
+      console.error(err);
     }
-    //console.log("document", document);
-    let kinesisDoc = finder.kinesisUsageFinder(document);
-    if (kinesisDoc) {
-      console.log("Found kinesis");
-    }
+  }
+  //console.log("document", document);
+  let kinesisDoc = finder.kinesisUsageFinder(document);
+  if (kinesisDoc) {
+    console.log("Found kinesis");
+  }
 
-    // Last but not least, resolve the Promise
+  // Last but not least, return the Promise
+  return new Promise((resolve, reject) => {
     resolve(costDocument);
   });
 }

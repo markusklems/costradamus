@@ -49,7 +49,7 @@ XRay.batchGetTraces(params, (err, data) => {
     };
     let invocations = cleanArray(res);
     costTrace.invocations = invocations;
-    console.log(util.inspect(costTrace, false, null))
+    console.log(util.inspect(costTrace, false, null));
   }).catch(err => console.log(err));
 });
 
