@@ -35,7 +35,7 @@ let collect = document => {
 };
 
 async function makeCostDocument(document) {
-  let costDocument = {};
+  //let costDocument = {};
 
   let lambdaDoc = finder.lambdaUsageFinder(document);
   if (lambdaDoc) {
@@ -44,12 +44,10 @@ async function makeCostDocument(document) {
     try {
       res = await collectLambdaUsage(document);
       console.log("lambda res", document.id);
-      costDocument.id = document.id;
-      costDocument.parent_id = document.parent_id;
-      costDocument.resourceName = res.resourceName;
-      costDocument.resourceId = res.resourceId;
-      costDocument.consumptions = res.consumptions;
-      costDocument.cost = res.cost;
+      document.resourceName = res.resourceName;
+      document.resourceId = res.resourceId;
+      document.consumptions = res.consumptions;
+      document.cost = res.cost;
     } catch (err) {
       console.error(err);
     }
@@ -65,13 +63,9 @@ async function makeCostDocument(document) {
       // TODO work in progress
       //console.log("res", res);
       let metadata = res.metadata.DynamoDBConsumedCapacity;
-      let subsegment = {};
-      subsegment.id = dynamoDoc.id;
-      subsegment.name = dynamoDoc.name;
-      subsegment.resourceName = metadata.resourceName;
-      subsegment.consumptions = metadata.consumptions;
-      subsegment.cost = res.cost;
-      costDocument.subsegment = subsegment;
+      dynamoDoc.resourceName = metadata.resourceName;
+      dynamoDoc.consumptions = metadata.consumptions;
+      dynamoDoc.cost = res.cost;
     } catch (err) {
       console.error(err);
     }
@@ -84,7 +78,7 @@ async function makeCostDocument(document) {
 
   // Last but not least, return the Promise
   return new Promise((resolve, reject) => {
-    resolve(costDocument);
+    resolve(document);
   });
 }
 
