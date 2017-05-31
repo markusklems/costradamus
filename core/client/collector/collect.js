@@ -3,6 +3,7 @@
 const finder = require('./finder.js');
 const collectLambdaUsage = require('./collect-lambda-usage.js');
 const collectDynamodbUsage = require('./collect-dynamodb-usage.js');
+const collectKinesisUsage = require('./collect-kinesis-usage.js');
 
 function collect(document) {
   let promise = traverse(document);
@@ -48,7 +49,10 @@ async function augment(document) {
   if (dynamoDoc) {
     //console.log("Found dynamodb document");
     let dynamoUsage = dynamoDoc.subsegments.find(finder.dynamoMetadataFinder);
-    dynamoUsage.metadata.DynamoDBConsumedCapacity.consumptions.Latency = dynamoDoc.end_time - dynamoDoc.start_time;
+    dynamoUsage.metadata.DynamoDBConsumedCapacity.consumptions.Latency = {
+      "val": (dynamoDoc.end_time - dynamoDoc.start_time),
+      "type": "MS"
+    };
     let res = {};
     try {
       res = collectDynamodbUsage(dynamoUsage);
@@ -65,6 +69,23 @@ async function augment(document) {
   //console.log("document", document);
   let kinesisDoc = finder.kinesisUsageFinder(document);
   if (kinesisDoc) {
+    let kinesisUsage = kinesisDoc.subsegments.find(finder.kinesisMetadataFinder);
+    kinesisUsage.metadata.KinesisMetadata.consumptions.Latency = {
+      "val": (kinesisDoc.end_time - kinesisDoc.start_time),
+      "type": "MS"
+    };
+    let res = {};
+    try {
+      res = collectKinesisUsage(kinesisUsage);
+      // TODO work in progress
+      //console.log("res", res);
+      let metadata = res.metadata.KinesisMetadata;
+      kinesisDoc.consumptions = metadata.consumptions;
+      kinesisDoc.cost = res.cost;
+    } catch (err) {
+      console.error(err);
+    }
+
     //console.log("Found kinesis");
   }
 

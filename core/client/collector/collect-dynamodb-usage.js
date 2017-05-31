@@ -11,15 +11,6 @@ let collectUsage = (dynamoUsageSubSeg) => {
       val: 1.5,
       type: 'KB'
     };
-    //c.CapacityUnits = {
-    //  val: 2,
-    //  type: 'WCU'
-    //};
-    //c.Latency = {
-    //  val: 800,
-    //  type: 'MS'
-    //};
-    //console.log("consumptions", consumptions);
     dynamoUsageSubSeg.cost = cost(consumptions);
     return dynamoUsageSubSeg;
   } else {
