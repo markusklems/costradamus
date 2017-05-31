@@ -49,17 +49,15 @@ async function augment(document) {
   if (dynamoDoc) {
     //console.log("Found dynamodb document");
     let dynamoUsage = dynamoDoc.subsegments.find(finder.dynamoMetadataFinder);
-    dynamoUsage.metadata.DynamoDBConsumedCapacity.consumptions.Latency = {
+    dynamoUsage.metadata.DynamoDBCostradamus.consumptions.Latency = {
       "val": (dynamoDoc.end_time - dynamoDoc.start_time),
       "type": "MS"
     };
     let res = {};
     try {
       res = collectDynamodbUsage(dynamoUsage);
-      // TODO work in progress
-      //console.log("res", res);
-      let metadata = res.metadata.DynamoDBConsumedCapacity;
-      dynamoDoc.resourceName = metadata.resourceName;
+      let metadata = res.metadata.DynamoDBCostradamus;
+      //dynamoDoc.resourceName = metadata.resourceName;
       dynamoDoc.consumptions = metadata.consumptions;
       dynamoDoc.cost = res.cost;
     } catch (err) {
@@ -70,7 +68,7 @@ async function augment(document) {
   let kinesisDoc = finder.kinesisUsageFinder(document);
   if (kinesisDoc) {
     let kinesisUsage = kinesisDoc.subsegments.find(finder.kinesisMetadataFinder);
-    kinesisUsage.metadata.KinesisMetadata.consumptions.Latency = {
+    kinesisUsage.metadata.KinesisCostradamus.consumptions.Latency = {
       "val": (kinesisDoc.end_time - kinesisDoc.start_time),
       "type": "MS"
     };
@@ -79,7 +77,7 @@ async function augment(document) {
       res = collectKinesisUsage(kinesisUsage);
       // TODO work in progress
       //console.log("res", res);
-      let metadata = res.metadata.KinesisMetadata;
+      let metadata = res.metadata.KinesisCostradamus;
       kinesisDoc.consumptions = metadata.consumptions;
       kinesisDoc.cost = res.cost;
     } catch (err) {

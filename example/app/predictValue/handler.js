@@ -6,7 +6,7 @@
 
 const Costradamus = require('costradamus');
 let costradamus = new Costradamus();
-costradamus.init('persistValue');
+costradamus.init('predictValue');
 const AWSXRAY = costradamus.getXRay();
 const AWS = costradamus.getAWS();
 
@@ -88,7 +88,7 @@ const sendToKinesis = event => {
     kinesis.putRecord(params, (err, data) => {
       if (err) reject(err);
       else {
-        kinesisTracer.addSubsegment(AWSXRAY.getSegment(), 'KINESISPUTRECORD', params);
+        //kinesisTracer.addWriteSubsegment(AWSXRAY.getSegment(), params);
         resolve(data)
       };
     });

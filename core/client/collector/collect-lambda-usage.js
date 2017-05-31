@@ -9,7 +9,7 @@ async function collectLambdaUsage(document) {
   if (document.subsegments) {
     let lambdaMetadata = document.subsegments.find(finder.lambdaMetadataFinder);
     if (lambdaMetadata) {
-      const requestId = lambdaMetadata.metadata.ResourceUsage.RequestId;
+      const requestId = lambdaMetadata.metadata.LambdaCostradamus.RequestId;
       // add 5 seconds buffer before start and after end time
       // (to make sure that we catch the time window in cloudwatch that contains our request)
       let startTimeUnix = parseInt(document.start_time.toString().replace(/\./, '')) - 5000;

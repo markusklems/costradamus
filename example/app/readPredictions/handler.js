@@ -6,7 +6,7 @@
 
 const Costradamus = require('costradamus');
 let costradamus = new Costradamus();
-costradamus.init('persistValue');
+costradamus.init('readPredictions');
 const AWSXRAY = costradamus.getXRay();
 const AWS = costradamus.getAWS();
 
