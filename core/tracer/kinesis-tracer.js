@@ -6,13 +6,15 @@ module.exports = class KinesisTracer {
 
   addReadSubsegment(parent, records) {
     let payloadSizeInByte = 0;
-    // Assumption of average utf8-base64 encoded record metadata size: 200 Bytes
+    // Assumption of average utf8-base64 encoded record metadata size: 0 Bytes
     // (assumption made for faster computation and less performance overhead of tracing)
-    const recordMetadataOverheadInBytes = 200;
+    const recordMetadataOverheadInBytes = 0;
+    //console.log("records", records);
     records.forEach(r => {
-      console.log("payloadSizeInByte", payloadSizeInByte);
-      payloadSizeInByte += records[r].Data.length; // length of decoded buffer object
-      console.log("r.Data.length", records[r].Data.length);
+      console.log("r", r);
+      let data = r.Data; // decoded buffer object
+      let base64Data = data.toString('base64'); // base64 encoded
+      payloadSizeInByte += base64Data.length;
       payloadSizeInByte += recordMetadataOverheadInBytes;
     });
     // Data is base64-encoded when the Data blob is serialized
@@ -26,9 +28,9 @@ module.exports = class KinesisTracer {
     // Data is base64-encoded when the Data blob is serialized
     // Calculate payload size in Bytes.
     let payloadSizeInByte = Math.ceil(AWS.util.base64.encode(params.Data).length * 8 / 6);
-    // Assumption of average utf8-base64 encoded record metadata size: 50 Bytes
+    // Assumption of average utf8-base64 encoded record metadata size: 0 Bytes
     // (assumption made for faster computation and less performance overhead of tracing)
-    const recordMetadataOverheadInBytes = 50;
+    const recordMetadataOverheadInBytes = 0;
     payloadSizeInByte += recordMetadataOverheadInBytes;
     this._addSubsegment(parent, 'WRITE', payloadSizeInByte);
   }

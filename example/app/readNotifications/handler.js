@@ -27,13 +27,14 @@ const getShardIterator = (streamName, from, shardId) => {
       ShardIteratorType: 'AT_TIMESTAMP',
       /* required */
       StreamName: streamName,
-      /* required */
+      /* required for ShardIteratorType: 'AT_TIMESTAMP' */
       Timestamp: from
     };
+    //console.log('getShardIterator params: ' + util.inspect(params));
     kinesis.getShardIterator(params, (err, data) => {
       if (err) reject(err);
       else {
-        // console.log('Result from getShardIterator(): ' +util.inspect(data));
+        //console.log('Result from getShardIterator(): ' + util.inspect(data));
         resolve(data.ShardIterator);
       }
     });
@@ -45,19 +46,20 @@ const getRecords = shardIterator => {
     const params = {
       ShardIterator: shardIterator /* required */
     };
+    //console.log('getRecords params: ' + util.inspect(params));
     kinesis.getRecords(params, (err, data) => {
       // TODO
       if (err) reject(err);
       else {
-        // console.log('Result from getRecords(): ' +util.inspect(data));
+        //console.log('Result from getRecords(): ' + util.inspect(data));
         const notifis = [],
           records = Array.from(data.Records);
-        //kinesisTracer.addReadSubsegment(AWSXRAY.getSegment(), records);
-        console.log('Records: ' + util.inspect(records));
+        kinesisTracer.addReadSubsegment(AWSXRAY.getSegment(), records);
+        //console.log('Records: ' + util.inspect(records));
         for (let r in records) {
           notifis.push(JSON.parse(records[r].Data));
         }
-        // console.log('Notfications: ' +util.inspect(notifis));
+        console.log('Notfications: ' + util.inspect(notifis));
         resolve(notifis);
       }
     });
@@ -66,8 +68,8 @@ const getRecords = shardIterator => {
 };
 
 module.exports.handler = (event, context, callback) => {
-  lambdaTracer.addSubsegment(AWSXRAY.getSegment(), context.awsRequestId);
-
+  console.log("context", context);
+  //lambdaTracer.addSubsegment(AWSXRAY.getSegment(), context.awsRequestId);
   getShardIterator('NotificationsStream', event.start)
     .then(shardIterator => {
       return getRecords(shardIterator);

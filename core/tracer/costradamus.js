@@ -16,6 +16,8 @@ module.exports = class Costradamus {
     if (toggles.tracing && toggles.tracing.find(i => i === shouldThisBeTraced)) {
       console.log("Tracing with Costradamus has been enabled.");
       this._tracing = true;
+    } else {
+      console.log("Tracing with Costradamus has been disabled.");
     }
   }
 

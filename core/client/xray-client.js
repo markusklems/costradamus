@@ -23,7 +23,8 @@ function batchGetTracesPromise(params) {
 async function main() {
   const params = {
     TraceIds: [
-      '1-592e7423-0bd282d59d349562a0068441'
+      '1-592ec12d-5e40def01a28cfb2caeeb872',
+      '1-592ec154-5c560b311618ea0d962d6210'
     ]
   };
 

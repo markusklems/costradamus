@@ -88,7 +88,7 @@ const sendToKinesis = event => {
     kinesis.putRecord(params, (err, data) => {
       if (err) reject(err);
       else {
-        //kinesisTracer.addWriteSubsegment(AWSXRAY.getSegment(), params);
+        kinesisTracer.addWriteSubsegment(AWSXRAY.getSegment(), params);
         resolve(data)
       };
     });
