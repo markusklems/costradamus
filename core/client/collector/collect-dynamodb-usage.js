@@ -4,7 +4,7 @@ const finder = require('./finder.js');
 const cost = require('../pricing/dynamodb.js');
 
 let collectUsage = (dynamoUsageSubSeg) => {
-  let consumptions = dynamoUsageSubSeg.metadata.DynamoDBConsumedCapacity.consumptions;
+  let consumptions = dynamoUsageSubSeg.metadata.DynamoDBCostradamus.consumptions;
   if (consumptions) {
     // TODO hardcoded values
     consumptions.PayloadSize = {
@@ -14,7 +14,7 @@ let collectUsage = (dynamoUsageSubSeg) => {
     dynamoUsageSubSeg.cost = cost(consumptions);
     return dynamoUsageSubSeg;
   } else {
-    console.error(`Expected to find a metadata.consumptions property for the subsegment. Skip processing DynamoDB usage for subsegment ${dynamoUsageSubSeg}.`);
+    console.error(`Expected to find a metadata.DynamoDBCostradamus.consumptions property for the subsegment. Skip processing DynamoDB usage for subsegment ${dynamoUsageSubSeg}.`);
   }
 }
 

@@ -7,8 +7,8 @@ module.exports = class DynamoTracer {
   }
 
   addSubsegment(parent, dynamoResponseData, operationType) {
-    console.log("Add DynamoDB Subsegment with used Capacity Units.");
-    let subsegment = parent.addNewSubsegment("DynamoDBConsumedCapacity");
+    //console.log("Add DynamoDB Subsegment with used Capacity Units.");
+    let subsegment = parent.addNewSubsegment("DynamoDBCostradamus");
     let CapacityUnits = {
       "val": dynamoResponseData.ConsumedCapacity.CapacityUnits,
       "type": operationType
@@ -16,22 +16,8 @@ module.exports = class DynamoTracer {
     let consumptions = {};
     consumptions.CapacityUnits = CapacityUnits;
     let resourceName = dynamoResponseData.ConsumedCapacity.TableName;
-    subsegment.addMetadata("consumptions", consumptions, "DynamoDBConsumedCapacity");
-    subsegment.addMetadata("resourceName", resourceName, "DynamoDBConsumedCapacity");
+    subsegment.addMetadata("consumptions", consumptions, "DynamoDBCostradamus");
+    //subsegment.addMetadata("resourceName", resourceName, "DynamoDBCostradamus");
     subsegment.close();
   }
-
-  // @deprecated
-  //handleRequest(req) {
-  //  console.log("Add DynamoDB Subsegment with used Capacity Units.");
-  //  let parent = this._segment;
-  //  req.on('success', res => {
-  //    //console.log("parent sub/segment", parent);
-  //    let subsegment = parent.addNewSubsegment("DynamoDBConsumedCapacity");
-  //    let consumedCapacity = res.data.ConsumedCapacity;
-  //    subsegment.addMetadata("DynamoDBConsumedCapacity", consumedCapacity, "ResourceUsage");
-  //    subsegment.close();
-  //  });
-  //}
-
 }

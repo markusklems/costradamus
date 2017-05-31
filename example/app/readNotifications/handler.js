@@ -6,7 +6,7 @@
 
 const Costradamus = require('costradamus');
 let costradamus = new Costradamus();
-costradamus.init('persistValue');
+costradamus.init('readNotifications');
 const AWSXRAY = costradamus.getXRay();
 const AWS = costradamus.getAWS();
 const kinesis = new AWS.Kinesis({
@@ -16,6 +16,7 @@ const util = require('util');
 
 // Add cost tracers
 let lambdaTracer = costradamus.getLambdaTracer();
+let kinesisTracer = costradamus.getKinesisTracer();
 
 const getShardIterator = (streamName, from, shardId) => {
   if (shardId === undefined) shardId = 'shardId-000000000000';
@@ -45,12 +46,14 @@ const getRecords = shardIterator => {
       ShardIterator: shardIterator /* required */
     };
     kinesis.getRecords(params, (err, data) => {
+      // TODO
       if (err) reject(err);
       else {
         // console.log('Result from getRecords(): ' +util.inspect(data));
         const notifis = [],
           records = Array.from(data.Records);
-        // console.log('Records: ' +util.inspect(records));
+        //kinesisTracer.addReadSubsegment(AWSXRAY.getSegment(), records);
+        console.log('Records: ' + util.inspect(records));
         for (let r in records) {
           notifis.push(JSON.parse(records[r].Data));
         }
