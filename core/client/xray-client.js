@@ -5,6 +5,7 @@ const XRay = new AWS.XRay({
   region: 'us-east-1'
 });
 const collect = require('./collector/collect.js');
+const fs = require('fs');
 const util = require('util');
 
 function batchGetTracesPromise(params) {
@@ -20,57 +21,28 @@ function batchGetTracesPromise(params) {
   });
 }
 
-async function main() {
+function getXRayTraces(traceId) {
   const params = {
-    TraceIds: [
-      '1-592ec12d-5e40def01a28cfb2caeeb872',
-      '1-592ec154-5c560b311618ea0d962d6210'
-    ]
+    TraceIds: [traceId]
   };
 
-  let data = null;
-  try {
-    data = await batchGetTracesPromise(params);
+  const path = traceId + '.json';
+
+  batchGetTracesPromise(params).then(data => {
+    // Jsonify the X-Ray trace
     let segments = data.Traces[0].Segments;
-    let promises = [];
     segments.forEach(segment => {
       let document = JSON.parse(segment.Document);
-      try {
-        let p = collect(document);
-        promises.push(p);
-      } catch (err) {
-        console.error(err);
-      }
+      segment.Document = document;
     });
+    // Save X-Ray trace in json file for further processing
+    fs.writeFileSync(path, JSON.stringify(data, null, 2));
+  }).catch(err => console.log(err));
 
-    let allAugmentedDocuments = await Promise.all(promises);
-
-    let costTrace = {
-      "traceId": params.TraceIds[0],
-      "origin": "TODO"
-    };
-    //let invocations = cleanArray(allAugmentedDocuments);
-    costTrace.segments = allAugmentedDocuments;
-    return costTrace;
-  } catch (err) {
-    console.log(err, err.stack);
-  }
 }
 
+//getXRayTraces('1-59301069-2ff295fcdc556b9dbee93a9a');
 
-function cleanArray(arr) {
-  for (let i = 0; i < arr.length; i++) {
-    if (!arr[i] || Object.keys(arr[i]).length === 0) {
-      arr.splice(i, 1);
-      i--;
-    }
-  }
-  return arr;
-}
-
-main().then(costTrace => console.log(util.inspect(costTrace, false, null)));
-
-//module.exports = class XRayClient {
-//  constructor() {}
-//
-//}
+module.exports = {
+  "getXRayTraces": getXRayTraces
+};

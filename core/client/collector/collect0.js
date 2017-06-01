@@ -5,57 +5,29 @@ const collectLambdaUsage = require('./collect-lambda-usage.js');
 const collectDynamodbUsage = require('./collect-dynamodb-usage.js');
 const collectKinesisUsage = require('./collect-kinesis-usage.js');
 
-const fs = require('fs');
-
-collect('1-59301069-2ff295fcdc556b9dbee93a9a');
-
-function collect(traceId) {
-  let data = readFromJsonFile(traceId + '.json');
-  //console.log("xrayTraces", data.Traces[0]);
-  traverse(data.Traces[0]).then(res => {
-    // Ignore res, we directly mutated the input data!
-
-    // Save augmented X-Ray trace in json file for further processing
-    let path = traceId + '-augmented.json';
-    fs.writeFileSync(path, JSON.stringify(data, null, 2));
-  }).catch(err => console.error(err));
+function collect(document) {
+  let promise = traverse(document);
+  return promise;
 };
 
-function readFromJsonFile(path) {
-  return JSON.parse(fs.readFileSync(path));
-}
-
-async function traverse(fromNode) {
-  let processedNodes = [];
+async function traverse(document) {
   let promises = [];
-  _traverse(fromNode);
+  _traverse(document);
   let toReturn = await Promise.all(promises);
   //console.log("toReturn", toReturn);
   return toReturn;
 
-  function _traverse(node) {
-    //console.log("node", node);
+  function _traverse(segment) {
     //console.log("augmenting " + segment.id);
-    //if (node && node.name) {
-    console.log("augmenting " + node.id);
-    if (!processedNodes.find(id => node.id === id)) {
-      let p = augment(node);
-      processedNodes.push(node.id);
-      promises.push(p);
-    }
-    //}
+    let p = augment(segment);
+    //promises.push(p);
 
-    if (node.Segments) {
-      node.Segments.forEach(segment => {
-        console.log("node.Segments augmenting " + segment.Document.id);
-        _traverse(segment.Document);
-      });
-    } else if (node.subsegments) {
-      node.subsegments.forEach(subsegment => {
+    if (segment.subsegments) {
+      segment.subsegments.forEach(subsegment => {
         _traverse(subsegment);
       });
     } else {
-      //promises.push(p);
+      promises.push(p);
     }
   }
 }
