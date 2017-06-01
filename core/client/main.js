@@ -7,12 +7,13 @@ const fs = require('fs');
 const readFromJsonFile = require('./io/file-operations.js').readFromJsonFile;
 const util = require('util');
 
-const traceId = '1-5930549c-763e04889a0bb576ba23ae9f';
-const path1 = `./data/${traceId}.json`;
-const path2 = `./data/${traceId}-augmented.json`;
-const path3 = `./data/${traceId}-pruned.json`;
+const TRACE_ID = '1-5930549c-763e04889a0bb576ba23ae9f';
 
-async function main() {
+async function main(_traceId) {
+  let traceId = _traceId || TRACE_ID;
+  const path1 = `./data/${traceId}.json`;
+  const path2 = `./data/${traceId}-augmented.json`;
+  const path3 = `./data/${traceId}-pruned.json`;
   try {
     let traceData = await getXRayTraces(traceId);
     fs.writeFileSync(path1, JSON.stringify(traceData, null, 2));
@@ -32,4 +33,4 @@ async function main() {
 }
 
 // Start
-main().then(res => console.log("Done.")).catch(err => console.error(err));
+//main().then(res => console.log("Done.")).catch(err => console.error(err));
