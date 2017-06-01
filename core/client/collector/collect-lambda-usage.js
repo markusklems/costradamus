@@ -12,18 +12,22 @@ async function collectLambdaUsage(document) {
       const requestId = lambdaMetadata.metadata.LambdaCostradamus.RequestId;
       // add 5 seconds buffer before start and after end time
       // (to make sure that we catch the time window in cloudwatch that contains our request)
-      let startTimeUnix = parseInt(document.start_time.toString().replace(/\./, '')) - 5000;
-      let endTimeUnix = parseInt(document.end_time.toString().replace(/\./, '')) + 5000;
+      let startTimeUnix = (document.start_time * 1000) - 5000;
+      let endTimeUnix = (document.end_time * 1000) + 5000;
+      //let startTimeUnixSec = document.start_time - 60;
+      //let endTimeUnixSec = document.end_time + 60;
       const resourceId = document.aws.function_arn;
       const resourceName = document.name;
       //console.log("resourceName", resourceName)
-      //console.log('startTimeUnix', new Date(startTimeUnix));
-      //console.log('endTimeUnix', new Date(endTimeUnix));
-      //console.log('requestId', requestId);
+      console.log('document.start_time', document.start_time);
+      console.log('document.end_time', document.end_time);
+      console.log('startTimeUnix', new Date(startTimeUnix));
+      console.log('endTimeUnix', new Date(endTimeUnix));
+      console.log('requestId', requestId);
 
       try {
         let res = await parseCloudWatchLogs(resourceName, startTimeUnix, endTimeUnix, requestId);
-        // TODO
+        //console.log("Parsed CloudWatch logs:", res);
         let costResult = cost(res);
         return new Promise((resolve, reject) => {
           resolve({

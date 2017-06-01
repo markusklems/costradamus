@@ -35,8 +35,15 @@ function parseCloudWatchLogs(lambdaFunctionName, startTime, endTime, requestId) 
             return [makeObj(acc), makeObj(curr)];
           }
         });
+        //let duration = Math.ceil(parseInt(reduced[0])).toString();
+        let durationValue = parseInt(reduced[0].val).toString();
+        let durationType = reduced[0].type;
+        let duration = {
+          val: durationValue,
+          type: durationType
+        }
         let toReturn = {
-          "Duration": Math.ceil(reduced[0]),
+          "Duration": duration,
           "BilledDuration": reduced[1],
           "MemorySize": reduced[2],
           "MaxMemoryUsed": reduced[3]
@@ -44,7 +51,7 @@ function parseCloudWatchLogs(lambdaFunctionName, startTime, endTime, requestId) 
         //console.log("CloudWatch output:", toReturn);
         resolve(toReturn);
       } else {
-        console.error(`Couldn\'t find CloudWatch logs for the specified time frame ${startTime} - ${endTime} and pattern ${searchPattern}.`);
+        console.error(`Couldn\'t find CloudWatch logs for the specified time frame ${startTime} - ${endTime} (${new Date(startTime)} - ${new Date(endTime)}) and pattern ${searchPattern}.`);
         resolve({});
       }
     });
