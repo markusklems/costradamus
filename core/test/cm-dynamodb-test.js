@@ -9,7 +9,7 @@ const expect = require('chai').expect;
 
 const model = require('../client/pricing/dynamodb');
 
-describe('AWS DynamoDB Table (QUERY) - ', () => {
+describe('AWS DynamoDB Table (10KB, 3RCU, 800ms) - ', () => {
 
     let input, output;
 
@@ -18,35 +18,49 @@ describe('AWS DynamoDB Table (QUERY) - ', () => {
         output = model( input );
     });
 
-    it('MonetaryCost: 10KB, 3RCU => 0.098USD / 1 mio. req', done => {
+    it('MonetaryCost: 87 NANO-USD', done => {
         expect(output.MonetaryCost.val).to.be.a('number');
-        expect(output.MonetaryCost.val).to.equal(0.098);
+        expect(output.MonetaryCost.val).to.equal(87);
         expect(output.MonetaryCost.type).to.be.a('string');
-        expect(output.MonetaryCost.type).to.equal('USD');
+        expect(output.MonetaryCost.type).to.equal('NANO-USD');
         done();
     });
 
-    it('PayloadWaste: 10KB, 3RCU => 2KB / req.', done => {
-        expect(output.PayloadWaste.val).to.be.a('number');
-        expect(output.PayloadWaste.val).to.equal(2);
-        expect(output.PayloadWaste.type).to.be.a('string');
-        expect(output.PayloadWaste.type).to.equal('KB');
+    it('ProvisioningAmountWaste: 190000 B', done => {
+        expect(output.ProvisioningAmountWaste.val).to.be.a('number');
+        expect(output.ProvisioningAmountWaste.val).to.equal(190000);
+        expect(output.ProvisioningAmountWaste.type).to.be.a('string');
+        expect(output.ProvisioningAmountWaste.type).to.equal('B');
         done();
     });
 
-    /**
-    it('MonetaryPayloadWaste: 6KB, 2RCU => { "val": , "type": "USD" }', done => {
-        expect(output.MonetaryRuntimeWaste.val).to.be.a('number');
-        expect(output.MonetaryRuntimeWaste.val).to.equal(0.000065);
-        expect(output.MonetaryRuntimeWaste.type).to.be.a('string');
-        expect(output.MonetaryRuntimeWaste.type).to.equal('USD');
+    it('ProvisioningTimeWaste: 3599200 MS', done => {
+        expect(output.ProvisioningTimeWaste.val).to.be.a('number');
+        expect(output.ProvisioningTimeWaste.val).to.equal(3599200);
+        expect(output.ProvisioningTimeWaste.type).to.be.a('string');
+        expect(output.ProvisioningTimeWaste.type).to.equal('MS');
         done();
     });
-     */
+
+    it('MeteringAmountWaste: 2000 B', done => {
+        expect(output.MeteringAmountWaste.val).to.be.a('number');
+        expect(output.MeteringAmountWaste.val).to.equal(2000);
+        expect(output.MeteringAmountWaste.type).to.be.a('string');
+        expect(output.MeteringAmountWaste.type).to.equal('B');
+        done();
+    });
+
+    it('MeteringTimeWaste: 200 MS', done => {
+        expect(output.MeteringTimeWaste.val).to.be.a('number');
+        expect(output.MeteringTimeWaste.val).to.equal(200);
+        expect(output.MeteringTimeWaste.type).to.be.a('string');
+        expect(output.MeteringTimeWaste.type).to.equal('MS');
+        done();
+    });
 
 });
 
-describe('AWS DynamoDB Table (PUT) - ', () => {
+describe('AWS DynamoDB Table (2.5KB, 3RCU, 800ms) - ', () => {
 
     let input, output;
 
@@ -55,29 +69,44 @@ describe('AWS DynamoDB Table (PUT) - ', () => {
         output = model( input );
     });
 
-    it('MonetaryCost: 2.5KB, 3RCU => 0.49USD / 1 mio req.', done => {
+    it('MonetaryCost: 433 NANO-USD', done => {
         expect(output.MonetaryCost.val).to.be.a('number');
-        expect(output.MonetaryCost.val).to.equal(0.49);
+        expect(output.MonetaryCost.val).to.equal(433);
         expect(output.MonetaryCost.type).to.be.a('string');
-        expect(output.MonetaryCost.type).to.equal('USD');
+        expect(output.MonetaryCost.type).to.equal('NANO-USD');
         done();
     });
 
-    it('PayloadWaste: 2.5KB, 3RCU => 0.5 KB / req.', done => {
-        expect(output.PayloadWaste.val).to.be.a('number');
-        expect(output.PayloadWaste.val).to.equal(0.5);
-        expect(output.PayloadWaste.type).to.be.a('string');
-        expect(output.PayloadWaste.type).to.equal('KB');
+    it('ProvisioningAmountWaste: 7500 B', done => {
+        expect(output.ProvisioningAmountWaste.val).to.be.a('number');
+        expect(output.ProvisioningAmountWaste.val).to.equal(7500);
+        expect(output.ProvisioningAmountWaste.type).to.be.a('string');
+        expect(output.ProvisioningAmountWaste.type).to.equal('B');
         done();
     });
 
-    /**
-    it('MonetaryPayloadWaste: 1.5KB, 2RCU => { "val": , "type": "USD" }', done => {
-        expect(output.MonetaryRuntimeWaste.val).to.be.a('number');
-        expect(output.MonetaryRuntimeWaste.val).to.equal(0.000325);
-        expect(output.MonetaryRuntimeWaste.type).to.be.a('string');
-        expect(output.MonetaryRuntimeWaste.type).to.equal('USD');
+    it('ProvisioningTimeWaste: 3599200 MS', done => {
+        expect(output.ProvisioningTimeWaste.val).to.be.a('number');
+        expect(output.ProvisioningTimeWaste.val).to.equal(3599200);
+        expect(output.ProvisioningTimeWaste.type).to.be.a('string');
+        expect(output.ProvisioningTimeWaste.type).to.equal('MS');
         done();
     });
-    */
+
+    it('MeteringAmountWaste: 500 B', done => {
+        expect(output.MeteringAmountWaste.val).to.be.a('number');
+        expect(output.MeteringAmountWaste.val).to.equal(500);
+        expect(output.MeteringAmountWaste.type).to.be.a('string');
+        expect(output.MeteringAmountWaste.type).to.equal('B');
+        done();
+    });
+
+    it('MeteringTimeWaste: 200 MS', done => {
+        expect(output.MeteringTimeWaste.val).to.be.a('number');
+        expect(output.MeteringTimeWaste.val).to.equal(200);
+        expect(output.MeteringTimeWaste.type).to.be.a('string');
+        expect(output.MeteringTimeWaste.type).to.equal('MS');
+        done();
+    });
+
 });
