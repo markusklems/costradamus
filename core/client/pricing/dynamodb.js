@@ -8,7 +8,7 @@
 
 
 const _dynamo = {
-    'us-west-1': {
+    'us-east-1': {
         WRITE: {
             price_val:                  6500000,        // 0.0065 USD
             price_unit:                 'NANO-USD',     // 1 NANO-USD = 0.000000001 USD
@@ -23,6 +23,32 @@ const _dynamo = {
         },
         READ: {
             price_val:                  6500000,        // 0.0065 USD
+            price_unit:                 'NANO-USD',     // 1 NANO-USD = 0.000000001 USD
+            provisioning_amount_val:    50,
+            provisioning_amount_unit:   'RCU',          // READ CAPACITY UNITS
+            provisioning_duration_val:  3600000,        // 1 h = 3600000 ms
+            provisioning_duration_unit: 'MS',           // milliseconds (ms)
+            metering_amount_val:        4000,
+            metering_amount_unit:       'B',            // 1000 B = 1 KB
+            metering_duration_val:      1000,           // 1000 ms = 1 s
+            metering_duration_unit:     'MS'            // milliseconds (ms)
+        }
+    },
+    'eu-west-1': {
+        WRITE: {
+            price_val:                  7350000,        // 0.0065 USD
+            price_unit:                 'NANO-USD',     // 1 NANO-USD = 0.000000001 USD
+            provisioning_amount_val:    10,
+            provisioning_amount_unit:   'WCU',          // WRITE CAPACITY UNITS
+            provisioning_duration_val:  3600000,        // 1 h = 3600 s = 3600000 ms
+            provisioning_duration_unit: 'MS',           // milliseconds (ms)
+            metering_amount_val:        1000,
+            metering_amount_unit:       'B',            // 1000 B = 1 KB
+            metering_duration_val:      1000,           // 1000 ms = 1 s
+            metering_duration_unit:     'MS'            // milliseconds (ms)
+        },
+        READ: {
+            price_val:                  7350000,        // 0.0065 USD
             price_unit:                 'NANO-USD',     // 1 NANO-USD = 0.000000001 USD
             provisioning_amount_val:    50,
             provisioning_amount_unit:   'RCU',          // READ CAPACITY UNITS
@@ -77,7 +103,7 @@ module.exports = c => {
 
     let costs = {}, op_type;
 
-    const region = 'us-west-1';
+    const region = 'us-east-1';
 
     if (c.PayloadSize.type !== 'KB') {
         new Error('InvalidParameterError: Payload must be specified in KB.' + c);
