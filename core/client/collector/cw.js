@@ -36,7 +36,7 @@ function parseCloudWatchLogs(lambdaFunctionName, startTime, endTime, requestId) 
           }
         });
         let toReturn = {
-          "Duration": reduced[0],
+          "Duration": Math.ceil(reduced[0]),
           "BilledDuration": reduced[1],
           "MemorySize": reduced[2],
           "MaxMemoryUsed": reduced[3]

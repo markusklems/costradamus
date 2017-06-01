@@ -70,20 +70,16 @@ async function augment(document) {
     let dynamoUsageDocs = finder.dynamoUsageFilter(document);
     if (dynamoUsageDocs && dynamoUsageDocs.length > 0) {
       dynamoUsageDocs.forEach(dynamoDoc => {
+        let latency = Math.ceil((document.end_time - document.start_time) * 1000);
         dynamoDoc.metadata.DynamoDBCostradamus.consumptions.Latency = {
-          "val": (document.end_time - document.start_time),
+          "val": latency,
           "type": "MS"
         };
-        let res = {};
-        try {
-          res = collectDynamodbUsage(dynamoDoc);
-          let metadata = res.metadata.DynamoDBCostradamus;
-          //dynamoDoc.resourceName = metadata.resourceName;
-          document.consumptions = metadata.consumptions;
-          document.cost = res.cost;
-        } catch (err) {
-          console.error(err);
-        }
+        let res = collectDynamodbUsage(dynamoDoc);
+        let metadata = res.metadata.DynamoDBCostradamus;
+        //dynamoDoc.resourceName = metadata.resourceName;
+        document.consumptions = metadata.consumptions;
+        document.cost = res.cost;
       });
     }
 
@@ -92,19 +88,15 @@ async function augment(document) {
     if (kinesisUsageDocs && kinesisUsageDocs.length > 0) {
       kinesisUsageDocs.forEach(kinesisDoc => {
         //console.log("Found kinesis document", kinesisDoc.id);
+        let latency = Math.ceil((document.end_time - document.start_time) * 1000);
         kinesisDoc.metadata.KinesisCostradamus.consumptions.Latency = {
-          "val": (document.end_time - document.start_time),
+          "val": latency,
           "type": "MS"
         };
-        let res = {};
-        try {
-          res = collectKinesisUsage(kinesisDoc);
-          let metadata = res.metadata.KinesisCostradamus;
-          document.consumptions = metadata.consumptions;
-          document.cost = res.cost;
-        } catch (err) {
-          console.error(err);
-        }
+        let res = collectKinesisUsage(kinesisDoc);
+        let metadata = res.metadata.KinesisCostradamus;
+        document.consumptions = metadata.consumptions;
+        document.cost = res.cost;
       });
     }
   }

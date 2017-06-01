@@ -8,9 +8,9 @@ const readFromJsonFile = require('./io/file-operations.js').readFromJsonFile;
 const util = require('util');
 
 const traceId = '1-59301069-2ff295fcdc556b9dbee93a9a';
-const path1 = traceId + '.json';
-const path2 = traceId + '-augmented.json';
-const path3 = traceId + '-pruned.json';
+const path1 = `./data/${traceId}.json`;
+const path2 = `./data/${traceId}-augmented.json`;
+const path3 = `./data/${traceId}-pruned.json`;
 
 async function main() {
   try {

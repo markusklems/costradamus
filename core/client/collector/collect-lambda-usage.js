@@ -27,8 +27,6 @@ async function collectLambdaUsage(document) {
         let costResult = cost(res);
         return new Promise((resolve, reject) => {
           resolve({
-            "resourceName": resourceName,
-            "resourceId": resourceId,
             "consumptions": res,
             "cost": costResult
           });
