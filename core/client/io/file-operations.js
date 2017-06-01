@@ -1,14 +1,10 @@
 'use strict';
 
-const getXRayTraces = require('./../xray-client.js').getXRayTraces;
 const fs = require('fs');
 const util = require('util');
 
 function writeToJsonFile(traceId, path) {
-  getXRayTraces([traceId]).then(xrayTrace => {
-    fs.writeFileSync(path, JSON.stringify(xrayTrace, null, 2));
-    //console.log(util.inspect(xrayTrace, false, null));
-  }).catch(err => console.error(err));
+
 }
 
 function readFromJsonFile(path) {
