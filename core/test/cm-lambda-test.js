@@ -9,7 +9,7 @@ const expect = require('chai').expect;
 
 const LambdaModel = require('../client/pricing/lambda');
 
-describe('AWS Lambda Function.', function() {
+describe('AWS Lambda Function (lambda-weird.json).', function() {
 
   let input, output;
 
@@ -18,33 +18,33 @@ describe('AWS Lambda Function.', function() {
     output = LambdaModel(input);
   });
 
-  it('MonetaryCost: 300 MS * 0.000000208 USD / 100 MS => 0.624 USD / 1 mio. req.', done => {
+  it('MonetaryCost: BilledDuration = 300 ms, MemorySize = 1024 MB => 5001 NANO-USD.', done => {
     expect(output.MonetaryCost.val).to.be.a('number');
-    expect(output.MonetaryCost.val).to.equal(0.624);
+    expect(output.MonetaryCost.val).to.equal(5001);
     expect(output.MonetaryCost.type).to.be.a('string');
-    expect(output.MonetaryCost.type).to.equal('USD');
+    expect(output.MonetaryCost.type).to.equal('NANO-USD');
     done();
   });
 
-  it('RuntimeWaste: 300 MS - 250.00 MS => 50 MS / req.', done => {
+  it('RuntimeWaste: BilledDuration = 300 ms, Duration = 281.48 ms => 1852 us.', done => {
     expect(output.RuntimeWaste.val).to.be.a('number');
-    expect(output.RuntimeWaste.val).to.equal(50);
+    expect(output.RuntimeWaste.val).to.equal(18520);
     expect(output.RuntimeWaste.type).to.be.a('string');
-    expect(output.RuntimeWaste.type).to.equal('MS');
+    expect(output.RuntimeWaste.type).to.equal('US');
     done();
   });
 
-  it('MonetaryRuntimeWaste: 50 MS * 0.000000208 USD / 100 MS => 0.104 MS / req.', done => {
+  it('MonetaryRuntimeWaste: RuntimeWaste = 1852 us, MemorySize = 1024 MB => 309 NANO-USD.', done => {
     expect(output.MonetaryRuntimeWaste.val).to.be.a('number');
-    expect(output.MonetaryRuntimeWaste.val).to.equal(0.104);
+    expect(output.MonetaryRuntimeWaste.val).to.equal(309);
     expect(output.MonetaryRuntimeWaste.type).to.be.a('string');
-    expect(output.MonetaryRuntimeWaste.type).to.equal('MS');
+    expect(output.MonetaryRuntimeWaste.type).to.equal('NANO-USD');
     done();
   });
 
-  it('MemoryWaste: 128 MB - 48 MB => 80 MB / req.', done => {
+  it('MemoryWaste: MemorySize = 1024 MB, MaxMemoryUsed = 43 MB => 981 MB.', done => {
     expect(output.MemoryWaste.val).to.be.a('number');
-    expect(output.MemoryWaste.val).to.equal(80);
+    expect(output.MemoryWaste.val).to.equal(981);
     expect(output.MemoryWaste.type).to.be.a('string');
     expect(output.MemoryWaste.type).to.equal('MB');
     done();

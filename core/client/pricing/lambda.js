@@ -4,52 +4,43 @@
 
 "use strict";
 
-// Price per 1ms in USD per 1mio invocation, SOURCE: (https://aws.amazon.com/lambda/pricing, accessed: 2017/05/29)
+// Price per 100ms in nano USD, SOURCE: (https://aws.amazon.com/lambda/pricing, accessed: 2017/05/29)
 const _prices = {
     'us-west-1': {
-        128: 0.00208,
-        192: 0.313,
-        256: 0.417,
-        320: 0.521,
-        384: 0.625,
-        448: 0.729,
-        512: 0.834,
-        576: 0.938,
-        640: 1.042,
-        704: 1.146,
-        768: 1.250,
-        832: 1.354,
-        896: 1.459,
-        960: 1.563,
-        1024: 1.667,
-        1088: 1.771,
-        1152: 1.875,
-        1216: 1.980,
-        1280: 2.084,
-        1344: 2.188,
-        1408: 2.292,
-        1472: 2.396,
-        1536: 2.501
+        128: 208,
+        192: 313,
+        256: 417,
+        320: 521,
+        384: 625,
+        448: 729,
+        512: 834,
+        576: 938,
+        640: 1042,
+        704: 1146,
+        768: 1250,
+        832: 1354,
+        896: 1459,
+        960: 1563,
+        1024: 1667,
+        1088: 1771,
+        1152: 1875,
+        1216: 1980,
+        1280: 2084,
+        1344: 2188,
+        1408: 2292,
+        1472: 2396,
+        1536: 2501
     }
 };
 
-/**
- *
- * @param region    Calculate prices based on this AWS region.
- * @param memory    Amount of provisioned memory for this AWS Lambda function.
- * @returns {*}
- * @private
- */
-const _price = (region, memory) => {
-    return _prices[region][memory];
-};
+const _meteredDurationInMs = 100;
 
 /**
  * Derives cost and waste metrics from consumption inputs. Metrics:
- *      - Monetary Cost:            Infrastructure cost for the invocation in USD.
- *      - Runtime Waste:            Billed and unused runtime of the invocation in milliseconds.
- *      - Monetary Runtime Waste:   Infrastructure cost of the Runtime Waste for the invocation in USD.
- *      - Memory Waste:             Amount of provisioned memory that has never been used by this invocation in MB.
+ *      - Monetary Cost:            Infrastructure cost for the invocation in NANO-USD.
+ *      - Runtime Waste:            Billed and unused runtime of the invocation in microseconds.
+ *      - Monetary Runtime Waste:   Infrastructure cost of the Runtime Waste for the invocation in NANO-USD.
+ *      - Memory Waste:             Lower bound for the amount of memory that has never been used by this invocation in MB.
  *                                  This metric can be tricky for AWS Lambda because configured memory does
  *                                  proportionally increase other selected compute resources, e.g., cpu.
  *
@@ -85,20 +76,25 @@ module.exports = c => {
 
     // monetary execution cost
     costs.MonetaryCost = {};
-    costs.MonetaryCost.type = 'USD';
-    costs.MonetaryCost.val = c.BilledDuration.val * _price(region, c.MemorySize.val);
+    costs.MonetaryCost.type = 'NANO-USD';
+    costs.MonetaryCost.val = c.BilledDuration.val / _meteredDurationInMs * _prices[region][c.MemorySize.val];
     // console.log('MonetaryCost: ' +costs.MonetaryCost.val);
 
     // Runtime waste
     costs.RuntimeWaste = {};
-    costs.RuntimeWaste.type = 'MS';
-    costs.RuntimeWaste.val = c.BilledDuration.val - c.Duration.val;
+    costs.RuntimeWaste.type = 'US';
+    console.log('BilledDuration: ' +c.BilledDuration.val+ ' [' +typeof c.BilledDuration.val+'], Duration: ' +c.Duration.val+ ' [' +typeof c.Duration.val+']');
+    const durationInUs = c.Duration.val * 1000;
+    const roundedDurationInUs = parseInt(durationInUs.toFixed(0));
+    costs.RuntimeWaste.val = ((c.BilledDuration.val * 1000) - roundedDurationInUs);
     // console.log('RuntimeWaste: ' +costs.RuntimeWaste.val);
 
     // monetary runtime waste
     costs.MonetaryRuntimeWaste = {};
-    costs.MonetaryRuntimeWaste.type = 'MS';
-    costs.MonetaryRuntimeWaste.val = costs.RuntimeWaste.val * _price(region, c.MemorySize.val);
+    costs.MonetaryRuntimeWaste.type = 'NANO-USD';
+    const monetaryRuntimeWaste = costs.RuntimeWaste.val / _meteredDurationInMs / 1000 * _prices[region][c.MemorySize.val];
+    const roundedMonetaryRuntimeWaste = parseInt(monetaryRuntimeWaste.toFixed(0));
+    costs.MonetaryRuntimeWaste.val = roundedMonetaryRuntimeWaste;
     // console.log('MonetaryRuntimeWaste: ' +costs.MonetaryRuntimeWaste.val);
 
     // memory waste
