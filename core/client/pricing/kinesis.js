@@ -223,13 +223,26 @@ const _price = (region, type) => {
  *                              Example: { val: 'READ', type: 'KINESISOPERATION' }
  * @param c.Latency             Request-Response latency of the operation.
  *                              Example: { val: 800, type: 'MS' }
+ * @param c.Datacenter          AWS region
+ *                              Example: { val: 'eu-west-1', type: 'AWSREGION' }
+ * @param c.Retention           Retentionpolicy of Kinesis stream.
+ *                              Example: { val: 'EXTENDED', type: 'RETENTIONPOLICY' }
  */
 module.exports = c => {
 
-    let costs = {};
+    let costs = {}, region, retention;
+    
+    if(c.Datacenter === undefined) {
+        region = 'us-east-1';
+    } else {
+        region = c.Datacenter.val
+    }
 
-    const region = 'us-east-1';
-    const retention = 'BASE';
+    if(c.Retention === undefined) {
+        retention = 'BASE';
+    } else {
+        retention = c.Retention.val
+    }
 
     if ( c.PayloadSize.type !== 'KB') {
         new Error('InvalidParameterError: Payload must be specified in KB.' + c);

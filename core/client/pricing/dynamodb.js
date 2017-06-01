@@ -98,12 +98,18 @@ const _dynamo = {
  *                              Example: { val: 2, type: 'WCU' }
  * @param c.Latency             Request-Response latency of the operation.
  *                              Example: { val: 800, type: 'MS' }
+ * @param c.Datacenter          AWS region
+ *                              Example: { val: 'eu-west-1', type: 'AWSREGION' }
  */
 module.exports = c => {
 
-    let costs = {}, op_type;
+    let costs = {}, op_type, region;
 
-    const region = 'us-east-1';
+    if(c.Datacenter === undefined) {
+        region = 'us-east-1';
+    } else {
+        region = c.Datacenter.val
+    }
 
     if (c.PayloadSize.type !== 'KB') {
         new Error('InvalidParameterError: Payload must be specified in KB.' + c);
