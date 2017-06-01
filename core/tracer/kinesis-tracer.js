@@ -44,11 +44,10 @@ module.exports = class KinesisTracer {
       "type": "B"
     }
     let kinesisOp = {
-      "Operation": {
-        "val": operation,
-        "type": "KINESISOPERATION"
-      }
+      "val": operation,
+      "type": "KINESISOPERATION"
     }
+
     consumptions.PayloadSize = payloadSize;
     consumptions.Operation = kinesisOp;
     subsegment.addMetadata("consumptions", consumptions, "KinesisCostradamus");

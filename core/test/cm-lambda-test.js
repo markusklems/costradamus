@@ -15,7 +15,7 @@ describe('AWS Lambda Function (Duration = 281 ms, MaxMemoryUsed = 43 MB, BilledD
   let input, output;
 
   before(() => {
-    input = require('./in/lambda-weird.json');
+    input = require('./in/lambda.json');
     output = LambdaModel(input);
   });
 
