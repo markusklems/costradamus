@@ -7,7 +7,7 @@
 // Price for 1 mio write capacity units per hour in USD, SOURCE: (https://aws.amazon.com/dynamodb/pricing/, accessed: 2017/05/29)
 
 
-const _api_Prices = {
+const _dynamo = {
     'us-west-1': {
         WRITE: {
             price_val:                  6500000,        // 0.0065 USD
@@ -60,36 +60,6 @@ const _api_Prices = {
             metering_duration_unit:     'MS'            // milliseconds (ms)
         }
     }
-};
-
-const metering = {
-    capacity: {
-        val: 25,
-        unit: 'KB'
-    },
-    duration: {
-        val: 1000,
-        unit: 'MS'
-    }
-};
-
-const _prices = {
-    'us-west-1': {
-        WCU: 650,
-        RCU: 130
-    },
-    'eu-west-1': {
-        WCU: 735,
-        RCU: 147
-    },
-    'eu-central-1': {
-        WCU: 735,
-        RCU: 147
-    }
-};
-
-const _price = (region, type) => {
-    return _prices[region][type];
 };
 
 /**
@@ -139,7 +109,7 @@ module.exports = c => {
     // monetary cost of invocation
     costs.MonetaryCost = {};
     costs.MonetaryCost.type = 'NANO-USD';
-    const monetaryCost = c.CapacityUnits.val / _api_Prices[region][op_type]['provisioning_amount_val'] * c.Latency.val / _api_Prices[region][op_type]['provisioning_duration_val'] * _api_Prices[region][op_type]['price_val'];
+    const monetaryCost = c.CapacityUnits.val / _dynamo[region][op_type]['provisioning_amount_val'] * c.Latency.val / _dynamo[region][op_type]['provisioning_duration_val'] * _dynamo[region][op_type]['price_val'];
     const roundedMonetaryCost = parseInt(monetaryCost.toFixed(0));
     costs.MonetaryCost.val = roundedMonetaryCost;
     // console.log('MonetaryCost: ' +roundedMonetaryCost+ ' [' +costs.MonetaryCost.type+ ']');
@@ -149,28 +119,28 @@ module.exports = c => {
     costs.ProvisioningAmountWaste.type = 'B';
 
     //console.log('provisioning_amount_val: ' +provisioning_amount_val+ ', metering_amount_val: ' +metering_amount_val+ ', ');
-    const provisioningAmountWaste = (_api_Prices[region][op_type]['provisioning_amount_val'] * _api_Prices[region][op_type]['metering_amount_val']) - (c.PayloadSize.val * 1000);
+    const provisioningAmountWaste = (_dynamo[region][op_type]['provisioning_amount_val'] * _dynamo[region][op_type]['metering_amount_val']) - (c.PayloadSize.val * 1000);
     costs.ProvisioningAmountWaste.val = provisioningAmountWaste;
     // console.log('ProvisioningAmountWaste: ' +provisioningAmountWaste+ ' [' +costs.ProvisioningAmountWaste.type+ ']');
 
     // provisioning time waste
     costs.ProvisioningTimeWaste = {};
     costs.ProvisioningTimeWaste.type = 'MS';
-    const provisioningTimeWaste = _api_Prices[region][op_type]['provisioning_duration_val'] - c.Latency.val;
+    const provisioningTimeWaste = _dynamo[region][op_type]['provisioning_duration_val'] - c.Latency.val;
     costs.ProvisioningTimeWaste.val = provisioningTimeWaste;
     // console.log('ProvisioningTimeWaste: ' +provisioningTimeWaste+ ' [' +costs.ProvisioningTimeWaste.type+ ']');
 
     // metering amount waste
     costs.MeteringAmountWaste = {};
     costs.MeteringAmountWaste.type = 'B';
-    const meteringAmountWaste = _api_Prices[region][op_type]['metering_amount_val'] - ((c.PayloadSize.val * 1000) % _api_Prices[region][op_type]['metering_amount_val']);
+    const meteringAmountWaste = _dynamo[region][op_type]['metering_amount_val'] - ((c.PayloadSize.val * 1000) % _dynamo[region][op_type]['metering_amount_val']);
     costs.MeteringAmountWaste.val = meteringAmountWaste;
     // console.log('MeteringAmountWaste: ' +meteringAmountWaste+ ' [' +costs.MeteringAmountWaste.type+ ']');
 
     // metering time waste
     costs.MeteringTimeWaste = {};
     costs.MeteringTimeWaste.type = 'MS';
-    const meteringTimeWaste = _api_Prices[region][op_type]['metering_duration_val'] - ((c.Latency.val) % _api_Prices[region][op_type]['metering_duration_val']);
+    const meteringTimeWaste = _dynamo[region][op_type]['metering_duration_val'] - ((c.Latency.val) % _dynamo[region][op_type]['metering_duration_val']);
     costs.MeteringTimeWaste.val = meteringTimeWaste;
     // console.log('MeteringTimeWaste: ' +meteringTimeWaste+ ' [' +costs.MeteringTimeWaste.type+ ']');
 
