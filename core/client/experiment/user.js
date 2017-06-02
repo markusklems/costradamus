@@ -19,11 +19,11 @@ program
   .option('-o, --output-file [value]', 'Traces output file')
   .parse(process.argv);
 
-console.log(program['functionName']);
-
 let functionName = program['functionName'] || 'persistValueFunction';
 let number = program['number'] || 1;
 let outputFile = program['outputFile'] || 'user_traces.txt';
+
+console.log(`Invoking ${functionName}`);
 
 class ResponseQueue extends EventEmitter {
   constructor(number, outputFile) {
@@ -47,7 +47,7 @@ let responsesQ = new ResponseQueue(number, outputFile);
 responsesQ.on('trace', msg => {
   responsesQ.write(msg);
 });
-console.log("number", number);
+
 for (let i = 1; i <= number; i++) {
   console.log(`Sending request #${i}.`);
   invokeFunction(functionName);
@@ -65,7 +65,7 @@ function invokeFunction(functionName) {
       console.log(err, err.stack, err.message);
       console.error(err);
     } else {
-      //console.log(data);
+      console.log(data);
     }
   });
 
@@ -75,7 +75,9 @@ function invokeFunction(functionName) {
     let regex = /root=(.*);/;
     let traceId = regex.exec(res.httpResponse.headers['x-amzn-trace-id'])[1];
     console.log(`Received response with trace id ${traceId}.`);
-    console.log(res.data);
     responsesQ.emit('trace', `${method} ${path} ${traceId}\n`);
+
+    //const util = require('util');
+    //console.log(util.inspect(res, false, null));
   });
 }
