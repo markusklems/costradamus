@@ -58,7 +58,7 @@ for (let i = 1; i <= number; i++) {
   console.log(`Sending request #${i}.`);
   let event = JSON.parse(fs.readFileSync(path.join(__dirname, 'workloads', `${functionName}Event.json`)));
   // We write as many values as there are iterations, by increasing the timestamp + 1 for each iteration.
-  if (functionName === 'persistValueFunction') {
+  if (functionName === 'persistValueFunction' || functionName === 'ingestValueFunction') {
     event.timestamp = event.timestamp + i;
   }
   invokeFunction(functionName, event);
@@ -76,7 +76,7 @@ function invokeFunction(functionName, event) {
       console.log(err, err.stack, err.message);
       console.error(err);
     } else {
-      //console.log(data);
+      console.log(data);
     }
   });
 

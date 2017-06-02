@@ -31,7 +31,7 @@ module.exports.handler = (event, context, callback) => {
       '#t': 'timestamp'
     },
     KeyConditionExpression: "id = :id AND #t BETWEEN :start AND :end",
-    Limit: 100
+    Limit: 1000
   };
 
   dynamoTracer.prepareParams(params);
