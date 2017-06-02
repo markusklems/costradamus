@@ -7,7 +7,7 @@
 // Price per 100ms in nano USD, SOURCE: (https://aws.amazon.com/lambda/pricing, accessed: 2017/05/29)
 
 const _lambda = {
-  'us-east-1': {
+  'all-regions': {
     128: {
       price_val: 208,
       price_unit: 'NANO-USD', // 1 NANO-USD = 0.000000001 USD
@@ -338,7 +338,7 @@ module.exports = c => {
   let costs = {},
     mem;
 
-  const region = require('../config.js').region;
+  const region = 'all-regions'; //require('../config.js').region;
 
   if (isNaN(c.Duration.val) || isNaN(c.BilledDuration.val) || isNaN(c.MemorySize.val) || isNaN(c.MaxMemoryUsed.val)) {
     new Error('InvalidParameterError: ' + c);
