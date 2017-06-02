@@ -26,7 +26,8 @@ lineReader.on('line', (line) => {
   console.log('Line from file:', line);
   const columns = line.split(' ');
   const trace_id = columns[2];
-  main(trace_id).then(res => console.log(`${trace_id} done.`)).catch(err => console.error(err));
+  console.log('Trace_id: ' +trace_id);
+  main(trace_id).then(res => console.log(`${trace_id} done.`)).catch(err => console.error('Trace-Id: ' +trace_id+ ', Error: ' +err));
 });
 
 /*
