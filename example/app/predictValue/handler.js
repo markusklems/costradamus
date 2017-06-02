@@ -68,7 +68,7 @@ const sendToDynamodb = event => {
     dynamo.put(params, (err, data) => {
       if (err) reject(err);
       else {
-        dynamoTracer.addWriteSubsegment(AWSXRAY.getSegment(), data);
+        dynamoTracer.addWriteSubsegment(AWSXRAY.getSegment(), data, params);
         resolve(data)
       };
     });

@@ -28,13 +28,13 @@ module.exports = class DynamoTracer {
     subsegment.close();
   }
 
-  addWriteSubsegment(parent, dynamoResponseData) {
+  addWriteSubsegment(parent, dynamoResponseData, dynamoRequestParams) {
     // Data is base64-encoded when the Data blob is serialized
     // Calculate payload size in Bytes.
-    let payloadSizeInByte = 0; //Math.ceil(AWS.util.base64.encode(this.params.Item).length * 8 / 6);
+    let payloadSizeInByte = Math.ceil(AWS.util.base64.encode(JSON.stringify(dynamoRequestParams.Item)).length * 8 / 6);
     // Assumption of average utf8-base64 encoded record metadata size: 0 Bytes
     // (assumption made for faster computation and less performance overhead of tracing)
-    const = metadataOverheadInBytes = 0;
+    const metadataOverheadInBytes = 0;
     payloadSizeInByte += metadataOverheadInBytes;
     this._addSubsegment(parent, dynamoResponseData, 'WCU', payloadSizeInByte);
   }
@@ -42,10 +42,10 @@ module.exports = class DynamoTracer {
   addReadSubsegment(parent, dynamoResponseData) {
     // Data is base64-encoded when the Data blob is serialized
     // Calculate payload size in Bytes.
-    let payloadSizeInByte = 0; //Math.ceil(AWS.util.base64.encode(dynamoResponseData).length * 8 / 6);
+    let payloadSizeInByte = Math.ceil(AWS.util.base64.encode(JSON.stringify(dynamoResponseData)).length * 8 / 6);
     // Assumption of average utf8-base64 encoded record metadata size: 0 Bytes
     // (assumption made for faster computation and less performance overhead of tracing)
-    const = metadataOverheadInBytes = 0;
+    const metadataOverheadInBytes = 0;
     payloadSizeInByte += metadataOverheadInBytes;
     this._addSubsegment(parent, dynamoResponseData, 'RCU', payloadSizeInByte);
   }
