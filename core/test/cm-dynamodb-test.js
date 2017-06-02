@@ -60,7 +60,7 @@ describe('AWS DynamoDB Table (10KB, 3RCU, 800ms) - ', () => {
 
 });
 
-describe('AWS DynamoDB Table (2.5KB, 3RCU, 800ms) - ', () => {
+describe('AWS DynamoDB Table (2.5KB, 3WCU, 800ms) - ', () => {
 
     let input, output;
 

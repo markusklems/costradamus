@@ -93,7 +93,7 @@ const _dynamo = {
  *
  * @param c                     Consumption object.
  * @param c.PayloadSize         Size of the item that is written to or queried from a DynamoDB table.
- *                              Example: { val: 1.5, type: 'KB' }
+ *                              Example: { val: 1500, type: 'B' }
  * @param c.CapacityUnits       Number of capacity units that are consumed by the operation.
  *                              Example: { val: 2, type: 'WCU' }
  * @param c.Latency             Request-Response latency of the operation.
@@ -151,7 +151,7 @@ module.exports = c => {
     costs.ProvisioningAmountWaste.type = 'B';
 
     //console.log('provisioning_amount_val: ' +provisioning_amount_val+ ', metering_amount_val: ' +metering_amount_val+ ', ');
-    const provisioningAmountWaste = (_dynamo[region][op_type]['provisioning_amount_val'] * _dynamo[region][op_type]['metering_amount_val']) - (c.PayloadSize.val * 1000);
+    const provisioningAmountWaste = (_dynamo[region][op_type]['provisioning_amount_val'] * _dynamo[region][op_type]['metering_amount_val']) - (c.PayloadSize.val);
     costs.ProvisioningAmountWaste.val = provisioningAmountWaste;
     // console.log('ProvisioningAmountWaste: ' +provisioningAmountWaste+ ' [' +costs.ProvisioningAmountWaste.type+ ']');
 
@@ -165,7 +165,7 @@ module.exports = c => {
     // metering amount waste
     costs.MeteringAmountWaste = {};
     costs.MeteringAmountWaste.type = 'B';
-    const meteringAmountWaste = _dynamo[region][op_type]['metering_amount_val'] - ((c.PayloadSize.val * 1000) % _dynamo[region][op_type]['metering_amount_val']);
+    const meteringAmountWaste = _dynamo[region][op_type]['metering_amount_val'] - ((c.PayloadSize.val) % _dynamo[region][op_type]['metering_amount_val']);
     costs.MeteringAmountWaste.val = meteringAmountWaste;
     // console.log('MeteringAmountWaste: ' +meteringAmountWaste+ ' [' +costs.MeteringAmountWaste.type+ ']');
 
