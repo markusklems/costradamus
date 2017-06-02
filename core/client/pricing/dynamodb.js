@@ -141,7 +141,8 @@ module.exports = c => {
     // monetary cost of invocation
     costs.MonetaryCost = {};
     costs.MonetaryCost.type = 'NANO-USD';
-    const monetaryCost = c.CapacityUnits.val / _dynamo[region][op_type]['provisioning_amount_val'] * c.Latency.val / _dynamo[region][op_type]['provisioning_duration_val'] * _dynamo[region][op_type]['price_val'];
+    const meteredLatency = Math.ceil(c.Latency.val / _dynamo[region][op_type]['metering_duration_val']) * _dynamo[region][op_type]['metering_duration_val'];
+    const monetaryCost = c.CapacityUnits.val / _dynamo[region][op_type]['provisioning_amount_val'] * meteredLatency / _dynamo[region][op_type]['provisioning_duration_val'] * _dynamo[region][op_type]['price_val'];
     const roundedMonetaryCost = parseInt(monetaryCost.toFixed(0));
     costs.MonetaryCost.val = roundedMonetaryCost;
     // console.log('MonetaryCost: ' +roundedMonetaryCost+ ' [' +costs.MonetaryCost.type+ ']');
