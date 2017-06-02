@@ -68,8 +68,8 @@ const getRecords = shardIterator => {
 };
 
 module.exports.handler = (event, context, callback) => {
-  console.log("context", context);
-  //lambdaTracer.addSubsegment(AWSXRAY.getSegment(), context.awsRequestId);
+  //console.log("context", context);
+  lambdaTracer.addSubsegment(AWSXRAY.getSegment(), context.awsRequestId);
   getShardIterator('NotificationsStream', event.start)
     .then(shardIterator => {
       return getRecords(shardIterator);
