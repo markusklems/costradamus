@@ -33,7 +33,7 @@ const sendToDynamodb = event => {
         console.log(err, err.stack, err.message);
         reject(err);
       } else {
-        console.log(data);
+        //console.log(data);
         resolve(data);
       }
     });
@@ -52,7 +52,7 @@ const sendToSqs = event => {
         console.log(err, err.stack);
         reject(err);
       } else {
-        console.log(data);
+        //console.log(data);
         resolve(data);
       }
     });
@@ -72,7 +72,7 @@ const sendToLambda = event => {
         console.log(err, err.stack, err.message);
         reject(err);
       } else {
-        console.log(data);
+        //console.log(data);
         resolve(data);
       }
     });

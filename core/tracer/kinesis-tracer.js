@@ -11,7 +11,7 @@ module.exports = class KinesisTracer {
     const recordMetadataOverheadInBytes = 0;
     //console.log("records", records);
     records.forEach(r => {
-      console.log("r", r);
+      //console.log("r", r);
       let data = r.Data; // decoded buffer object
       let base64Data = data.toString('base64'); // base64 encoded
       payloadSizeInByte += base64Data.length;
@@ -24,7 +24,7 @@ module.exports = class KinesisTracer {
   }
 
   addWriteSubsegment(parent, params) {
-    console.log("addWriteSubsegment params", params);
+    //console.log("addWriteSubsegment params", params);
     // Data is base64-encoded when the Data blob is serialized
     // Calculate payload size in Bytes.
     let payloadSizeInByte = Math.ceil(AWS.util.base64.encode(params.Data).length * 8 / 6);

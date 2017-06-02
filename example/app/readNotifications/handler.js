@@ -59,7 +59,7 @@ const getRecords = shardIterator => {
         for (let r in records) {
           notifis.push(JSON.parse(records[r].Data));
         }
-        console.log('Notfications: ' + util.inspect(notifis));
+        //console.log('Notfications: ' + util.inspect(notifis));
         resolve(notifis);
       }
     });

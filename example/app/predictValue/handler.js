@@ -115,7 +115,7 @@ module.exports.handler = (event, context, callback) => {
         .then(responses => {
           responses = Array.from(responses);
           for (let r in responses) {
-            console.log('Response: ' + util.inspect(responses[r]));
+            //console.log('Response: ' + util.inspect(responses[r]));
           }
           callback(null, "Success!");
         })
