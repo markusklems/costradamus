@@ -1,4 +1,5 @@
 const cwlogs = require('cwlogs');
+const config = require('../config.js');
 
 function parseCloudWatchLogs(lambdaFunctionName, startTime, endTime, requestId) {
   return new Promise((resolve, reject) => {
@@ -6,7 +7,7 @@ function parseCloudWatchLogs(lambdaFunctionName, startTime, endTime, requestId) 
     const searchPattern = `REPORT RequestId: ${requestId}`;
     let r = cwlogs.readable({
       group: '/aws/lambda/' + lambdaFunctionName,
-      region: 'us-east-1',
+      region: config.region,
       messages: true,
       start: startTime,
       end: endTime,
