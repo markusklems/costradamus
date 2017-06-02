@@ -40,7 +40,7 @@ module.exports.handler = (event, context, callback) => {
   dynamo.query(params, (err, data) => {
     if (err) callback(err);
     else {
-      dynamoTracer.addSubsegment(AWSXRAY.getSegment(), data, 'RCU');
+      dynamoTracer.addReadSubsegment(AWSXRAY.getSegment(), data);
       callback(null, data.Items);
     }
   });
