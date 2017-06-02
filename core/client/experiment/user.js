@@ -65,7 +65,7 @@ function invokeFunction(functionName) {
       console.log(err, err.stack, err.message);
       console.error(err);
     } else {
-      console.log(data);
+      //console.log(data);
     }
   });
 
@@ -75,6 +75,7 @@ function invokeFunction(functionName) {
     let regex = /root=(.*);/;
     let traceId = regex.exec(res.httpResponse.headers['x-amzn-trace-id'])[1];
     console.log(`Received response with trace id ${traceId}.`);
+    console.log(res.data);
     responsesQ.emit('trace', `${method} ${path} ${traceId}\n`);
   });
 }

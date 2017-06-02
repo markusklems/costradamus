@@ -18,7 +18,6 @@ let lambdaTracer = costradamus.getLambdaTracer();
 
 module.exports.handler = (event, context, callback) => {
   lambdaTracer.addSubsegment(AWSXRAY.getSegment(), context.awsRequestId);
-  // TODO Check params
 
   const params = {
     TableName: 'PredictionsTable',
@@ -40,7 +39,7 @@ module.exports.handler = (event, context, callback) => {
   dynamo.query(params, (err, data) => {
     if (err) callback(err);
     else {
-      dynamoTracer.addSubsegment(AWSXRAY.getSegment(), data, 'RCU');
+      dynamoTracer.addReadSubsegment(AWSXRAY.getSegment(), data);
       callback(null, data.Items);
     }
   });
