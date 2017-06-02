@@ -1,0 +1,168 @@
+# Welcome to Serverless!
+#
+# This file is the main config file for your service.
+# It's very minimal at this point and uses default values.
+# You can always add more config options for more control.
+# We've included some commented out config examples here.
+# Just uncomment any of them to get that config option.
+#
+# For full config options, check the docs:
+#    docs.serverless.com
+#
+# Happy Coding!
+
+service: smartgridmonitor
+
+# You can pin your service to only deploy with a specific Serverless version
+# Check out our docs for more details
+# frameworkVersion: "=X.X.X"
+
+provider:
+  name: aws
+  runtime: nodejs4.3
+#  stage: dev
+  region: eu-west-1
+# TODO Set region via reference.
+# TODO Set IAM role statements for specific resources and not globally.
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - dynamodb:PutItem
+        - dynamodb:Query
+      Resource: "arn:aws:dynamodb:eu-west-1:*:*"
+    - Effect: "Allow"
+      Action:
+        - lambda:InvokeFunction
+      Resource: "arn:aws:lambda:eu-west-1:*:function:*"
+    - Effect: "Allow"
+      Action:
+        - kinesis:DescribeStream
+        - kinesis:GetShardIterator
+        - kinesis:GetRecords
+        - kinesis:PutRecord
+      Resource: "arn:aws:kinesis:eu-west-1:*:stream/*"
+    - Effect: "Allow"
+      Action:
+        - sqs:SendMessage
+        - sqs:ReceiveMessage
+      Resource: "arn:aws:sqs:eu-west-1:*:*"
+    - Effect: "Allow"
+      Action:
+        - logs:CreateLogGroup
+        - logs:CreateLogStream
+        - logs:PutLogEvents
+      Resource: "arn:aws:logs:eu-west-1:*:*"
+
+# you can define service wide environment variables here
+#  environment:
+#    variable1: value1
+
+# you can add packaging information here
+#package:
+#  include:
+#    - include-me.js
+#    - include-me-dir/**
+#  exclude:
+#    - exclude-me.js
+#    - exclude-me-dir/**
+
+functions:
+  persistValueFunction:
+    name: persistValueFunction
+    handler: persistValue/handler.handler
+    timeout: 10
+    memorySize: 128
+  ingestValueFunction:
+    name: ingestValueFunction
+    handler: ingestValue/handler.handler
+    timeout: 10
+    memorySize: 128
+  readValuesFunction:
+    name: readValuesFunction
+    handler: readValues/handler.handler
+    timeout: 10
+    memorySize: 128
+  readPredictionsFunction:
+    name: readPredictionsFunction
+    handler: readPredictions/handler.handler
+    timeout: 10,
+    memeorySize: 128
+  readNotificationsFunction:
+    name: readNotificationsFunction
+    handler: readNotifications/handler.handler
+    timeout: 10
+    memorySize: 128
+  predictValueFunction:
+    name: predictValueFunction
+    handler: predictValue/handler.handler
+    timeout: 10
+    memeorySize: 128
+
+#    The following are a few example events you can configure
+#    NOTE: Please make sure to change your handler code to work with those events
+#    Check the event documentation for details
+#    events:
+#      - http:
+#          path: users/create
+#          method: get
+#      - s3: ${env:BUCKET}
+#      - schedule: rate(10 minutes)
+#      - sns: greeter-topic
+#      - stream: arn:aws:dynamodb:region:XXXXXX:table/foo/stream/1970-01-01T00:00:00.000
+#      - alexaSkill
+#      - iot:
+#          sql: "SELECT * FROM 'some_topic'"
+
+#    Define function environment variables here
+#    environment:
+#      variable2: value2
+
+# you can add CloudFormation resource templates here
+resources:
+  Resources:
+    valuesTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ValuesTable
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+          - AttributeName: timestamp
+            AttributeType: N
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+          - AttributeName: timestamp
+            KeyType: RANGE
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+    predictionsTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: PredictionsTable
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+          - AttributeName: timestamp
+            AttributeType: N
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+          - AttributeName: timestamp
+            KeyType: RANGE
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+    notificationStream:
+      Type: AWS::Kinesis::Stream
+      Properties:
+        Name: NotificationsStream
+        ShardCount: 1
+        Tags:
+         - Key: app
+           Value: smartgridmonitor
+    meterTopic:
+      Type: AWS::SQS::Queue
+      Properties:
+        QueueName: DE00056366740S2031372170000000000010001080000
