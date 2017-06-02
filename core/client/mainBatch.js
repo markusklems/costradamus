@@ -29,8 +29,6 @@ lineReader.on('line', (line) => {
   main(trace_id).then(res => console.log(`${trace_id} done.`)).catch(err => console.error(err));
 });
 
-
-// Start
 /*
 traceIds.forEach(tid => {
   main(tid).then(res => console.log(`${tid} done.`)).catch(err => console.error(err));
