@@ -32,5 +32,7 @@ async function main(_traceId) {
   }
 }
 
+module.exports = main;
+
 // Start
 //main().then(res => console.log("Done.")).catch(err => console.error(err));
