@@ -15,7 +15,25 @@ describe('AWS Lambda Function (Duration = 281 ms, MaxMemoryUsed = 43 MB, BilledD
   let input, output;
 
   before(() => {
-    input = require('./in/lambda.json');
+    // input = require('./in/lambda.json');
+    input = {
+      "Duration": {
+        "val": 281,
+        "type": "MS"
+      },
+      "BilledDuration": {
+        "val": "300",
+        "type": "MS"
+      },
+      "MemorySize": {
+        "val": 1024,
+        "type": "MB"
+      },
+      "MaxMemoryUsed": {
+        "val": 43,
+        "type": "MB"
+      }
+    };
     output = LambdaModel(input);
   });
 
