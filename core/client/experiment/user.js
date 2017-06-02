@@ -17,11 +17,13 @@ program
   .option('-f, --function-name [value]', 'Lambda function name')
   .option('-n, --number <n>', 'Number of repeated requests')
   .option('-o, --output-file [value]', 'Traces output file')
+  .option('-e, --ephemeral', 'We write no output file')
   .parse(process.argv);
 
 let functionName = program['functionName'] || 'persistValueFunction';
 let number = program['number'] || 1;
 let outputFile = program['outputFile'] || 'user_traces.txt';
+let ephemeral = program['ephemeral'] || false;
 
 console.log(`Invoking ${functionName}`);
 
@@ -31,7 +33,9 @@ class ResponseQueue extends EventEmitter {
     this.number = number;
     this.counter = 0;
     this.messages = [];
-    this.fileWriteStream = fs.createWriteStream(path.join(__dirname, outputFile));
+    if (!ephemeral) {
+      this.fileWriteStream = fs.createWriteStream(path.join(__dirname, outputFile));
+    }
   }
 
   write(msg) {
@@ -45,16 +49,22 @@ class ResponseQueue extends EventEmitter {
 
 let responsesQ = new ResponseQueue(number, outputFile);
 responsesQ.on('trace', msg => {
-  responsesQ.write(msg);
+  if (!ephemeral) {
+    responsesQ.write(msg);
+  }
 });
 
 for (let i = 1; i <= number; i++) {
   console.log(`Sending request #${i}.`);
-  invokeFunction(functionName);
+  let event = JSON.parse(fs.readFileSync(path.join(__dirname, 'workloads', `${functionName}Event.json`)));
+  // We write as many values as there are iterations, by increasing the timestamp + 1 for each iteration.
+  if (functionName === 'persistValueFunction') {
+    event.timestamp = event.timestamp + i;
+  }
+  invokeFunction(functionName, event);
 }
 
-function invokeFunction(functionName) {
-  let event = JSON.parse(fs.readFileSync(path.join(__dirname, 'workloads', `${functionName}Event.json`)));
+function invokeFunction(functionName, event) {
   const params = {
     FunctionName: functionName,
     InvocationType: 'RequestResponse',
