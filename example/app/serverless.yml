@@ -21,7 +21,7 @@ provider:
   name: aws
   runtime: nodejs4.3
 #  stage: dev
-  region: eu-west-1
+#  region: us-east-1
 # TODO Set region via reference.
 # TODO Set IAM role statements for specific resources and not globally.
   iamRoleStatements:
@@ -29,29 +29,29 @@ provider:
       Action:
         - dynamodb:PutItem
         - dynamodb:Query
-      Resource: "arn:aws:dynamodb:eu-west-1:*:*"
+      Resource: "arn:aws:dynamodb:us-east-1:*:*"
     - Effect: "Allow"
       Action:
         - lambda:InvokeFunction
-      Resource: "arn:aws:lambda:eu-west-1:*:function:*"
+      Resource: "arn:aws:lambda:us-east-1:*:function:*"
     - Effect: "Allow"
       Action:
         - kinesis:DescribeStream
         - kinesis:GetShardIterator
         - kinesis:GetRecords
         - kinesis:PutRecord
-      Resource: "arn:aws:kinesis:eu-west-1:*:stream/*"
+      Resource: "arn:aws:kinesis:us-east-1:*:stream/*"
     - Effect: "Allow"
       Action:
         - sqs:SendMessage
         - sqs:ReceiveMessage
-      Resource: "arn:aws:sqs:eu-west-1:*:*"
+      Resource: "arn:aws:sqs:us-east-1:*:*"
     - Effect: "Allow"
       Action:
         - logs:CreateLogGroup
         - logs:CreateLogStream
         - logs:PutLogEvents
-      Resource: "arn:aws:logs:eu-west-1:*:*"
+      Resource: "arn:aws:logs:us-east-1:*:*"
 
 # you can define service wide environment variables here
 #  environment:
