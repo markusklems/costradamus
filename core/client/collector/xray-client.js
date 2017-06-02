@@ -1,8 +1,9 @@
 'use strict';
 
+const config = require('../config.js');
 const AWS = require('aws-sdk');
 const XRay = new AWS.XRay({
-  region: 'us-east-1'
+  region: config.region
 });
 const util = require('util');
 
