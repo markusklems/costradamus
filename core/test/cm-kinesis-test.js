@@ -14,7 +14,7 @@ describe('AWS Kinesis Stream (Region = eu-west-1, PayloadSize = 256 KB, Operatio
   let input, output;
 
   before(() => {
-    input = require('./in/kinesis-read2.json');
+    input = require('./in/kinesis-read.json');
     output = model(input);
   });
 

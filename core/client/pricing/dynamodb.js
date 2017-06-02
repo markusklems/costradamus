@@ -111,8 +111,8 @@ module.exports = c => {
         region = c.Datacenter.val
     }
 
-    if (c.PayloadSize.type !== 'KB') {
-        new Error('InvalidParameterError: Payload must be specified in KB.' + c);
+    if (c.PayloadSize.type !== 'B') {
+        new Error('InvalidParameterError: Payload must be specified in B.' + c);
     }
 
     if (c.CapacityUnits.type !== 'WCU' || c.CapacityUnits.type !== 'RCU') {

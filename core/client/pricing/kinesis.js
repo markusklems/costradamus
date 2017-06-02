@@ -218,7 +218,7 @@ const _price = (region, type) => {
  *
  * @param c                     Consumption object.
  * @param c.PayloadSize         Size of the message that is written to or retrieved from a Kinesis table.
- *                              Example: { val: 1.5, type: 'KB' }
+ *                              Example: { val: 1500, type: 'B' }
  * @param c.Operation           Specifies if the operation is a READ or WRITE operation.
  *                              Example: { val: 'READ', type: 'KINESISOPERATION' }
  * @param c.Latency             Request-Response latency of the operation.
@@ -244,8 +244,8 @@ module.exports = c => {
         retention = c.Retention.val
     }
 
-    if ( c.PayloadSize.type !== 'KB') {
-        new Error('InvalidParameterError: Payload must be specified in KB.' + c);
+    if ( c.PayloadSize.type !== 'B') {
+        new Error('InvalidParameterError: Payload must be specified in B.' + c);
     }
 
     if ( c.Operation.type !== 'KINESISOPERATION' || !(c.Operation.val === 'READ' || c.Operation.val === 'WRITE')) {
@@ -270,7 +270,7 @@ module.exports = c => {
 
     const op_type = c.Operation.val;
 
-    const used_amount_in_bytes = c.PayloadSize.val * 1000;
+    const used_amount_in_bytes = c.PayloadSize.val;
     const used_duration_in_ms = c.Latency.val;
 
     const shard_metered_amount_in_bytes = Math.ceil( used_amount_in_bytes / _shard[region][retention][op_type]['metering_amount_val'] ) * _shard[region][retention][op_type]['metering_amount_val'];
