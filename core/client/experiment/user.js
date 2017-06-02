@@ -57,15 +57,16 @@ function invokeFunction(functionName) {
   let event = JSON.parse(fs.readFileSync(path.join(__dirname, 'workloads', `${functionName}Event.json`)));
   const params = {
     FunctionName: functionName,
-    InvocationType: 'Event',
+    InvocationType: 'RequestResponse',
     Payload: JSON.stringify(event, null)
   };
+
   let req = lambda.invoke(params, (err, data) => {
     if (err) {
       console.log(err, err.stack, err.message);
       console.error(err);
     } else {
-      console.log(data);
+      //console.log(data);
     }
   });
 
@@ -76,8 +77,6 @@ function invokeFunction(functionName) {
     let traceId = regex.exec(res.httpResponse.headers['x-amzn-trace-id'])[1];
     console.log(`Received response with trace id ${traceId}.`);
     responsesQ.emit('trace', `${method} ${path} ${traceId}\n`);
-
-    //const util = require('util');
-    //console.log(util.inspect(res, false, null));
   });
+
 }

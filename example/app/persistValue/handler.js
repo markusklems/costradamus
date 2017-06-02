@@ -27,6 +27,8 @@ module.exports.handler = (event, context, callback) => {
     }
   };
 
+  console.log("Params", params);
+
   dynamoTracer.prepareParams(params);
 
   dynamo.put(params, (err, data) => {
