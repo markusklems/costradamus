@@ -131,7 +131,7 @@ fields.push(t.Duration);
 let line = fields.join(delimiter) + '\n';
 appendLine(line);
 
-fields = ['name', 'id', 'resource', 'parent_id', 'start', 'end', 'MC-val', 'MC-unit','PAW-val', 'PAW-unit', 'PTW-val', 'PTW-unit', 'MAW-val', 'MAW-unit', 'MTW-val', 'MTW-unit', 'c_1_name', 'c_1_val', 'c_1_type', 'c_2_name', 'c_2_val', 'c_2_type', 'c_3_name', 'c_3_val', 'c_3_type'];
+fields = ['name', 'id', 'resource', 'parent_id', 'start', 'end', 'MC-val', 'MC-unit','PAW-val', 'PAW-unit', 'PTW-val', 'PTW-unit', 'MAW-val', 'MAW-unit', 'MTW-val', 'MTW-unit', 'c_1_name', 'c_1_val', 'c_1_type', 'c_2_name', 'c_2_val', 'c_2_type', 'c_3_name', 'c_3_val', 'c_3_type', 'c_4_name', 'c_4_val', 'c_4_type'];
 line = fields.join(delimiter) + '\n';
 appendLine(line);
 
