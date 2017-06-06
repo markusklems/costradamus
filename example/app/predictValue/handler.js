@@ -22,6 +22,9 @@ let dynamoTracer = costradamus.getDynamoTracer();
 let lambdaTracer = costradamus.getLambdaTracer();
 let kinesisTracer = costradamus.getKinesisTracer();
 
+// Prediction Model Config: #timestamps
+const interval = 3;
+
 const readMissingValues = (id, start, end) => {
   // console.log('Reading missing values: { id:' +id+ ', start:' +start+ ', end:' +end+ '}');
   return new Promise((resolve, reject) => {
@@ -99,7 +102,7 @@ module.exports.handler = (event, context, callback) => {
   lambdaTracer.addSubsegment(AWSXRAY.getSegment(), context.awsRequestId);
 
   // Read missing values from DynamoDB
-  readMissingValues(event.id, event.timestamp - 3, event.timestamp)
+  readMissingValues(event.id, event.timestamp - interval, event.timestamp)
     .then(data => {
       // console.log('Data from promise: ' +util.inspect(data));
       const model = mavg(data.Items);
