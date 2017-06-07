@@ -107,6 +107,7 @@ const convertSubsegments = (parent_name, parent_id, subs) => {
 program
     .version('1.0.0')
     .option('-t, --trace-id [value]', 'Trace id.')
+    // .option('-d, --input-dir [value]', 'Directory containing pruned trace files.')
     .parse(process.argv);
 
 
@@ -116,7 +117,7 @@ let trace_id = program['traceId'] || '1-5930549c-763e04889a0bb576ba23ae9f';
 
 console.log(program['traceId']);
 
-const input_path = path.join(__dirname, 'data', `${trace_id}-pruned.json`);
+const input_path = path.join(__dirname, '..', '..', 'experiments', 'results', 'baseline-us-east-1', `${trace_id}-pruned.json`);
 const output_path = path.join(__dirname, 'data', `${trace_id}.csv`);
 
 let t = JSON.parse(fs.readFileSync(input_path)); //trace
