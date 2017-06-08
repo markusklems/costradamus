@@ -58,7 +58,7 @@ responsesQ.on('trace', msg => {
 let waitFor = 0;
 
 for (let i = 1; i <= number; i++) {
-  waitFor += 100;
+  waitFor += 1000;
   setTimeout(() => {
     console.log(`Sending request #${i}.`);
     let event = JSON.parse(fs.readFileSync(path.join(__dirname, 'workloads', `${functionName}Event.json`)));
