@@ -6,16 +6,21 @@ Load phase:
 - 600x persistValue invocations to fill the ValuesTable in DynamoDB
 
 Run phase: function invocations
-1. 1000x ingestValue
-2. 1000x readNotification
-3. 1000x readPredictions
-4. 1000x readValues
+1. 100x ingestValue
+2. 100x readNotifications
+3. 100x readPredictions
+4. 100x readValues
+
 ```
 node user.js -f persistValueFunction -e -n 600
-node user.js -f ingestValueFunction -o results/experiment1/ingestValue.txt -n 1000
-node user.js -f readNotificationsFunction -o results/experiment1/readNotifications.txt -n 1000
-node user.js -f readPredictionsFunction -o results/experiment1/readPredictions.txt -n 1000
-node user.js -f readValuesFunction -o results/experiment1/readValues.txt -n 1000
+node user.js -f ingestValueFunction -o results/experiment1/ingestValue.txt -n 100
+node user.js -f readNotificationsFunction -o results/experiment1/readNotifications.txt -n 100
+node user.js -f readPredictionsFunction -o results/experiment1/readPredictions.txt -n 100
+node user.js -f readValuesFunction -o results/experiment1/readValues.txt -n 100
+```
+
+```
+node mainBatch.js -i results/experiment1/ingestValue.txt -o results/experiment1/traces
 ```
 
 # Experiments 1-4

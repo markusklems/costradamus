@@ -37,7 +37,7 @@ async function traverse(fromNode) {
 
     if (node.Segments) {
       node.Segments.forEach(segment => {
-        console.log("node.Segments augmenting " + segment.Document.id);
+        console.log("Augmenting segment " + segment.Document.id);
         _traverse(segment.Document);
       });
     } else if (node.subsegments) {

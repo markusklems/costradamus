@@ -6,14 +6,14 @@ const prune = require('./prune.js');
 const fs = require('fs');
 const readFromJsonFile = require('./io/file-operations.js').readFromJsonFile;
 const util = require('util');
+const path = require('path');
 
-const TRACE_ID = '1-5930549c-763e04889a0bb576ba23ae9f';
-
-async function main(_traceId) {
-  let traceId = _traceId || TRACE_ID;
-  const path1 = `./data/${traceId}.json`;
-  const path2 = `./data/${traceId}-augmented.json`;
-  const path3 = `./data/${traceId}-pruned.json`;
+async function main(_traceId, outputDir) {
+  let traceId = _traceId;
+  const output_path = `${outputDir}`;
+  const path1 = path.join(output_path, `${traceId}.json`);
+  const path2 = path.join(output_path, `${traceId}-augmented.json`);
+  const path3 = path.join(output_path, `${traceId}-pruned.json`);
   try {
     let traceData = await getXRayTraces(traceId);
     fs.writeFileSync(path1, JSON.stringify(traceData, null, 2));

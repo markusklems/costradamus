@@ -55,14 +55,19 @@ responsesQ.on('trace', msg => {
   }
 });
 
+let waitFor = 0;
+
 for (let i = 1; i <= number; i++) {
-  console.log(`Sending request #${i}.`);
-  let event = JSON.parse(fs.readFileSync(path.join(__dirname, 'workloads', `${functionName}Event.json`)));
-  // We write as many values as there are iterations, by increasing the timestamp + 1 for each iteration.
-  if (functionName === 'persistValueFunction' || functionName === 'ingestValueFunction') {
-    event.timestamp = event.timestamp + i;
-  }
-  invokeFunction(functionName, event);
+  waitFor += 100;
+  setTimeout(() => {
+    console.log(`Sending request #${i}.`);
+    let event = JSON.parse(fs.readFileSync(path.join(__dirname, 'workloads', `${functionName}Event.json`)));
+    // We write as many values as there are iterations, by increasing the timestamp + 1 for each iteration.
+    if (functionName === 'persistValueFunction' || functionName === 'ingestValueFunction') {
+      event.timestamp = event.timestamp + i;
+    }
+    invokeFunction(functionName, event);
+  }, waitFor);
 }
 
 function invokeFunction(functionName, event) {

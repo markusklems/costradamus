@@ -1,6 +1,6 @@
 'use strict';
 
-let main = require('./main.js');
+let main = require('costradamus/client/main.js');
 const fs = require('fs');
 const path = require('path');
 const program = require('commander');
@@ -13,10 +13,12 @@ const Util = require('util');
 program
   .version('1.0.0')
   .option('-i, --input-file [value]', 'Trace id.')
+  .option('-o, --output-dir [value]', 'Directory with processed trace data from x-ray + costradamus.')
   .parse(process.argv);
 
-const input_file = program['inputFile'] || '1-5930549c-763e04889a0bb576ba23ae9f';
+const input_file = program['inputFile'];
 const input_path = path.join(__dirname, `${input_file}`);
+const output_path = path.join(__dirname, `${program['outputDir']}`);
 
 let waitFor = 0;
 
@@ -30,9 +32,9 @@ lineReader.on('line', (line) => {
   const trace_id = columns[2];
   console.log('Trace_id: ' + trace_id);
   // We need to throttle this because otherwise we run into X-Ray rate exceeded exceptions.
-  waitFor += 1000;
+  waitFor += 2000;
   setTimeout(() => {
-    main(trace_id).then(res => console.log(`${trace_id} done.`)).catch(err => console.error('Trace-Id: ' + trace_id + ', Error: ' + err));
+    main(trace_id, output_path).then(res => console.log(`${trace_id} done.`)).catch(err => console.error('Trace-Id: ' + trace_id + ', Error: ' + err));
   }, waitFor);
 });
 
