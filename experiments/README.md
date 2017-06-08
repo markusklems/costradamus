@@ -1,6 +1,4 @@
-# Workloads
-
-## Workload A
+# Workload
 
 Load phase:
 - 600x persistValue invocations to fill the ValuesTable in DynamoDB
@@ -35,19 +33,19 @@ node mainBatch.js -i results/experiment1/readValues.txt -o results/experiment1/r
 ## 1. Baseline experiment
 
 Region: us-east-1
-Lambda config: 1024 MB memory, 10 sec timeout
-Workload A
+Lambda config: 1024 MB memory
+PredictValue function: interval 3
+
+(other configurations as stated in example/app/serverless.yml)
 
 ## 2. Memory configuration experiment
 
-Baseline with
 Lambda config: 128 MB memory
 
-## 3. Multi-region experiment
+## 3. Code change experiment
 
-Baseline with
+PredictValue function: interval 60
+
+## 4. Multi-region experiment
+
 Region: eu-west-1
-
-## 4. Code change experiment
-
-Baseline with different predictValue with different prediction model (interval 60, in baseline 3)
