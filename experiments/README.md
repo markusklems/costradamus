@@ -24,7 +24,10 @@ node user.js -f readValuesFunction -o results/experiment1/readValues.txt -n 100
 Fetch batches of x-ray traces and augment the traces with costradamus:
 
 ```
-node mainBatch.js -i results/experiment1/ingestValue.txt -o results/experiment1/traces
+node mainBatch.js -i results/experiment1/ingestValue.txt -o results/experiment1/ingest-value-traces
+node mainBatch.js -i results/experiment1/readNotifications.txt -o results/experiment1/read-notifications-traces
+node mainBatch.js -i results/experiment1/readPredictions.txt -o results/experiment1/read-predictions-traces
+node mainBatch.js -i results/experiment1/readValues.txt -o results/experiment1/read-values-traces
 ```
 
 # Experiments 1-4

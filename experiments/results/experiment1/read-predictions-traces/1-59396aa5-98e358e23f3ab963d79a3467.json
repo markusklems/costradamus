@@ -1,0 +1,140 @@
+{
+  "Traces": [
+    {
+      "Id": "1-59396aa5-98e358e23f3ab963d79a3467",
+      "Duration": 0.05800008773803711,
+      "Segments": [
+        {
+          "Id": "542fcd9c6508dd56",
+          "Document": {
+            "id": "542fcd9c6508dd56",
+            "name": "readPredictionsFunction",
+            "start_time": 1496935077.196,
+            "end_time": 1496935077.226,
+            "parent_id": "47b7adc3443d83a2",
+            "aws": {
+              "function_arn": "arn:aws:lambda:us-east-1:797753712737:function:readPredictionsFunction",
+              "resource_names": [
+                "readPredictionsFunction"
+              ],
+              "account_id": "797753712737"
+            },
+            "trace_id": "1-59396aa5-98e358e23f3ab963d79a3467",
+            "origin": "AWS::Lambda::Function",
+            "subsegments": [
+              {
+                "id": "1f8621d5d132871f",
+                "name": "DynamoDB",
+                "start_time": 1496935077.197,
+                "end_time": 1496935077.225,
+                "http": {
+                  "response": {
+                    "status": 200
+                  }
+                },
+                "aws": {
+                  "operation": "Query",
+                  "region": "us-east-1",
+                  "request_id": "T2VRFSVGPLGCVQE5TD645VBC4NVV4KQNSO5AEMVJF66Q9ASUAAJG",
+                  "retries": 0,
+                  "limit": 1000,
+                  "select": "ALL_ATTRIBUTES",
+                  "table_name": "PredictionsTable",
+                  "resource_names": [
+                    "PredictionsTable"
+                  ]
+                },
+                "namespace": "aws",
+                "subsegments": [
+                  {
+                    "id": "65c5a534a9a661fc",
+                    "name": "DynamoDBCostradamus",
+                    "start_time": 1496935077.226,
+                    "end_time": 1496935077.226,
+                    "metadata": {
+                      "DynamoDBCostradamus": {
+                        "consumptions": {
+                          "CapacityUnits": {
+                            "val": 0.5,
+                            "type": "RCU"
+                          },
+                          "PayloadSize": {
+                            "val": 1819,
+                            "type": "B"
+                          }
+                        }
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "c995dd0b9d3d35d8",
+                "name": "LambdaCostradamus",
+                "start_time": 1496935077.196,
+                "end_time": 1496935077.196,
+                "metadata": {
+                  "LambdaCostradamus": {
+                    "RequestId": "a6c42011-4c5d-11e7-b007-fb1813b53e65"
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "Id": "47b7adc3443d83a2",
+          "Document": {
+            "id": "47b7adc3443d83a2",
+            "name": "readPredictionsFunction",
+            "start_time": 1496935077.168,
+            "end_time": 1496935077.226,
+            "http": {
+              "response": {
+                "status": 200
+              }
+            },
+            "aws": {
+              "request_id": "a6c42011-4c5d-11e7-b007-fb1813b53e65"
+            },
+            "trace_id": "1-59396aa5-98e358e23f3ab963d79a3467",
+            "origin": "AWS::Lambda",
+            "resource_arn": "arn:aws:lambda:us-east-1:797753712737:function:readPredictionsFunction"
+          }
+        },
+        {
+          "Id": "05888a1a0f112954",
+          "Document": {
+            "id": "05888a1a0f112954",
+            "name": "DynamoDB",
+            "start_time": 1496935077.197,
+            "end_time": 1496935077.225,
+            "parent_id": "1f8621d5d132871f",
+            "inferred": true,
+            "http": {
+              "response": {
+                "status": 200
+              }
+            },
+            "aws": {
+              "operation": "Query",
+              "region": "us-east-1",
+              "request_id": "T2VRFSVGPLGCVQE5TD645VBC4NVV4KQNSO5AEMVJF66Q9ASUAAJG",
+              "retries": 0,
+              "limit": 1000,
+              "select": "ALL_ATTRIBUTES",
+              "table_name": "PredictionsTable",
+              "resource_names": [
+                "PredictionsTable"
+              ]
+            },
+            "trace_id": "1-59396aa5-98e358e23f3ab963d79a3467",
+            "origin": "AWS::DynamoDB::Table"
+          }
+        }
+      ]
+    }
+  ],
+  "UnprocessedTraceIds": [],
+  "NextToken": null
+}
