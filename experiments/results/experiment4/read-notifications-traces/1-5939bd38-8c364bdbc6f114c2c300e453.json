@@ -1,0 +1,172 @@
+{
+  "Traces": [
+    {
+      "Id": "1-5939bd38-8c364bdbc6f114c2c300e453",
+      "Duration": 0.23,
+      "Segments": [
+        {
+          "Id": "16148fa747a63213",
+          "Document": {
+            "id": "16148fa747a63213",
+            "name": "readNotificationsFunction",
+            "start_time": 1496956216.602,
+            "end_time": 1496956216.825,
+            "parent_id": "024b4cb6e668085d",
+            "aws": {
+              "function_arn": "arn:aws:lambda:eu-west-1:797753712737:function:readNotificationsFunction",
+              "resource_names": [
+                "readNotificationsFunction"
+              ],
+              "account_id": "797753712737"
+            },
+            "trace_id": "1-5939bd38-8c364bdbc6f114c2c300e453",
+            "origin": "AWS::Lambda::Function",
+            "subsegments": [
+              {
+                "id": "f12176939f1ae674",
+                "name": "LambdaCostradamus",
+                "start_time": 1496956216.602,
+                "end_time": 1496956216.602,
+                "metadata": {
+                  "LambdaCostradamus": {
+                    "RequestId": "ded99d7c-4c8e-11e7-b346-532bd089e9ac"
+                  }
+                }
+              },
+              {
+                "id": "9b0d1c4dd879a459",
+                "name": "Kinesis",
+                "start_time": 1496956216.603,
+                "end_time": 1496956216.718,
+                "http": {
+                  "response": {
+                    "status": 200
+                  }
+                },
+                "aws": {
+                  "operation": "GetShardIterator",
+                  "region": "eu-west-1",
+                  "request_id": "c5be2c4c-0add-16e4-940d-9334a7563fea",
+                  "retries": 0
+                },
+                "namespace": "aws",
+                "subsegments": [
+                  {
+                    "id": "9278b16a76afcd9d",
+                    "name": "Kinesis",
+                    "start_time": 1496956216.718,
+                    "end_time": 1496956216.822,
+                    "http": {
+                      "response": {
+                        "status": 200
+                      }
+                    },
+                    "aws": {
+                      "operation": "GetRecords",
+                      "region": "eu-west-1",
+                      "request_id": "ef2e2027-fdaa-845d-be9d-9f5fa14bcf50",
+                      "retries": 0
+                    },
+                    "namespace": "aws",
+                    "subsegments": [
+                      {
+                        "id": "c56fe52547fb9405",
+                        "name": "KinesisCostradamus",
+                        "start_time": 1496956216.824,
+                        "end_time": 1496956216.824,
+                        "metadata": {
+                          "KinesisCostradamus": {
+                            "consumptions": {
+                              "PayloadSize": {
+                                "val": 45560,
+                                "type": "B"
+                              },
+                              "Operation": {
+                                "val": "READ",
+                                "type": "KINESISOPERATION"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "Id": "024b4cb6e668085d",
+          "Document": {
+            "id": "024b4cb6e668085d",
+            "name": "readNotificationsFunction",
+            "start_time": 1496956216.599,
+            "end_time": 1496956216.829,
+            "http": {
+              "response": {
+                "status": 200
+              }
+            },
+            "aws": {
+              "request_id": "ded99d7c-4c8e-11e7-b346-532bd089e9ac"
+            },
+            "trace_id": "1-5939bd38-8c364bdbc6f114c2c300e453",
+            "origin": "AWS::Lambda",
+            "resource_arn": "arn:aws:lambda:eu-west-1:797753712737:function:readNotificationsFunction"
+          }
+        },
+        {
+          "Id": "03378be415a6ec86",
+          "Document": {
+            "id": "03378be415a6ec86",
+            "name": "Kinesis",
+            "start_time": 1496956216.603,
+            "end_time": 1496956216.718,
+            "parent_id": "9b0d1c4dd879a459",
+            "inferred": true,
+            "http": {
+              "response": {
+                "status": 200
+              }
+            },
+            "aws": {
+              "operation": "GetShardIterator",
+              "region": "eu-west-1",
+              "request_id": "c5be2c4c-0add-16e4-940d-9334a7563fea",
+              "retries": 0
+            },
+            "trace_id": "1-5939bd38-8c364bdbc6f114c2c300e453",
+            "origin": "AWS::Kinesis"
+          }
+        },
+        {
+          "Id": "3753a3db133a072b",
+          "Document": {
+            "id": "3753a3db133a072b",
+            "name": "Kinesis",
+            "start_time": 1496956216.718,
+            "end_time": 1496956216.822,
+            "parent_id": "9278b16a76afcd9d",
+            "inferred": true,
+            "http": {
+              "response": {
+                "status": 200
+              }
+            },
+            "aws": {
+              "operation": "GetRecords",
+              "region": "eu-west-1",
+              "request_id": "ef2e2027-fdaa-845d-be9d-9f5fa14bcf50",
+              "retries": 0
+            },
+            "trace_id": "1-5939bd38-8c364bdbc6f114c2c300e453",
+            "origin": "AWS::Kinesis"
+          }
+        }
+      ]
+    }
+  ],
+  "UnprocessedTraceIds": [],
+  "NextToken": null
+}

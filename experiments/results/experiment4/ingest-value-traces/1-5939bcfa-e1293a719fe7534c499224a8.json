@@ -1,0 +1,952 @@
+{
+  "Traces": [
+    {
+      "Id": "1-5939bcfa-e1293a719fe7534c499224a8",
+      "Duration": 0.162,
+      "Segments": [
+        {
+          "Id": "5b81854e27bb5cfc",
+          "Document": {
+            "id": "5b81854e27bb5cfc",
+            "name": "persistValueFunction",
+            "start_time": 1496956154.775,
+            "end_time": 1496956154.79,
+            "parent_id": "48aac233ed243403",
+            "aws": {
+              "function_arn": "arn:aws:lambda:eu-west-1:797753712737:function:persistValueFunction",
+              "resource_names": [
+                "persistValueFunction"
+              ],
+              "account_id": "797753712737"
+            },
+            "trace_id": "1-5939bcfa-e1293a719fe7534c499224a8",
+            "origin": "AWS::Lambda::Function",
+            "subsegments": [
+              {
+                "id": "62526579407efbdd",
+                "name": "LambdaCostradamus",
+                "start_time": 1496956154.775,
+                "end_time": 1496956154.775,
+                "metadata": {
+                  "LambdaCostradamus": {
+                    "RequestId": "b9f900ef-4c8e-11e7-8db5-572c6ed59838"
+                  }
+                }
+              },
+              {
+                "id": "069bd47e0127d972",
+                "name": "DynamoDB",
+                "start_time": 1496956154.776,
+                "end_time": 1496956154.789,
+                "http": {
+                  "response": {
+                    "status": 200
+                  }
+                },
+                "aws": {
+                  "operation": "PutItem",
+                  "region": "eu-west-1",
+                  "request_id": "CABJMCJL5L48IF4VKN59Q8NVDJVV4KQNSO5AEMVJF66Q9ASUAAJG",
+                  "retries": 0,
+                  "table_name": "ValuesTable",
+                  "resource_names": [
+                    "ValuesTable"
+                  ]
+                },
+                "namespace": "aws",
+                "subsegments": [
+                  {
+                    "id": "30d4011b89715f4d",
+                    "name": "DynamoDBCostradamus",
+                    "start_time": 1496956154.789,
+                    "end_time": 1496956154.789,
+                    "metadata": {
+                      "DynamoDBCostradamus": {
+                        "consumptions": {
+                          "CapacityUnits": {
+                            "val": 1,
+                            "type": "WCU"
+                          },
+                          "PayloadSize": {
+                            "val": 182,
+                            "type": "B"
+                          }
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "Id": "2006a67800f016d1",
+          "Document": {
+            "id": "2006a67800f016d1",
+            "name": "ingestValueFunction",
+            "start_time": 1496956154.698,
+            "end_time": 1496956154.743,
+            "parent_id": "6aa109d82f639aaf",
+            "aws": {
+              "function_arn": "arn:aws:lambda:eu-west-1:797753712737:function:ingestValueFunction",
+              "resource_names": [
+                "ingestValueFunction"
+              ],
+              "account_id": "797753712737"
+            },
+            "trace_id": "1-5939bcfa-e1293a719fe7534c499224a8",
+            "origin": "AWS::Lambda::Function",
+            "subsegments": [
+              {
+                "id": "99298c6e43473bf8",
+                "name": "Lambda",
+                "start_time": 1496956154.7,
+                "end_time": 1496956154.743,
+                "http": {
+                  "response": {
+                    "status": 202
+                  }
+                },
+                "aws": {
+                  "operation": "Invoke",
+                  "region": "eu-west-1",
+                  "request_id": "b9f99cdf-4c8e-11e7-bd24-0d6b2dc6107b",
+                  "retries": 0,
+                  "function_name": "predictValueFunction",
+                  "invocation_type": "Event",
+                  "resource_names": [
+                    "predictValueFunction"
+                  ]
+                },
+                "namespace": "aws"
+              },
+              {
+                "id": "cdff3957b9273f4a",
+                "name": "Lambda",
+                "start_time": 1496956154.698,
+                "end_time": 1496956154.719,
+                "http": {
+                  "response": {
+                    "status": 202
+                  }
+                },
+                "aws": {
+                  "operation": "Invoke",
+                  "region": "eu-west-1",
+                  "request_id": "b9f900ef-4c8e-11e7-8db5-572c6ed59838",
+                  "retries": 0,
+                  "function_name": "persistValueFunction",
+                  "invocation_type": "Event",
+                  "resource_names": [
+                    "persistValueFunction"
+                  ]
+                },
+                "namespace": "aws"
+              },
+              {
+                "id": "b3c7b75230fe18e1",
+                "name": "LambdaCostradamus",
+                "start_time": 1496956154.698,
+                "end_time": 1496956154.698,
+                "metadata": {
+                  "LambdaCostradamus": {
+                    "RequestId": "b9f46d70-4c8e-11e7-9bb3-39498e8b030a"
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "Id": "3c3f4ce357399383",
+          "Document": {
+            "id": "3c3f4ce357399383",
+            "name": "predictValueFunction",
+            "start_time": 1496956154.734,
+            "end_time": 1496956154.757,
+            "parent_id": "99298c6e43473bf8",
+            "http": {
+              "response": {
+                "status": 202
+              }
+            },
+            "aws": {
+              "request_id": "b9f99cdf-4c8e-11e7-bd24-0d6b2dc6107b"
+            },
+            "trace_id": "1-5939bcfa-e1293a719fe7534c499224a8",
+            "origin": "AWS::Lambda",
+            "resource_arn": "arn:aws:lambda:eu-west-1:797753712737:function:predictValueFunction",
+            "subsegments": [
+              {
+                "id": "4d35ddf2f342c5e3",
+                "name": "Dwell Time",
+                "start_time": 1496956154.734,
+                "end_time": 1496956154.785,
+                "http": {
+                  "response": {}
+                }
+              },
+              {
+                "id": "2183e2abf83d6737",
+                "name": "Attempt #1",
+                "start_time": 1496956154.785,
+                "end_time": 1496956154.86,
+                "http": {
+                  "response": {
+                    "status": 200
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "Id": "53d92abc1ef042a6",
+          "Document": {
+            "id": "53d92abc1ef042a6",
+            "name": "predictValueFunction",
+            "start_time": 1496956154.793,
+            "end_time": 1496956154.86,
+            "parent_id": "2183e2abf83d6737",
+            "aws": {
+              "function_arn": "arn:aws:lambda:eu-west-1:797753712737:function:predictValueFunction",
+              "resource_names": [
+                "predictValueFunction"
+              ],
+              "account_id": "797753712737"
+            },
+            "trace_id": "1-5939bcfa-e1293a719fe7534c499224a8",
+            "origin": "AWS::Lambda::Function",
+            "subsegments": [
+              {
+                "id": "c3db0c7bb1d19471",
+                "name": "DynamoDB",
+                "start_time": 1496956154.793,
+                "end_time": 1496956154.808,
+                "http": {
+                  "response": {
+                    "status": 200
+                  }
+                },
+                "aws": {
+                  "operation": "Query",
+                  "region": "eu-west-1",
+                  "request_id": "5FLF3VES1MB404591MEQ1HSKCNVV4KQNSO5AEMVJF66Q9ASUAAJG",
+                  "retries": 0,
+                  "limit": 100,
+                  "select": "ALL_ATTRIBUTES",
+                  "table_name": "ValuesTable",
+                  "resource_names": [
+                    "ValuesTable"
+                  ]
+                },
+                "namespace": "aws",
+                "subsegments": [
+                  {
+                    "id": "97dff0b9d547596c",
+                    "name": "DynamoDB",
+                    "start_time": 1496956154.809,
+                    "end_time": 1496956154.834,
+                    "http": {
+                      "response": {
+                        "status": 200
+                      }
+                    },
+                    "aws": {
+                      "operation": "PutItem",
+                      "region": "eu-west-1",
+                      "request_id": "0M92Q7CL5L6IN1TFFQML0MF3MFVV4KQNSO5AEMVJF66Q9ASUAAJG",
+                      "retries": 0,
+                      "table_name": "PredictionsTable",
+                      "resource_names": [
+                        "PredictionsTable"
+                      ]
+                    },
+                    "namespace": "aws",
+                    "subsegments": [
+                      {
+                        "id": "3bb89025804b44d5",
+                        "name": "DynamoDBCostradamus",
+                        "start_time": 1496956154.834,
+                        "end_time": 1496956154.834,
+                        "metadata": {
+                          "DynamoDBCostradamus": {
+                            "consumptions": {
+                              "CapacityUnits": {
+                                "val": 1,
+                                "type": "WCU"
+                              },
+                              "PayloadSize": {
+                                "val": 182,
+                                "type": "B"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "id": "5bb27cb0c7c4464e",
+                    "name": "Kinesis",
+                    "start_time": 1496956154.81,
+                    "end_time": 1496956154.84,
+                    "http": {
+                      "response": {
+                        "status": 200
+                      }
+                    },
+                    "aws": {
+                      "operation": "PutRecord",
+                      "region": "eu-west-1",
+                      "request_id": "e72a986c-2402-824a-b699-27567a7af317",
+                      "retries": 0
+                    },
+                    "namespace": "aws",
+                    "subsegments": [
+                      {
+                        "id": "acf866c9c7985a14",
+                        "name": "KinesisCostradamus",
+                        "start_time": 1496956154.84,
+                        "end_time": 1496956154.84,
+                        "metadata": {
+                          "KinesisCostradamus": {
+                            "consumptions": {
+                              "PayloadSize": {
+                                "val": 182,
+                                "type": "B"
+                              },
+                              "Operation": {
+                                "val": "WRITE",
+                                "type": "KINESISOPERATION"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "id": "6955fa5b5a797f7e",
+                    "name": "DynamoDB",
+                    "start_time": 1496956154.813,
+                    "end_time": 1496956154.849,
+                    "http": {
+                      "response": {
+                        "status": 200
+                      }
+                    },
+                    "aws": {
+                      "operation": "PutItem",
+                      "region": "eu-west-1",
+                      "request_id": "8E2MRSCEBKE74JGQNDH1MSQLG7VV4KQNSO5AEMVJF66Q9ASUAAJG",
+                      "retries": 0,
+                      "table_name": "PredictionsTable",
+                      "resource_names": [
+                        "PredictionsTable"
+                      ]
+                    },
+                    "namespace": "aws",
+                    "subsegments": [
+                      {
+                        "id": "6de2de06d1587c68",
+                        "name": "DynamoDBCostradamus",
+                        "start_time": 1496956154.849,
+                        "end_time": 1496956154.849,
+                        "metadata": {
+                          "DynamoDBCostradamus": {
+                            "consumptions": {
+                              "CapacityUnits": {
+                                "val": 1,
+                                "type": "WCU"
+                              },
+                              "PayloadSize": {
+                                "val": 182,
+                                "type": "B"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "id": "8252776a40e548af",
+                    "name": "Kinesis",
+                    "start_time": 1496956154.812,
+                    "end_time": 1496956154.855,
+                    "http": {
+                      "response": {
+                        "status": 200
+                      }
+                    },
+                    "aws": {
+                      "operation": "PutRecord",
+                      "region": "eu-west-1",
+                      "request_id": "d67b0843-dd94-ef94-87c8-b779370482ab",
+                      "retries": 0
+                    },
+                    "namespace": "aws",
+                    "subsegments": [
+                      {
+                        "id": "f4299eb97e1d2b02",
+                        "name": "KinesisCostradamus",
+                        "start_time": 1496956154.855,
+                        "end_time": 1496956154.855,
+                        "metadata": {
+                          "KinesisCostradamus": {
+                            "consumptions": {
+                              "PayloadSize": {
+                                "val": 182,
+                                "type": "B"
+                              },
+                              "Operation": {
+                                "val": "WRITE",
+                                "type": "KINESISOPERATION"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "id": "cf3d6a46dd4d14d0",
+                    "name": "DynamoDB",
+                    "start_time": 1496956154.811,
+                    "end_time": 1496956154.845,
+                    "http": {
+                      "response": {
+                        "status": 200
+                      }
+                    },
+                    "aws": {
+                      "operation": "PutItem",
+                      "region": "eu-west-1",
+                      "request_id": "SOIHC08V5KIJQ35763HGE8BFDVVV4KQNSO5AEMVJF66Q9ASUAAJG",
+                      "retries": 0,
+                      "table_name": "PredictionsTable",
+                      "resource_names": [
+                        "PredictionsTable"
+                      ]
+                    },
+                    "namespace": "aws",
+                    "subsegments": [
+                      {
+                        "id": "f7da1e073a670584",
+                        "name": "DynamoDBCostradamus",
+                        "start_time": 1496956154.845,
+                        "end_time": 1496956154.845,
+                        "metadata": {
+                          "DynamoDBCostradamus": {
+                            "consumptions": {
+                              "CapacityUnits": {
+                                "val": 1,
+                                "type": "WCU"
+                              },
+                              "PayloadSize": {
+                                "val": 182,
+                                "type": "B"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "id": "3febae3a152c5b68",
+                    "name": "DynamoDB",
+                    "start_time": 1496956154.815,
+                    "end_time": 1496956154.835,
+                    "http": {
+                      "response": {
+                        "status": 200
+                      }
+                    },
+                    "aws": {
+                      "operation": "PutItem",
+                      "region": "eu-west-1",
+                      "request_id": "ET73K6U7S1PE049GU8FKGJEI3BVV4KQNSO5AEMVJF66Q9ASUAAJG",
+                      "retries": 0,
+                      "table_name": "PredictionsTable",
+                      "resource_names": [
+                        "PredictionsTable"
+                      ]
+                    },
+                    "namespace": "aws",
+                    "subsegments": [
+                      {
+                        "id": "007289bd6b8e963b",
+                        "name": "DynamoDBCostradamus",
+                        "start_time": 1496956154.835,
+                        "end_time": 1496956154.835,
+                        "metadata": {
+                          "DynamoDBCostradamus": {
+                            "consumptions": {
+                              "CapacityUnits": {
+                                "val": 1,
+                                "type": "WCU"
+                              },
+                              "PayloadSize": {
+                                "val": 182,
+                                "type": "B"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "id": "c6e77f18f52bffcd",
+                    "name": "Kinesis",
+                    "start_time": 1496956154.814,
+                    "end_time": 1496956154.86,
+                    "http": {
+                      "response": {
+                        "status": 200
+                      }
+                    },
+                    "aws": {
+                      "operation": "PutRecord",
+                      "region": "eu-west-1",
+                      "request_id": "efb14c2d-84fb-3031-be02-f3171b35ceb7",
+                      "retries": 0
+                    },
+                    "namespace": "aws",
+                    "subsegments": [
+                      {
+                        "id": "4e7bb4871384b2de",
+                        "name": "KinesisCostradamus",
+                        "start_time": 1496956154.86,
+                        "end_time": 1496956154.86,
+                        "metadata": {
+                          "KinesisCostradamus": {
+                            "consumptions": {
+                              "PayloadSize": {
+                                "val": 182,
+                                "type": "B"
+                              },
+                              "Operation": {
+                                "val": "WRITE",
+                                "type": "KINESISOPERATION"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "id": "6c0392faca1360e7",
+                    "name": "DynamoDBCostradamus",
+                    "start_time": 1496956154.808,
+                    "end_time": 1496956154.808,
+                    "metadata": {
+                      "DynamoDBCostradamus": {
+                        "consumptions": {
+                          "CapacityUnits": {
+                            "val": 0.5,
+                            "type": "RCU"
+                          },
+                          "PayloadSize": {
+                            "val": 907,
+                            "type": "B"
+                          }
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "id": "6a7e7ece6ad6ade9",
+                    "name": "Kinesis",
+                    "start_time": 1496956154.816,
+                    "end_time": 1496956154.857,
+                    "http": {
+                      "response": {
+                        "status": 200
+                      }
+                    },
+                    "aws": {
+                      "operation": "PutRecord",
+                      "region": "eu-west-1",
+                      "request_id": "dda1e851-a731-5dcf-8c12-576bc8ee0088",
+                      "retries": 0
+                    },
+                    "namespace": "aws",
+                    "subsegments": [
+                      {
+                        "id": "a334cabba0ab472a",
+                        "name": "KinesisCostradamus",
+                        "start_time": 1496956154.857,
+                        "end_time": 1496956154.857,
+                        "metadata": {
+                          "KinesisCostradamus": {
+                            "consumptions": {
+                              "PayloadSize": {
+                                "val": 182,
+                                "type": "B"
+                              },
+                              "Operation": {
+                                "val": "WRITE",
+                                "type": "KINESISOPERATION"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "9b3c37c6916858af",
+                "name": "LambdaCostradamus",
+                "start_time": 1496956154.793,
+                "end_time": 1496956154.793,
+                "metadata": {
+                  "LambdaCostradamus": {
+                    "RequestId": "b9f99cdf-4c8e-11e7-bd24-0d6b2dc6107b"
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "Id": "5766c2ccd509cfcd",
+          "Document": {
+            "id": "5766c2ccd509cfcd",
+            "name": "persistValueFunction",
+            "start_time": 1496956154.729,
+            "end_time": 1496956154.736,
+            "parent_id": "cdff3957b9273f4a",
+            "http": {
+              "response": {
+                "status": 202
+              }
+            },
+            "aws": {
+              "request_id": "b9f900ef-4c8e-11e7-8db5-572c6ed59838"
+            },
+            "trace_id": "1-5939bcfa-e1293a719fe7534c499224a8",
+            "origin": "AWS::Lambda",
+            "resource_arn": "arn:aws:lambda:eu-west-1:797753712737:function:persistValueFunction",
+            "subsegments": [
+              {
+                "id": "5a0cd52e8c84103b",
+                "name": "Dwell Time",
+                "start_time": 1496956154.729,
+                "end_time": 1496956154.763,
+                "http": {
+                  "response": {}
+                }
+              },
+              {
+                "id": "48aac233ed243403",
+                "name": "Attempt #1",
+                "start_time": 1496956154.763,
+                "end_time": 1496956154.787,
+                "http": {
+                  "response": {
+                    "status": 200
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "Id": "6aa109d82f639aaf",
+          "Document": {
+            "id": "6aa109d82f639aaf",
+            "name": "ingestValueFunction",
+            "start_time": 1496956154.701,
+            "end_time": 1496956154.752,
+            "http": {
+              "response": {
+                "status": 200
+              }
+            },
+            "aws": {
+              "request_id": "b9f46d70-4c8e-11e7-9bb3-39498e8b030a"
+            },
+            "trace_id": "1-5939bcfa-e1293a719fe7534c499224a8",
+            "origin": "AWS::Lambda",
+            "resource_arn": "arn:aws:lambda:eu-west-1:797753712737:function:ingestValueFunction"
+          }
+        },
+        {
+          "Id": "2688e4c22bde47d9",
+          "Document": {
+            "id": "2688e4c22bde47d9",
+            "name": "DynamoDB",
+            "start_time": 1496956154.776,
+            "end_time": 1496956154.789,
+            "parent_id": "069bd47e0127d972",
+            "inferred": true,
+            "http": {
+              "response": {
+                "status": 200
+              }
+            },
+            "aws": {
+              "operation": "PutItem",
+              "region": "eu-west-1",
+              "request_id": "CABJMCJL5L48IF4VKN59Q8NVDJVV4KQNSO5AEMVJF66Q9ASUAAJG",
+              "retries": 0,
+              "table_name": "ValuesTable",
+              "resource_names": [
+                "ValuesTable"
+              ]
+            },
+            "trace_id": "1-5939bcfa-e1293a719fe7534c499224a8",
+            "origin": "AWS::DynamoDB::Table"
+          }
+        },
+        {
+          "Id": "224ad08721119844",
+          "Document": {
+            "id": "224ad08721119844",
+            "name": "DynamoDB",
+            "start_time": 1496956154.793,
+            "end_time": 1496956154.808,
+            "parent_id": "c3db0c7bb1d19471",
+            "inferred": true,
+            "http": {
+              "response": {
+                "status": 200
+              }
+            },
+            "aws": {
+              "operation": "Query",
+              "region": "eu-west-1",
+              "request_id": "5FLF3VES1MB404591MEQ1HSKCNVV4KQNSO5AEMVJF66Q9ASUAAJG",
+              "retries": 0,
+              "limit": 100,
+              "select": "ALL_ATTRIBUTES",
+              "table_name": "ValuesTable",
+              "resource_names": [
+                "ValuesTable"
+              ]
+            },
+            "trace_id": "1-5939bcfa-e1293a719fe7534c499224a8",
+            "origin": "AWS::DynamoDB::Table"
+          }
+        },
+        {
+          "Id": "280e15e9265944e6",
+          "Document": {
+            "id": "280e15e9265944e6",
+            "name": "DynamoDB",
+            "start_time": 1496956154.809,
+            "end_time": 1496956154.834,
+            "parent_id": "97dff0b9d547596c",
+            "inferred": true,
+            "http": {
+              "response": {
+                "status": 200
+              }
+            },
+            "aws": {
+              "operation": "PutItem",
+              "region": "eu-west-1",
+              "request_id": "0M92Q7CL5L6IN1TFFQML0MF3MFVV4KQNSO5AEMVJF66Q9ASUAAJG",
+              "retries": 0,
+              "table_name": "PredictionsTable",
+              "resource_names": [
+                "PredictionsTable"
+              ]
+            },
+            "trace_id": "1-5939bcfa-e1293a719fe7534c499224a8",
+            "origin": "AWS::DynamoDB::Table"
+          }
+        },
+        {
+          "Id": "3e35f887091cd74f",
+          "Document": {
+            "id": "3e35f887091cd74f",
+            "name": "Kinesis",
+            "start_time": 1496956154.81,
+            "end_time": 1496956154.84,
+            "parent_id": "5bb27cb0c7c4464e",
+            "inferred": true,
+            "http": {
+              "response": {
+                "status": 200
+              }
+            },
+            "aws": {
+              "operation": "PutRecord",
+              "region": "eu-west-1",
+              "request_id": "e72a986c-2402-824a-b699-27567a7af317",
+              "retries": 0
+            },
+            "trace_id": "1-5939bcfa-e1293a719fe7534c499224a8",
+            "origin": "AWS::Kinesis"
+          }
+        },
+        {
+          "Id": "229b487d2d153d81",
+          "Document": {
+            "id": "229b487d2d153d81",
+            "name": "DynamoDB",
+            "start_time": 1496956154.813,
+            "end_time": 1496956154.849,
+            "parent_id": "6955fa5b5a797f7e",
+            "inferred": true,
+            "http": {
+              "response": {
+                "status": 200
+              }
+            },
+            "aws": {
+              "operation": "PutItem",
+              "region": "eu-west-1",
+              "request_id": "8E2MRSCEBKE74JGQNDH1MSQLG7VV4KQNSO5AEMVJF66Q9ASUAAJG",
+              "retries": 0,
+              "table_name": "PredictionsTable",
+              "resource_names": [
+                "PredictionsTable"
+              ]
+            },
+            "trace_id": "1-5939bcfa-e1293a719fe7534c499224a8",
+            "origin": "AWS::DynamoDB::Table"
+          }
+        },
+        {
+          "Id": "1d6589d0068f37cd",
+          "Document": {
+            "id": "1d6589d0068f37cd",
+            "name": "Kinesis",
+            "start_time": 1496956154.812,
+            "end_time": 1496956154.855,
+            "parent_id": "8252776a40e548af",
+            "inferred": true,
+            "http": {
+              "response": {
+                "status": 200
+              }
+            },
+            "aws": {
+              "operation": "PutRecord",
+              "region": "eu-west-1",
+              "request_id": "d67b0843-dd94-ef94-87c8-b779370482ab",
+              "retries": 0
+            },
+            "trace_id": "1-5939bcfa-e1293a719fe7534c499224a8",
+            "origin": "AWS::Kinesis"
+          }
+        },
+        {
+          "Id": "2c8a588205d1cdd6",
+          "Document": {
+            "id": "2c8a588205d1cdd6",
+            "name": "DynamoDB",
+            "start_time": 1496956154.811,
+            "end_time": 1496956154.845,
+            "parent_id": "cf3d6a46dd4d14d0",
+            "inferred": true,
+            "http": {
+              "response": {
+                "status": 200
+              }
+            },
+            "aws": {
+              "operation": "PutItem",
+              "region": "eu-west-1",
+              "request_id": "SOIHC08V5KIJQ35763HGE8BFDVVV4KQNSO5AEMVJF66Q9ASUAAJG",
+              "retries": 0,
+              "table_name": "PredictionsTable",
+              "resource_names": [
+                "PredictionsTable"
+              ]
+            },
+            "trace_id": "1-5939bcfa-e1293a719fe7534c499224a8",
+            "origin": "AWS::DynamoDB::Table"
+          }
+        },
+        {
+          "Id": "1c209b68059b4a43",
+          "Document": {
+            "id": "1c209b68059b4a43",
+            "name": "DynamoDB",
+            "start_time": 1496956154.815,
+            "end_time": 1496956154.835,
+            "parent_id": "3febae3a152c5b68",
+            "inferred": true,
+            "http": {
+              "response": {
+                "status": 200
+              }
+            },
+            "aws": {
+              "operation": "PutItem",
+              "region": "eu-west-1",
+              "request_id": "ET73K6U7S1PE049GU8FKGJEI3BVV4KQNSO5AEMVJF66Q9ASUAAJG",
+              "retries": 0,
+              "table_name": "PredictionsTable",
+              "resource_names": [
+                "PredictionsTable"
+              ]
+            },
+            "trace_id": "1-5939bcfa-e1293a719fe7534c499224a8",
+            "origin": "AWS::DynamoDB::Table"
+          }
+        },
+        {
+          "Id": "23ff21d10e32de73",
+          "Document": {
+            "id": "23ff21d10e32de73",
+            "name": "Kinesis",
+            "start_time": 1496956154.814,
+            "end_time": 1496956154.86,
+            "parent_id": "c6e77f18f52bffcd",
+            "inferred": true,
+            "http": {
+              "response": {
+                "status": 200
+              }
+            },
+            "aws": {
+              "operation": "PutRecord",
+              "region": "eu-west-1",
+              "request_id": "efb14c2d-84fb-3031-be02-f3171b35ceb7",
+              "retries": 0
+            },
+            "trace_id": "1-5939bcfa-e1293a719fe7534c499224a8",
+            "origin": "AWS::Kinesis"
+          }
+        },
+        {
+          "Id": "3829c0de164e88b1",
+          "Document": {
+            "id": "3829c0de164e88b1",
+            "name": "Kinesis",
+            "start_time": 1496956154.816,
+            "end_time": 1496956154.857,
+            "parent_id": "6a7e7ece6ad6ade9",
+            "inferred": true,
+            "http": {
+              "response": {
+                "status": 200
+              }
+            },
+            "aws": {
+              "operation": "PutRecord",
+              "region": "eu-west-1",
+              "request_id": "dda1e851-a731-5dcf-8c12-576bc8ee0088",
+              "retries": 0
+            },
+            "trace_id": "1-5939bcfa-e1293a719fe7534c499224a8",
+            "origin": "AWS::Kinesis"
+          }
+        }
+      ]
+    }
+  ],
+  "UnprocessedTraceIds": [],
+  "NextToken": null
+}
