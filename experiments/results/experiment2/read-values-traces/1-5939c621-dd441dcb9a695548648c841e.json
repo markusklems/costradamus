@@ -1,0 +1,140 @@
+{
+  "Traces": [
+    {
+      "Id": "1-5939c621-dd441dcb9a695548648c841e",
+      "Duration": 0.2950000762939453,
+      "Segments": [
+        {
+          "Id": "467886d3c61c1562",
+          "Document": {
+            "id": "467886d3c61c1562",
+            "name": "readValuesFunction",
+            "start_time": 1496958497.612,
+            "end_time": 1496958497.907,
+            "http": {
+              "response": {
+                "status": 200
+              }
+            },
+            "aws": {
+              "request_id": "2e6fd121-4c94-11e7-bcb9-8dbc4d73fb20"
+            },
+            "trace_id": "1-5939c621-dd441dcb9a695548648c841e",
+            "origin": "AWS::Lambda",
+            "resource_arn": "arn:aws:lambda:us-east-1:797753712737:function:readValuesFunction"
+          }
+        },
+        {
+          "Id": "00621f4f0f27e9c2",
+          "Document": {
+            "id": "00621f4f0f27e9c2",
+            "name": "readValuesFunction",
+            "start_time": 1496958497.629,
+            "end_time": 1496958497.869,
+            "parent_id": "467886d3c61c1562",
+            "aws": {
+              "function_arn": "arn:aws:lambda:us-east-1:797753712737:function:readValuesFunction",
+              "resource_names": [
+                "readValuesFunction"
+              ],
+              "account_id": "797753712737"
+            },
+            "trace_id": "1-5939c621-dd441dcb9a695548648c841e",
+            "origin": "AWS::Lambda::Function",
+            "subsegments": [
+              {
+                "id": "d18ac73c00308b09",
+                "name": "DynamoDB",
+                "start_time": 1496958497.63,
+                "end_time": 1496958497.811,
+                "http": {
+                  "response": {
+                    "status": 200
+                  }
+                },
+                "aws": {
+                  "operation": "Query",
+                  "region": "us-east-1",
+                  "request_id": "11VQ7E78FJ80MMQ2FGHHRCUHOVVV4KQNSO5AEMVJF66Q9ASUAAJG",
+                  "retries": 0,
+                  "limit": 1000,
+                  "select": "ALL_ATTRIBUTES",
+                  "table_name": "ValuesTable",
+                  "resource_names": [
+                    "ValuesTable"
+                  ]
+                },
+                "namespace": "aws",
+                "subsegments": [
+                  {
+                    "id": "8b8f19c4c9dfcfa9",
+                    "name": "DynamoDBCostradamus",
+                    "start_time": 1496958497.811,
+                    "end_time": 1496958497.811,
+                    "metadata": {
+                      "DynamoDBCostradamus": {
+                        "consumptions": {
+                          "CapacityUnits": {
+                            "val": 3,
+                            "type": "RCU"
+                          },
+                          "PayloadSize": {
+                            "val": 54059,
+                            "type": "B"
+                          }
+                        }
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "f95e14f516f71377",
+                "name": "LambdaCostradamus",
+                "start_time": 1496958497.63,
+                "end_time": 1496958497.63,
+                "metadata": {
+                  "LambdaCostradamus": {
+                    "RequestId": "2e6fd121-4c94-11e7-bcb9-8dbc4d73fb20"
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "Id": "1ea8c15105a89a01",
+          "Document": {
+            "id": "1ea8c15105a89a01",
+            "name": "DynamoDB",
+            "start_time": 1496958497.63,
+            "end_time": 1496958497.811,
+            "parent_id": "d18ac73c00308b09",
+            "inferred": true,
+            "http": {
+              "response": {
+                "status": 200
+              }
+            },
+            "aws": {
+              "operation": "Query",
+              "region": "us-east-1",
+              "request_id": "11VQ7E78FJ80MMQ2FGHHRCUHOVVV4KQNSO5AEMVJF66Q9ASUAAJG",
+              "retries": 0,
+              "limit": 1000,
+              "select": "ALL_ATTRIBUTES",
+              "table_name": "ValuesTable",
+              "resource_names": [
+                "ValuesTable"
+              ]
+            },
+            "trace_id": "1-5939c621-dd441dcb9a695548648c841e",
+            "origin": "AWS::DynamoDB::Table"
+          }
+        }
+      ]
+    }
+  ],
+  "UnprocessedTraceIds": [],
+  "NextToken": null
+}
