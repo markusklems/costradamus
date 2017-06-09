@@ -1,0 +1,1339 @@
+{
+  "Id": "1-593aaf6a-b8788d51bc2eb0681422a9cc",
+  "Duration": 9.164,
+  "Segments": [
+    {
+      "Id": "42ff63a59b627c40",
+      "Document": {
+        "id": "42ff63a59b627c40",
+        "name": "ingestValueFunction",
+        "start_time": 1497018218.854,
+        "end_time": 1497018218.914,
+        "http": {
+          "response": {
+            "status": 200
+          }
+        },
+        "aws": {
+          "request_id": "3b12eb90-4d1f-11e7-8d98-cba1c4c7363b"
+        },
+        "trace_id": "1-593aaf6a-b8788d51bc2eb0681422a9cc",
+        "origin": "AWS::Lambda",
+        "resource_arn": "arn:aws:lambda:eu-west-1:797753712737:function:ingestValueFunction"
+      }
+    },
+    {
+      "Id": "53ba6d3a508f3eac",
+      "Document": {
+        "id": "53ba6d3a508f3eac",
+        "name": "predictValueFunction",
+        "start_time": 1497018227.718,
+        "end_time": 1497018228.015,
+        "parent_id": "74751549c9c73c9c",
+        "aws": {
+          "function_arn": "arn:aws:lambda:eu-west-1:797753712737:function:predictValueFunction",
+          "resource_names": [
+            "predictValueFunction"
+          ],
+          "account_id": "797753712737"
+        },
+        "trace_id": "1-593aaf6a-b8788d51bc2eb0681422a9cc",
+        "origin": "AWS::Lambda::Function",
+        "subsegments": [
+          {
+            "id": "45960cc67a5dd8b7",
+            "name": "Initialization",
+            "start_time": 1497018226.865,
+            "end_time": 1497018227.716,
+            "aws": {
+              "function_arn": "arn:aws:lambda:eu-west-1:797753712737:function:predictValueFunction"
+            }
+          },
+          {
+            "id": "7445a12662747fcb",
+            "name": "DynamoDB",
+            "start_time": 1497018227.737,
+            "end_time": 1497018227.893,
+            "http": {
+              "response": {
+                "status": 200
+              }
+            },
+            "aws": {
+              "operation": "Query",
+              "region": "eu-west-1",
+              "request_id": "HK59DADQ8I2DASIUGD3GP6JMKNVV4KQNSO5AEMVJF66Q9ASUAAJG",
+              "retries": 0,
+              "limit": 100,
+              "select": "ALL_ATTRIBUTES",
+              "table_name": "ValuesTable",
+              "resource_names": [
+                "ValuesTable"
+              ]
+            },
+            "namespace": "aws",
+            "subsegments": [
+              {
+                "id": "8aee9bafb974b1bb",
+                "name": "DynamoDBCostradamus",
+                "start_time": 1497018227.904,
+                "end_time": 1497018227.905,
+                "metadata": {
+                  "DynamoDBCostradamus": {
+                    "consumptions": {
+                      "CapacityUnits": {
+                        "val": 0.5,
+                        "type": "RCU"
+                      },
+                      "PayloadSize": {
+                        "val": 726,
+                        "type": "B"
+                      },
+                      "Latency": {
+                        "val": 156,
+                        "type": "MS"
+                      }
+                    }
+                  }
+                },
+                "cost": {
+                  "MonetaryCost": {
+                    "type": "NANO-USD",
+                    "val": 20
+                  },
+                  "ProvisioningAmountWaste": {
+                    "type": "B",
+                    "val": 199274
+                  },
+                  "ProvisioningTimeWaste": {
+                    "type": "MS",
+                    "val": 3599844
+                  },
+                  "MeteringAmountWaste": {
+                    "type": "B",
+                    "val": 3274
+                  },
+                  "MeteringTimeWaste": {
+                    "type": "MS",
+                    "val": 844
+                  }
+                }
+              },
+              {
+                "id": "9954701ed8117bd9",
+                "name": "Kinesis",
+                "start_time": 1497018227.945,
+                "end_time": 1497018228.005,
+                "http": {
+                  "response": {
+                    "status": 200
+                  }
+                },
+                "aws": {
+                  "operation": "PutRecord",
+                  "region": "eu-west-1",
+                  "request_id": "d59dda5a-4e88-cc69-8429-6be98727481d",
+                  "retries": 0
+                },
+                "namespace": "aws",
+                "subsegments": [
+                  {
+                    "id": "27beb95ae017f1e3",
+                    "name": "KinesisCostradamus",
+                    "start_time": 1497018228.006,
+                    "end_time": 1497018228.006,
+                    "metadata": {
+                      "KinesisCostradamus": {
+                        "consumptions": {
+                          "PayloadSize": {
+                            "val": 182,
+                            "type": "B"
+                          },
+                          "Operation": {
+                            "val": "WRITE",
+                            "type": "KINESISOPERATION"
+                          },
+                          "Latency": {
+                            "val": 61,
+                            "type": "MS"
+                          }
+                        }
+                      }
+                    },
+                    "cost": {
+                      "MonetaryCost": {
+                        "type": "NANO-USD",
+                        "val": 135
+                      }
+                    }
+                  }
+                ],
+                "consumptions": {
+                  "PayloadSize": {
+                    "val": 182,
+                    "type": "B"
+                  },
+                  "Operation": {
+                    "val": "WRITE",
+                    "type": "KINESISOPERATION"
+                  },
+                  "Latency": {
+                    "val": 61,
+                    "type": "MS"
+                  }
+                },
+                "cost": {
+                  "MonetaryCost": {
+                    "type": "NANO-USD",
+                    "val": 135
+                  }
+                }
+              },
+              {
+                "id": "28bd00c8b31aaca2",
+                "name": "DynamoDB",
+                "start_time": 1497018227.948,
+                "end_time": 1497018228.003,
+                "http": {
+                  "response": {
+                    "status": 200
+                  }
+                },
+                "aws": {
+                  "operation": "PutItem",
+                  "region": "eu-west-1",
+                  "request_id": "2TD856LVJTPNHH3Q7PS7685T6FVV4KQNSO5AEMVJF66Q9ASUAAJG",
+                  "retries": 0,
+                  "table_name": "PredictionsTable",
+                  "resource_names": [
+                    "PredictionsTable"
+                  ]
+                },
+                "namespace": "aws",
+                "subsegments": [
+                  {
+                    "id": "4290ff50888110ac",
+                    "name": "DynamoDBCostradamus",
+                    "start_time": 1497018228.003,
+                    "end_time": 1497018228.003,
+                    "metadata": {
+                      "DynamoDBCostradamus": {
+                        "consumptions": {
+                          "CapacityUnits": {
+                            "val": 1,
+                            "type": "WCU"
+                          },
+                          "PayloadSize": {
+                            "val": 182,
+                            "type": "B"
+                          },
+                          "Latency": {
+                            "val": 56,
+                            "type": "MS"
+                          }
+                        }
+                      }
+                    },
+                    "cost": {
+                      "MonetaryCost": {
+                        "type": "NANO-USD",
+                        "val": 204
+                      },
+                      "ProvisioningAmountWaste": {
+                        "type": "B",
+                        "val": 9818
+                      },
+                      "ProvisioningTimeWaste": {
+                        "type": "MS",
+                        "val": 3599944
+                      },
+                      "MeteringAmountWaste": {
+                        "type": "B",
+                        "val": 818
+                      },
+                      "MeteringTimeWaste": {
+                        "type": "MS",
+                        "val": 944
+                      }
+                    }
+                  }
+                ],
+                "consumptions": {
+                  "CapacityUnits": {
+                    "val": 1,
+                    "type": "WCU"
+                  },
+                  "PayloadSize": {
+                    "val": 182,
+                    "type": "B"
+                  },
+                  "Latency": {
+                    "val": 56,
+                    "type": "MS"
+                  }
+                },
+                "cost": {
+                  "MonetaryCost": {
+                    "type": "NANO-USD",
+                    "val": 204
+                  },
+                  "ProvisioningAmountWaste": {
+                    "type": "B",
+                    "val": 9818
+                  },
+                  "ProvisioningTimeWaste": {
+                    "type": "MS",
+                    "val": 3599944
+                  },
+                  "MeteringAmountWaste": {
+                    "type": "B",
+                    "val": 818
+                  },
+                  "MeteringTimeWaste": {
+                    "type": "MS",
+                    "val": 944
+                  }
+                }
+              },
+              {
+                "id": "bcbae435be85a0fb",
+                "name": "DynamoDB",
+                "start_time": 1497018227.942,
+                "end_time": 1497018227.993,
+                "http": {
+                  "response": {
+                    "status": 200
+                  }
+                },
+                "aws": {
+                  "operation": "PutItem",
+                  "region": "eu-west-1",
+                  "request_id": "ARENCB1MN7B2GGE8PGL47AVTABVV4KQNSO5AEMVJF66Q9ASUAAJG",
+                  "retries": 0,
+                  "table_name": "PredictionsTable",
+                  "resource_names": [
+                    "PredictionsTable"
+                  ]
+                },
+                "namespace": "aws",
+                "subsegments": [
+                  {
+                    "id": "4370d30ac7fe67b1",
+                    "name": "DynamoDBCostradamus",
+                    "start_time": 1497018227.993,
+                    "end_time": 1497018227.993,
+                    "metadata": {
+                      "DynamoDBCostradamus": {
+                        "consumptions": {
+                          "CapacityUnits": {
+                            "val": 1,
+                            "type": "WCU"
+                          },
+                          "PayloadSize": {
+                            "val": 182,
+                            "type": "B"
+                          },
+                          "Latency": {
+                            "val": 52,
+                            "type": "MS"
+                          }
+                        }
+                      }
+                    },
+                    "cost": {
+                      "MonetaryCost": {
+                        "type": "NANO-USD",
+                        "val": 204
+                      },
+                      "ProvisioningAmountWaste": {
+                        "type": "B",
+                        "val": 9818
+                      },
+                      "ProvisioningTimeWaste": {
+                        "type": "MS",
+                        "val": 3599948
+                      },
+                      "MeteringAmountWaste": {
+                        "type": "B",
+                        "val": 818
+                      },
+                      "MeteringTimeWaste": {
+                        "type": "MS",
+                        "val": 948
+                      }
+                    }
+                  }
+                ],
+                "consumptions": {
+                  "CapacityUnits": {
+                    "val": 1,
+                    "type": "WCU"
+                  },
+                  "PayloadSize": {
+                    "val": 182,
+                    "type": "B"
+                  },
+                  "Latency": {
+                    "val": 52,
+                    "type": "MS"
+                  }
+                },
+                "cost": {
+                  "MonetaryCost": {
+                    "type": "NANO-USD",
+                    "val": 204
+                  },
+                  "ProvisioningAmountWaste": {
+                    "type": "B",
+                    "val": 9818
+                  },
+                  "ProvisioningTimeWaste": {
+                    "type": "MS",
+                    "val": 3599948
+                  },
+                  "MeteringAmountWaste": {
+                    "type": "B",
+                    "val": 818
+                  },
+                  "MeteringTimeWaste": {
+                    "type": "MS",
+                    "val": 948
+                  }
+                }
+              },
+              {
+                "id": "c0dbdda264ddecfc",
+                "name": "DynamoDB",
+                "start_time": 1497018227.912,
+                "end_time": 1497018227.99,
+                "http": {
+                  "response": {
+                    "status": 200
+                  }
+                },
+                "aws": {
+                  "operation": "PutItem",
+                  "region": "eu-west-1",
+                  "request_id": "GICI9B0JFK7NN0OER16OS8K9VNVV4KQNSO5AEMVJF66Q9ASUAAJG",
+                  "retries": 0,
+                  "table_name": "PredictionsTable",
+                  "resource_names": [
+                    "PredictionsTable"
+                  ]
+                },
+                "namespace": "aws",
+                "subsegments": [
+                  {
+                    "id": "287db84d03e0dde9",
+                    "name": "DynamoDBCostradamus",
+                    "start_time": 1497018227.991,
+                    "end_time": 1497018227.991,
+                    "metadata": {
+                      "DynamoDBCostradamus": {
+                        "consumptions": {
+                          "CapacityUnits": {
+                            "val": 1,
+                            "type": "WCU"
+                          },
+                          "PayloadSize": {
+                            "val": 182,
+                            "type": "B"
+                          },
+                          "Latency": {
+                            "val": 79,
+                            "type": "MS"
+                          }
+                        }
+                      }
+                    },
+                    "cost": {
+                      "MonetaryCost": {
+                        "type": "NANO-USD",
+                        "val": 204
+                      },
+                      "ProvisioningAmountWaste": {
+                        "type": "B",
+                        "val": 9818
+                      },
+                      "ProvisioningTimeWaste": {
+                        "type": "MS",
+                        "val": 3599921
+                      },
+                      "MeteringAmountWaste": {
+                        "type": "B",
+                        "val": 818
+                      },
+                      "MeteringTimeWaste": {
+                        "type": "MS",
+                        "val": 921
+                      }
+                    }
+                  }
+                ],
+                "consumptions": {
+                  "CapacityUnits": {
+                    "val": 1,
+                    "type": "WCU"
+                  },
+                  "PayloadSize": {
+                    "val": 182,
+                    "type": "B"
+                  },
+                  "Latency": {
+                    "val": 79,
+                    "type": "MS"
+                  }
+                },
+                "cost": {
+                  "MonetaryCost": {
+                    "type": "NANO-USD",
+                    "val": 204
+                  },
+                  "ProvisioningAmountWaste": {
+                    "type": "B",
+                    "val": 9818
+                  },
+                  "ProvisioningTimeWaste": {
+                    "type": "MS",
+                    "val": 3599921
+                  },
+                  "MeteringAmountWaste": {
+                    "type": "B",
+                    "val": 818
+                  },
+                  "MeteringTimeWaste": {
+                    "type": "MS",
+                    "val": 921
+                  }
+                }
+              },
+              {
+                "id": "b1a92c9e7ef45025",
+                "name": "Kinesis",
+                "start_time": 1497018227.95,
+                "end_time": 1497018228.012,
+                "http": {
+                  "response": {
+                    "status": 200
+                  }
+                },
+                "aws": {
+                  "operation": "PutRecord",
+                  "region": "eu-west-1",
+                  "request_id": "f3ac2c9d-3b9c-4db7-a218-9d2ea4341fca",
+                  "retries": 0
+                },
+                "namespace": "aws",
+                "subsegments": [
+                  {
+                    "id": "db4597ddf73494bc",
+                    "name": "KinesisCostradamus",
+                    "start_time": 1497018228.012,
+                    "end_time": 1497018228.012,
+                    "metadata": {
+                      "KinesisCostradamus": {
+                        "consumptions": {
+                          "PayloadSize": {
+                            "val": 182,
+                            "type": "B"
+                          },
+                          "Operation": {
+                            "val": "WRITE",
+                            "type": "KINESISOPERATION"
+                          },
+                          "Latency": {
+                            "val": 63,
+                            "type": "MS"
+                          }
+                        }
+                      }
+                    },
+                    "cost": {
+                      "MonetaryCost": {
+                        "type": "NANO-USD",
+                        "val": 135
+                      }
+                    }
+                  }
+                ],
+                "consumptions": {
+                  "PayloadSize": {
+                    "val": 182,
+                    "type": "B"
+                  },
+                  "Operation": {
+                    "val": "WRITE",
+                    "type": "KINESISOPERATION"
+                  },
+                  "Latency": {
+                    "val": 63,
+                    "type": "MS"
+                  }
+                },
+                "cost": {
+                  "MonetaryCost": {
+                    "type": "NANO-USD",
+                    "val": 135
+                  }
+                }
+              },
+              {
+                "id": "40740a8c96b80f4d",
+                "name": "Kinesis",
+                "start_time": 1497018227.931,
+                "end_time": 1497018228.014,
+                "http": {
+                  "response": {
+                    "status": 200
+                  }
+                },
+                "aws": {
+                  "operation": "PutRecord",
+                  "region": "eu-west-1",
+                  "request_id": "f0abe3d1-7626-d325-a11f-5262db8c6b5f",
+                  "retries": 0
+                },
+                "namespace": "aws",
+                "subsegments": [
+                  {
+                    "id": "49c2203c69eb94f7",
+                    "name": "KinesisCostradamus",
+                    "start_time": 1497018228.014,
+                    "end_time": 1497018228.014,
+                    "metadata": {
+                      "KinesisCostradamus": {
+                        "consumptions": {
+                          "PayloadSize": {
+                            "val": 182,
+                            "type": "B"
+                          },
+                          "Operation": {
+                            "val": "WRITE",
+                            "type": "KINESISOPERATION"
+                          },
+                          "Latency": {
+                            "val": 83,
+                            "type": "MS"
+                          }
+                        }
+                      }
+                    },
+                    "cost": {
+                      "MonetaryCost": {
+                        "type": "NANO-USD",
+                        "val": 135
+                      }
+                    }
+                  }
+                ],
+                "consumptions": {
+                  "PayloadSize": {
+                    "val": 182,
+                    "type": "B"
+                  },
+                  "Operation": {
+                    "val": "WRITE",
+                    "type": "KINESISOPERATION"
+                  },
+                  "Latency": {
+                    "val": 83,
+                    "type": "MS"
+                  }
+                },
+                "cost": {
+                  "MonetaryCost": {
+                    "type": "NANO-USD",
+                    "val": 135
+                  }
+                }
+              }
+            ],
+            "consumptions": {
+              "CapacityUnits": {
+                "val": 0.5,
+                "type": "RCU"
+              },
+              "PayloadSize": {
+                "val": 726,
+                "type": "B"
+              },
+              "Latency": {
+                "val": 156,
+                "type": "MS"
+              }
+            },
+            "cost": {
+              "MonetaryCost": {
+                "type": "NANO-USD",
+                "val": 20
+              },
+              "ProvisioningAmountWaste": {
+                "type": "B",
+                "val": 199274
+              },
+              "ProvisioningTimeWaste": {
+                "type": "MS",
+                "val": 3599844
+              },
+              "MeteringAmountWaste": {
+                "type": "B",
+                "val": 3274
+              },
+              "MeteringTimeWaste": {
+                "type": "MS",
+                "val": 844
+              }
+            }
+          },
+          {
+            "id": "578a7b93b6729aeb",
+            "name": "LambdaCostradamus",
+            "start_time": 1497018227.719,
+            "end_time": 1497018227.72,
+            "metadata": {
+              "LambdaCostradamus": {
+                "RequestId": "3b16e33d-4d1f-11e7-b11b-41872c971f0d"
+              }
+            }
+          }
+        ],
+        "consumptions": {
+          "Duration": {
+            "val": 299,
+            "type": "ms"
+          },
+          "BilledDuration": {
+            "val": 300,
+            "type": "ms"
+          },
+          "MemorySize": {
+            "val": 1024,
+            "type": "MB"
+          },
+          "MaxMemoryUsed": {
+            "val": 39,
+            "type": "MB"
+          }
+        },
+        "cost": {
+          "MonetaryCost": {
+            "type": "NANO-USD",
+            "val": 5001
+          },
+          "ProvisioningAmountWaste": {
+            "type": "B",
+            "val": 0
+          },
+          "ProvisioningTimeWaste": {
+            "type": "MS",
+            "val": 0
+          },
+          "MeteringAmountWaste": {
+            "type": "MB",
+            "val": 985
+          },
+          "MeteringTimeWaste": {
+            "type": "MS",
+            "val": 1
+          }
+        }
+      }
+    },
+    {
+      "Id": "29e11d305e02f619",
+      "Document": {
+        "id": "29e11d305e02f619",
+        "name": "persistValueFunction",
+        "start_time": 1497018218.882,
+        "end_time": 1497018218.909,
+        "parent_id": "5d00963f2ad96ae5",
+        "http": {
+          "response": {
+            "status": 202
+          }
+        },
+        "aws": {
+          "request_id": "3b170abe-4d1f-11e7-8f64-2d190030cbc0"
+        },
+        "trace_id": "1-593aaf6a-b8788d51bc2eb0681422a9cc",
+        "origin": "AWS::Lambda",
+        "resource_arn": "arn:aws:lambda:eu-west-1:797753712737:function:persistValueFunction",
+        "subsegments": [
+          {
+            "id": "4b84108f2be32296",
+            "name": "Attempt #1",
+            "start_time": 1497018218.939,
+            "end_time": 1497018218.985,
+            "http": {
+              "response": {
+                "status": 200
+              }
+            }
+          },
+          {
+            "id": "07895d63f39943d3",
+            "name": "Dwell Time",
+            "start_time": 1497018218.882,
+            "end_time": 1497018218.939,
+            "http": {
+              "response": {}
+            }
+          }
+        ]
+      }
+    },
+    {
+      "Id": "5a37befb14680584",
+      "Document": {
+        "id": "5a37befb14680584",
+        "name": "persistValueFunction",
+        "start_time": 1497018218.946,
+        "end_time": 1497018218.979,
+        "parent_id": "4b84108f2be32296",
+        "aws": {
+          "function_arn": "arn:aws:lambda:eu-west-1:797753712737:function:persistValueFunction",
+          "resource_names": [
+            "persistValueFunction"
+          ],
+          "account_id": "797753712737"
+        },
+        "trace_id": "1-593aaf6a-b8788d51bc2eb0681422a9cc",
+        "origin": "AWS::Lambda::Function",
+        "subsegments": [
+          {
+            "id": "36e68caad1c2a66a",
+            "name": "LambdaCostradamus",
+            "start_time": 1497018218.946,
+            "end_time": 1497018218.946,
+            "metadata": {
+              "LambdaCostradamus": {
+                "RequestId": "3b170abe-4d1f-11e7-8f64-2d190030cbc0"
+              }
+            }
+          },
+          {
+            "id": "ef965950bbf6c2e4",
+            "name": "DynamoDB",
+            "start_time": 1497018218.947,
+            "end_time": 1497018218.978,
+            "http": {
+              "response": {
+                "status": 200
+              }
+            },
+            "aws": {
+              "operation": "PutItem",
+              "region": "eu-west-1",
+              "request_id": "J8JVV7ICLBHS1O61GN5BD6HUJNVV4KQNSO5AEMVJF66Q9ASUAAJG",
+              "retries": 0,
+              "table_name": "ValuesTable",
+              "resource_names": [
+                "ValuesTable"
+              ]
+            },
+            "namespace": "aws",
+            "subsegments": [
+              {
+                "id": "0496dff3e4e779bc",
+                "name": "DynamoDBCostradamus",
+                "start_time": 1497018218.978,
+                "end_time": 1497018218.978,
+                "metadata": {
+                  "DynamoDBCostradamus": {
+                    "consumptions": {
+                      "CapacityUnits": {
+                        "val": 1,
+                        "type": "WCU"
+                      },
+                      "PayloadSize": {
+                        "val": 182,
+                        "type": "B"
+                      },
+                      "Latency": {
+                        "val": 31,
+                        "type": "MS"
+                      }
+                    }
+                  }
+                },
+                "cost": {
+                  "MonetaryCost": {
+                    "type": "NANO-USD",
+                    "val": 204
+                  },
+                  "ProvisioningAmountWaste": {
+                    "type": "B",
+                    "val": 9818
+                  },
+                  "ProvisioningTimeWaste": {
+                    "type": "MS",
+                    "val": 3599969
+                  },
+                  "MeteringAmountWaste": {
+                    "type": "B",
+                    "val": 818
+                  },
+                  "MeteringTimeWaste": {
+                    "type": "MS",
+                    "val": 969
+                  }
+                }
+              }
+            ],
+            "consumptions": {
+              "CapacityUnits": {
+                "val": 1,
+                "type": "WCU"
+              },
+              "PayloadSize": {
+                "val": 182,
+                "type": "B"
+              },
+              "Latency": {
+                "val": 31,
+                "type": "MS"
+              }
+            },
+            "cost": {
+              "MonetaryCost": {
+                "type": "NANO-USD",
+                "val": 204
+              },
+              "ProvisioningAmountWaste": {
+                "type": "B",
+                "val": 9818
+              },
+              "ProvisioningTimeWaste": {
+                "type": "MS",
+                "val": 3599969
+              },
+              "MeteringAmountWaste": {
+                "type": "B",
+                "val": 818
+              },
+              "MeteringTimeWaste": {
+                "type": "MS",
+                "val": 969
+              }
+            }
+          }
+        ],
+        "consumptions": {
+          "Duration": {
+            "val": 33,
+            "type": "ms"
+          },
+          "BilledDuration": {
+            "val": 100,
+            "type": "ms"
+          },
+          "MemorySize": {
+            "val": 1024,
+            "type": "MB"
+          },
+          "MaxMemoryUsed": {
+            "val": 45,
+            "type": "MB"
+          }
+        },
+        "cost": {
+          "MonetaryCost": {
+            "type": "NANO-USD",
+            "val": 1667
+          },
+          "ProvisioningAmountWaste": {
+            "type": "B",
+            "val": 0
+          },
+          "ProvisioningTimeWaste": {
+            "type": "MS",
+            "val": 0
+          },
+          "MeteringAmountWaste": {
+            "type": "MB",
+            "val": 979
+          },
+          "MeteringTimeWaste": {
+            "type": "MS",
+            "val": 67
+          }
+        }
+      }
+    },
+    {
+      "Id": "6007bf4f0f3d1d5f",
+      "Document": {
+        "id": "6007bf4f0f3d1d5f",
+        "name": "ingestValueFunction",
+        "start_time": 1497018218.857,
+        "end_time": 1497018218.912,
+        "parent_id": "42ff63a59b627c40",
+        "aws": {
+          "function_arn": "arn:aws:lambda:eu-west-1:797753712737:function:ingestValueFunction",
+          "resource_names": [
+            "ingestValueFunction"
+          ],
+          "account_id": "797753712737"
+        },
+        "trace_id": "1-593aaf6a-b8788d51bc2eb0681422a9cc",
+        "origin": "AWS::Lambda::Function",
+        "subsegments": [
+          {
+            "id": "5d00963f2ad96ae5",
+            "name": "Lambda",
+            "start_time": 1497018218.859,
+            "end_time": 1497018218.908,
+            "http": {
+              "response": {
+                "status": 202
+              }
+            },
+            "aws": {
+              "operation": "Invoke",
+              "region": "eu-west-1",
+              "request_id": "3b170abe-4d1f-11e7-8f64-2d190030cbc0",
+              "retries": 0,
+              "function_name": "persistValueFunction",
+              "invocation_type": "Event",
+              "resource_names": [
+                "persistValueFunction"
+              ]
+            },
+            "namespace": "aws"
+          },
+          {
+            "id": "655500c51c331e77",
+            "name": "Lambda",
+            "start_time": 1497018218.861,
+            "end_time": 1497018218.911,
+            "http": {
+              "response": {
+                "status": 202
+              }
+            },
+            "aws": {
+              "operation": "Invoke",
+              "region": "eu-west-1",
+              "request_id": "3b16e33d-4d1f-11e7-b11b-41872c971f0d",
+              "retries": 0,
+              "function_name": "predictValueFunction",
+              "invocation_type": "Event",
+              "resource_names": [
+                "predictValueFunction"
+              ]
+            },
+            "namespace": "aws"
+          },
+          {
+            "id": "946ae616a45672f8",
+            "name": "LambdaCostradamus",
+            "start_time": 1497018218.858,
+            "end_time": 1497018218.858,
+            "metadata": {
+              "LambdaCostradamus": {
+                "RequestId": "3b12eb90-4d1f-11e7-8d98-cba1c4c7363b"
+              }
+            }
+          }
+        ],
+        "consumptions": {
+          "Duration": {
+            "val": 54,
+            "type": "ms"
+          },
+          "BilledDuration": {
+            "val": 100,
+            "type": "ms"
+          },
+          "MemorySize": {
+            "val": 1024,
+            "type": "MB"
+          },
+          "MaxMemoryUsed": {
+            "val": 43,
+            "type": "MB"
+          }
+        },
+        "cost": {
+          "MonetaryCost": {
+            "type": "NANO-USD",
+            "val": 1667
+          },
+          "ProvisioningAmountWaste": {
+            "type": "B",
+            "val": 0
+          },
+          "ProvisioningTimeWaste": {
+            "type": "MS",
+            "val": 0
+          },
+          "MeteringAmountWaste": {
+            "type": "MB",
+            "val": 981
+          },
+          "MeteringTimeWaste": {
+            "type": "MS",
+            "val": 46
+          }
+        }
+      }
+    },
+    {
+      "Id": "01e2327d4f81c45d",
+      "Document": {
+        "id": "01e2327d4f81c45d",
+        "name": "predictValueFunction",
+        "start_time": 1497018218.881,
+        "end_time": 1497018218.91,
+        "parent_id": "655500c51c331e77",
+        "http": {
+          "response": {
+            "status": 202
+          }
+        },
+        "aws": {
+          "request_id": "3b16e33d-4d1f-11e7-b11b-41872c971f0d"
+        },
+        "trace_id": "1-593aaf6a-b8788d51bc2eb0681422a9cc",
+        "origin": "AWS::Lambda",
+        "resource_arn": "arn:aws:lambda:eu-west-1:797753712737:function:predictValueFunction",
+        "subsegments": [
+          {
+            "id": "4fe2072766d53f04",
+            "name": "Dwell Time",
+            "start_time": 1497018218.881,
+            "end_time": 1497018218.94,
+            "http": {
+              "response": {}
+            }
+          },
+          {
+            "id": "74751549c9c73c9c",
+            "name": "Attempt #1",
+            "start_time": 1497018218.94,
+            "end_time": 1497018228.018,
+            "http": {
+              "response": {
+                "status": 200
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "Id": "3a0b0ecf2770a851",
+      "Document": {
+        "id": "3a0b0ecf2770a851",
+        "name": "DynamoDB",
+        "start_time": 1497018227.737,
+        "end_time": 1497018227.893,
+        "parent_id": "7445a12662747fcb",
+        "inferred": true,
+        "http": {
+          "response": {
+            "status": 200
+          }
+        },
+        "aws": {
+          "operation": "Query",
+          "region": "eu-west-1",
+          "request_id": "HK59DADQ8I2DASIUGD3GP6JMKNVV4KQNSO5AEMVJF66Q9ASUAAJG",
+          "retries": 0,
+          "limit": 100,
+          "select": "ALL_ATTRIBUTES",
+          "table_name": "ValuesTable",
+          "resource_names": [
+            "ValuesTable"
+          ]
+        },
+        "trace_id": "1-593aaf6a-b8788d51bc2eb0681422a9cc",
+        "origin": "AWS::DynamoDB::Table"
+      }
+    },
+    {
+      "Id": "225b0bb21a01721c",
+      "Document": {
+        "id": "225b0bb21a01721c",
+        "name": "Kinesis",
+        "start_time": 1497018227.945,
+        "end_time": 1497018228.005,
+        "parent_id": "9954701ed8117bd9",
+        "inferred": true,
+        "http": {
+          "response": {
+            "status": 200
+          }
+        },
+        "aws": {
+          "operation": "PutRecord",
+          "region": "eu-west-1",
+          "request_id": "d59dda5a-4e88-cc69-8429-6be98727481d",
+          "retries": 0
+        },
+        "trace_id": "1-593aaf6a-b8788d51bc2eb0681422a9cc",
+        "origin": "AWS::Kinesis"
+      }
+    },
+    {
+      "Id": "26a414d9312a91af",
+      "Document": {
+        "id": "26a414d9312a91af",
+        "name": "DynamoDB",
+        "start_time": 1497018227.948,
+        "end_time": 1497018228.003,
+        "parent_id": "28bd00c8b31aaca2",
+        "inferred": true,
+        "http": {
+          "response": {
+            "status": 200
+          }
+        },
+        "aws": {
+          "operation": "PutItem",
+          "region": "eu-west-1",
+          "request_id": "2TD856LVJTPNHH3Q7PS7685T6FVV4KQNSO5AEMVJF66Q9ASUAAJG",
+          "retries": 0,
+          "table_name": "PredictionsTable",
+          "resource_names": [
+            "PredictionsTable"
+          ]
+        },
+        "trace_id": "1-593aaf6a-b8788d51bc2eb0681422a9cc",
+        "origin": "AWS::DynamoDB::Table"
+      }
+    },
+    {
+      "Id": "18406f7f37ae856d",
+      "Document": {
+        "id": "18406f7f37ae856d",
+        "name": "DynamoDB",
+        "start_time": 1497018227.942,
+        "end_time": 1497018227.993,
+        "parent_id": "bcbae435be85a0fb",
+        "inferred": true,
+        "http": {
+          "response": {
+            "status": 200
+          }
+        },
+        "aws": {
+          "operation": "PutItem",
+          "region": "eu-west-1",
+          "request_id": "ARENCB1MN7B2GGE8PGL47AVTABVV4KQNSO5AEMVJF66Q9ASUAAJG",
+          "retries": 0,
+          "table_name": "PredictionsTable",
+          "resource_names": [
+            "PredictionsTable"
+          ]
+        },
+        "trace_id": "1-593aaf6a-b8788d51bc2eb0681422a9cc",
+        "origin": "AWS::DynamoDB::Table"
+      }
+    },
+    {
+      "Id": "099fe4e1318b91fc",
+      "Document": {
+        "id": "099fe4e1318b91fc",
+        "name": "DynamoDB",
+        "start_time": 1497018227.912,
+        "end_time": 1497018227.99,
+        "parent_id": "c0dbdda264ddecfc",
+        "inferred": true,
+        "http": {
+          "response": {
+            "status": 200
+          }
+        },
+        "aws": {
+          "operation": "PutItem",
+          "region": "eu-west-1",
+          "request_id": "GICI9B0JFK7NN0OER16OS8K9VNVV4KQNSO5AEMVJF66Q9ASUAAJG",
+          "retries": 0,
+          "table_name": "PredictionsTable",
+          "resource_names": [
+            "PredictionsTable"
+          ]
+        },
+        "trace_id": "1-593aaf6a-b8788d51bc2eb0681422a9cc",
+        "origin": "AWS::DynamoDB::Table"
+      }
+    },
+    {
+      "Id": "240f239b0d40fcb5",
+      "Document": {
+        "id": "240f239b0d40fcb5",
+        "name": "Kinesis",
+        "start_time": 1497018227.95,
+        "end_time": 1497018228.012,
+        "parent_id": "b1a92c9e7ef45025",
+        "inferred": true,
+        "http": {
+          "response": {
+            "status": 200
+          }
+        },
+        "aws": {
+          "operation": "PutRecord",
+          "region": "eu-west-1",
+          "request_id": "f3ac2c9d-3b9c-4db7-a218-9d2ea4341fca",
+          "retries": 0
+        },
+        "trace_id": "1-593aaf6a-b8788d51bc2eb0681422a9cc",
+        "origin": "AWS::Kinesis"
+      }
+    },
+    {
+      "Id": "3c8afbfb00b883d5",
+      "Document": {
+        "id": "3c8afbfb00b883d5",
+        "name": "Kinesis",
+        "start_time": 1497018227.931,
+        "end_time": 1497018228.014,
+        "parent_id": "40740a8c96b80f4d",
+        "inferred": true,
+        "http": {
+          "response": {
+            "status": 200
+          }
+        },
+        "aws": {
+          "operation": "PutRecord",
+          "region": "eu-west-1",
+          "request_id": "f0abe3d1-7626-d325-a11f-5262db8c6b5f",
+          "retries": 0
+        },
+        "trace_id": "1-593aaf6a-b8788d51bc2eb0681422a9cc",
+        "origin": "AWS::Kinesis"
+      }
+    },
+    {
+      "Id": "1839ac0523a6b5df",
+      "Document": {
+        "id": "1839ac0523a6b5df",
+        "name": "DynamoDB",
+        "start_time": 1497018218.947,
+        "end_time": 1497018218.978,
+        "parent_id": "ef965950bbf6c2e4",
+        "inferred": true,
+        "http": {
+          "response": {
+            "status": 200
+          }
+        },
+        "aws": {
+          "operation": "PutItem",
+          "region": "eu-west-1",
+          "request_id": "J8JVV7ICLBHS1O61GN5BD6HUJNVV4KQNSO5AEMVJF66Q9ASUAAJG",
+          "retries": 0,
+          "table_name": "ValuesTable",
+          "resource_names": [
+            "ValuesTable"
+          ]
+        },
+        "trace_id": "1-593aaf6a-b8788d51bc2eb0681422a9cc",
+        "origin": "AWS::DynamoDB::Table"
+      }
+    }
+  ]
+}
